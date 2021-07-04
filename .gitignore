@@ -15,8 +15,8 @@ nbproject/
 
 # End of https://www.toptal.com/developers/gitignore/api/netbeans
 *.properties
-*.xml
+
 nbproject/project.properties
-*.xml
+
 *.properties
 nbproject/project.properties
