@@ -27,7 +27,7 @@
                     <div class="row">
                         <c:forEach var="tier" items="${tiers}">
                             <div class="border rounded col-3 mx-2 my-3">
-                                <a href="#" class="tier text-dark" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                <a href="#" class="tier text-dark" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}">
                                     <p class="fw-bold border-bottom">${tier.tierTitle}</p>
                                     <div class="text-center">
                                         <p>${tier.price} USD</p>
@@ -35,7 +35,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="modal fade" id="confirmModal" tab-index="-1">
+                            <div class="modal fade" id="modal-${tier.tierId}" tab-index="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
