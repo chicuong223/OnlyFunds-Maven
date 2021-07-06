@@ -93,7 +93,7 @@
                             </span>
                             <span class="nav-item mt-1 ms-5">
                                 <form class="form-inline" action="SearchServlet?a=searchstring" method="GET">
-                                <input type="hidden" name="a" value="searchstring"/>
+                                    <input type="hidden" name="a" value="searchstring"/>
                                     <div class="input-group input-group-sm" id="search-input">
                                         <input type="text" class="form-control" name="search" placeholder="Search...">
                                         <button class="input-group-text" id="basic-addon2" type="submit">
@@ -122,7 +122,6 @@
                                 </c:when>
                                 <c:otherwise>
                                     <!-- For user -->
-                                    <!-- Notification chua duoc implement -->
                                     <div class="nav-item" id="notification">
                                         <a href="#Category" class="nav-link" id="navbarDropdown" role="button"
                                            data-bs-toggle="dropdown"><i class="fas fa-bell"></i>
@@ -143,6 +142,7 @@
                                         <div class="dropdown-menu m-0 p-0" style="width: 200px; position: absolute; left: 85vw;">
                                             <a href="ManageAccount" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage account</a>
                                             <a href="ManageSubscription" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage subscription</a>
+                                            <a href="ViewTransactionHistory?username=${sessionScope.user.username}" class="col-12 nav-link m-0 p-0 text-center border-bottom">Transaction History</a>
                                             <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
                                         </div>
                                     </div>
