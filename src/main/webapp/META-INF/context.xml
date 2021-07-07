@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/OnlyFunds">
     <Resource
-       url="jdbc:sqlserver://only-funds.database.windows.net;databaseName=SWP391_OnlyFunds" 
+       url="jdbc:sqlserver://only-funds-asia.database.windows.net;databaseName=SWP391_OnlyFunds_Copy" 
        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
        password="OnlyFunds123"
        username="admin123" 

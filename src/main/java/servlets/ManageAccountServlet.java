@@ -62,25 +62,13 @@ public class ManageAccountServlet extends HttpServlet {
                 request.setAttribute("ERROR_LIST", errorList);
                 rd.forward(request, response);
             }
-            
-            //change avatar
-            else if (action.equals("avatar")) {
-                
-            }
         }
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserCategoryMapDAO ucDao = new UserCategoryMapDAO();
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
-        RequestDispatcher rd = request.getRequestDispatcher(accountInfoPage);
-            
-        request.setAttribute("userCategoryList", userCatList);
-        rd.forward(request, response);
+        response.sendRedirect(accountInfoPage);
     }
     
     @Override
