@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.user.User;
@@ -39,12 +40,15 @@ public class SubscribeServlet extends HttpServlet {
         Tier tier = tierDAO.getTierById(tierID);
         PaymentUtils paymentUtil = new PaymentUtils();
         User subscriber = (User) request.getSession().getAttribute("user");
+        HttpSession session = request.getSession();
+        session.setAttribute("tier", tier);
         try {
             Payment definedPayment = paymentUtil.definePayment(tier, subscriber);
             String approvalLink = paymentUtil.createPayment(definedPayment);
             response.sendRedirect(approvalLink);
         }
-        catch (Exception e) {
+        catch (IOException e) {
+            log(e.getMessage());
         }
     }
 

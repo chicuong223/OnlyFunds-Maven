@@ -15,6 +15,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import subscription_management.subscription.SubscriptionDAO;
+import subscription_management.tier.Tier;
+import subscription_management.transaction.BillDAO;
+import user_management.user.User;
 import utils.PaymentUtils;
 
 /**
@@ -32,12 +37,26 @@ public class ExecutePaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if(request.getParameter("cancel") != null){
+            Tier tier = (Tier) request.getSession().getAttribute("tier");
+            request.getSession().removeAttribute("tier");
+            response.sendRedirect("CreatorInfoServlet?username=" + tier.getCreator().getUsername());
+            return;
+        }
         try {
             PaymentUtils paymentUtils = new PaymentUtils();
             Payment payment = paymentUtils.executePayment(request);
             PayerInfo payerInfo = payment.getPayer().getPayerInfo();
             Transaction transaction = payment.getTransactions().get(0);
-
+            SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
+            BillDAO billDAO = new BillDAO();
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            Tier tier = (Tier) session.getAttribute("tier");
+            subscriptionDAO.addSubscription(user, tier);
+            billDAO.addBill(user, tier);
+            session.removeAttribute("tier");
+            request.setAttribute("tier", tier);
             request.setAttribute("payer", payerInfo);
             request.setAttribute("transaction", transaction);
             request.getRequestDispatcher("receipt.jsp").forward(request, response);

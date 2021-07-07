@@ -18,6 +18,7 @@
             <input type="hidden" name="PayerID" value="${param.PayerID}" />
             <div>
                 <h4>Payment Description</h4>
+                <p>Creator: ${sessionScope.tier.creator.firstName} ${sessionScope.tier.creator.lastName} </p>
                 <p>Tier Title: ${transaction.description}</p>
                 <p>Price: ${transaction.amount.total} USD</p>
             </div>
@@ -29,6 +30,7 @@
             </div>
             <div>
                 <input type="submit" value="Pay Now"/>
+                <input type="submit" name="cancel" value="Cancel"/>
             </div>
         </form>
     </body>

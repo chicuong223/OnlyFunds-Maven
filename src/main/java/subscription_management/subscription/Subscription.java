@@ -14,6 +14,7 @@ import java.sql.Date;
  * @author chiuy
  */
 public class Subscription {
+    private int subscriptionId;
     private User subscriber;
     private Tier tier;
     private Date startDate;
@@ -22,13 +23,24 @@ public class Subscription {
     
     public Subscription(){}
 
-    public Subscription(User subscriber, Tier tier, Date startDate, Date endDate, boolean isActive) {
+    public Subscription(int subscriptionId, User subscriber, Tier tier, Date startDate, Date endDate, boolean isActive) {
+        this.subscriptionId = subscriptionId;
         this.subscriber = subscriber;
         this.tier = tier;
         this.startDate = startDate;
         this.endDate = endDate;
         this.isActive = isActive;
     }
+
+    public int getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(int subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
+   
 
     public User getSubscriber() {
         return subscriber;

@@ -19,12 +19,22 @@
             <h1 class="text-center">Payment Done</h1>
         </header>
         <main>
+            <c:set var="user" value="${sessionScope.user}"></c:set>
             <div class="w-75 shadow mx-auto">
                 <h2>Receipt Details: </h2>
                 <div>
-                    <p>Payer: ${payer.firstName} ${payer.lastName}</p>
-                    <p>Description: ${transaction.description}</p>
+                    <h3>Subscriber</h3>
+                    <p>Name: ${user.firstName} ${user.lastName}</p>
+                    <p>Email: ${user.email}</p>
+                </div>
+                <div>
+                    <h3>Content</h3>
+                    <p>Creator: ${tier.creator.firstName} ${tier.creator.lastName}</p>
+                    <p>Tier title: ${tier.tierTitle}</p>
                     <p>Price: ${transaction.amount.total}</p>
+                </div>
+                <div>
+                    <a href="CreatorInfoServlet?username=${tier.creator.username}" class="link-primary">Click here to go back</a>
                 </div>
             </div>
         </main>
