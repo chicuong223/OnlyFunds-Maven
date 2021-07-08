@@ -15,17 +15,19 @@ public class User {
     private String lastName;
     private String firstName;
     private String email;
+    private String bio;
     private String avatarURL;
     private boolean isBanned;
     
     public User(){}
 
-    public User(String username, String password, String lastName, String firstName, String email, String avatarURL, boolean isBanned) {
+    public User(String username, String password, String lastName, String firstName, String email, String bio, String avatarURL, boolean isBanned) {
         this.username = username;
         this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
+        this.bio = bio;
         this.avatarURL = avatarURL;
         this.isBanned = isBanned;
     }
@@ -85,6 +87,15 @@ public class User {
     public void setIsBanned(boolean isBanned) {
         this.isBanned = isBanned;
     }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+    
 
     @Override
     public String toString() {

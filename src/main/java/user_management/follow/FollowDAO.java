@@ -35,9 +35,10 @@ public class FollowDAO {
                             String firstName = rs.getString("firstname");
                             String lastName = rs.getString("lastname");
                             String email = rs.getString("email");
+                            String bio = rs.getString("bio");
                             String avatarURL = rs.getString("avatarURL");
                             boolean isBanned = rs.getBoolean("is_banned");
-                            user = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                            user = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                             lst.add(user);
                         }
                     }

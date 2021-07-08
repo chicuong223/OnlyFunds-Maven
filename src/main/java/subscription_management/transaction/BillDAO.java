@@ -51,7 +51,7 @@ public class BillDAO {
             if(con != null){
                 UserDAO userDAO = new UserDAO();
                 PreparedStatement ps = con.prepareStatement("SELECT id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
-                        + "WHERE recipient_username = ? ");
+                        + "WHERE recipient_username = ? ORDER BY id");
                 ps.setString(1, user.getUsername());
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()){
@@ -82,7 +82,7 @@ public class BillDAO {
             if(con != null){
                 UserDAO userDAO = new UserDAO();
                 PreparedStatement ps = con.prepareStatement("SELECT id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
-                        + "WHERE recipient_username = ? ");
+                        + "WHERE recipient_username = ? ORDER BY id");
                 ps.setString(1, user.getUsername());
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()){
@@ -113,7 +113,7 @@ public class BillDAO {
             if(con != null){
                 UserDAO userDAO = new UserDAO();
                 PreparedStatement ps = con.prepareStatement("SELECT id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
-                        + "WHERE sender_username = ? OR recipient_username = ? ");
+                        + "WHERE sender_username = ? OR recipient_username = ? ORDER BY id");
                 ps.setString(1, user.getUsername());
                 ps.setString(2, user.getUsername());
                 ResultSet rs = ps.executeQuery();

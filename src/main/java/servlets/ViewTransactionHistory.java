@@ -36,26 +36,57 @@ public class ViewTransactionHistory extends HttpServlet {
         String username = request.getParameter("username");
         User user = new UserDAO().getUserByUsername(username);
         if (user == null) {
-            request.setAttribute("usererror", "User not logged in");
+            request.setAttribute("usererror", "User not found");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         BillDAO billDAO = new BillDAO();
-        ArrayList<Bill> billList = billDAO.getTransactionsByUser(user);
-        
-        //filter receiving transactions
+        ArrayList<Bill> billList = new ArrayList<>();
         String filter = request.getParameter("filter");
-        if(filter != null){
-            if(filter.equalsIgnoreCase("receive")){
-                Predicate<Bill> byRecieve = bill -> bill.getRecipient().getUsername().equals(username);
-                billList.stream().filter(byRecieve).collect(Collectors.toList());
-            }
+        if (filter == null) {
+            billList = billDAO.getTransactionsByUser(user);
         }
-        
-        for (Bill bill : billList) {
+        else if (filter.equalsIgnoreCase("receive")) {
+            billList = billDAO.getReceiveTransactions(user);
+        }
+        else if (filter.equalsIgnoreCase("send")) {
+            billList = billDAO.getSendTransactions(user);
+        }
+        else {
+            request.setAttribute("actionerror", "Invalid parameter");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+        int count = billList.size();
+        int pageSize = 5;
+        int end = count / pageSize;
+        if (count % pageSize != 0) {
+            end++;
+        }
+        String strPageIndex = request.getParameter("page");
+        int pageIndex = 0;
+        if (strPageIndex == null) {
+            pageIndex = 1;
+        }
+        else {
+            pageIndex = Integer.parseInt(strPageIndex);
+        }
+        ArrayList<Bill> result = new ArrayList<>();
+        for (int i = pageIndex * pageSize - (pageSize - 1) - 1; i <= pageIndex * pageSize - 1; i++) {
+            if (i >= billList.size()) {
+                break;
+            }
+            result.add(billList.get(i));
+        }
+        if (filter != null) {
+            request.setAttribute("filter", filter);
+        }
+        for (Bill bill : result) {
             System.out.println(bill.getContent());
         }
-        request.setAttribute("transactions", billList);
+        request.setAttribute("username", username);
+        request.setAttribute("end", end);
+        request.setAttribute("transactions", result);
         request.getRequestDispatcher("transactions.jsp").forward(request, response);
     }
 

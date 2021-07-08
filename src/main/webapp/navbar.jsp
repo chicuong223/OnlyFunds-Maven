@@ -6,7 +6,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
-
     <head>
         <!-- Default -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -71,7 +70,6 @@
                                     <c:set var="end" value="5" />
                                     <div class="row">
                                         <c:forEach begin="0" end="4">
-
                                             <c:forEach items="${applicationScope.catList}" var="cat"
                                                        begin="${begin}" end="${end}">
                                                 <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
@@ -81,7 +79,6 @@
                                                     </a>
                                                 </div>
                                             </c:forEach>
-
                                             <c:set var="begin" value="${begin+7}" />
                                             <c:set var="end" value="${end+7}" />
                                         </c:forEach>
@@ -91,7 +88,7 @@
                             <span class="nav-item me-5">
                                 <a href="#Explore" class="nav-link text-dark"><u>About us</u></a>
                             </span>
-                            <span class="nav-item mt-1 ms-5">
+                            <span class="nav-item mt-1 ms-5"> 
                                 <form class="form-inline" action="SearchServlet?a=searchstring" method="GET">
                                     <input type="hidden" name="a" value="searchstring"/>
                                     <div class="input-group input-group-sm" id="search-input">

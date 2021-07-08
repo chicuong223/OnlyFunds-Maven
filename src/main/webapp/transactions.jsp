@@ -38,8 +38,13 @@
                             <td>${bill.transactionDate}</td>
                         </tr>
                     </c:forEach>
-                    </tbody>
+                </tbody>
             </table>
         </main>
+        <footer>
+        <c:forEach begin="1" end="${end}" var="index">
+            <a href="ViewTransactionHistory?username=${username}&page=${index}">${index}</a>
+        </c:forEach>
+        </footer>
     </body>
 </html>
