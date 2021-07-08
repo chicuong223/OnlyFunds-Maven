@@ -32,7 +32,7 @@
                     <h1 class="text-center">${requestScope.post.title}</h1>
                 </header>
                 <main>
-                    <div class="w-50 mx-auto">
+                    <div class="w-75 mx-auto">
                         <!-- Post Details -->
                         <p>${requestScope.post.uploadDate}</p>
                         <div class="border border-2 rounded" id="postDetails">
@@ -75,7 +75,7 @@
                                 </c:choose>
                             </div>
                             <!-- Comment Section -->
-                            <section class="text-break" id="commentSection">
+                            <section class="text-break" id="commentSection" style="height: 300px; overflow-x: hidden; overflow-y: scroll">
                                 <c:if test="${sessionScope.user != null}">
                                     <form action="WriteCommentServlet" method="POST">
                                         <div class="row">
@@ -83,7 +83,8 @@
                                                 <img src="${pageContext.request.contextPath}/images/avatars/${sessionScope.user.avatarURL}" alt="avatar" class="img-thumbnail" width="100px"/>
                                             </div>
                                             <div class="col">
-                                                <input type="text" name="comment"  placeholder="Write your thought here" class="w-75 p-3 rounded border-1"/>
+                                                <input type="text" name="content"  placeholder="Write your thought here" class="w-75 p-3 rounded border-1"/>
+                                                <input type="hidden" name="postId" value="${requestScope.post.postId}"/>
                                                 <button type="submit" class="btn btn-warning py-2">Post</button>
                                             </div>
                                         </div>
