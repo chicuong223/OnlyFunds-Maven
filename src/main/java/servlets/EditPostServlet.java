@@ -82,7 +82,7 @@ public class EditPostServlet extends HttpServlet {
         if (!filename.isEmpty())
         {
             upload.deleteFile(request, post.getAttachmentURL());
-            filename = upload.postAttachmentUpload(request);
+            filename = upload.postAttachmentUpload(request, post.getPostId());
             post.setAttachmentURL(filename);
         }
         postDAO.updatePost(post);

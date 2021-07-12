@@ -57,21 +57,22 @@ public class WritePostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String title = request.getParameter("title");
-        String desc = request.getParameter("desc");
-        UploadFile fileUpload = new UploadFile();
-        String filename = fileUpload.postAttachmentUpload(request);
-        String[] cats = request.getParameterValues("cat");
-        String[] tiers = request.getParameterValues("tier");
-        User user = (User) request.getSession().getAttribute("user");
-        long millis = System.currentTimeMillis();
-        Date date = new java.sql.Date(millis);
-        Post post = new Post(0, user, title, desc, filename, date, 0, true);
-        PostCategoryMapDAO categoryMapDAO = new map.PostCategoryMapDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
         PostDAO dao = new PostDAO();
         TierDAO tierDAO = new TierDAO();
         TierMapDAO tierMapDAO = new TierMapDAO();
+        String title = request.getParameter("title");
+        String desc = request.getParameter("desc");
+        UploadFile fileUpload = new UploadFile();
+        String[] cats = request.getParameterValues("cat");
+        String[] tiers = request.getParameterValues("tier");
+        User user = (User) request.getSession().getAttribute("user");
+        int postId = dao.getLatestPostIdByUser(user) + 1;
+        String filename = fileUpload.postAttachmentUpload(request, postId);
+        long millis = System.currentTimeMillis();
+        Date date = new java.sql.Date(millis);
+        PostCategoryMapDAO categoryMapDAO = new map.PostCategoryMapDAO();
+        Post post = new Post(postId, user, title, desc, filename, date, postId, true);
         dao.addPost(post);
         //If user did not choose any category, add category Others to category map
         //else, add all checked categories to category map

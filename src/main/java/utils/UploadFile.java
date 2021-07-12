@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import user_management.user.User;
 
 /**
  *
@@ -20,116 +21,115 @@ import javax.servlet.http.Part;
  */
 public class UploadFile {
 
-    public String uploadFile(HttpServletRequest request, Part filePart) throws IOException, ServletException {
+    public String uploadFile(HttpServletRequest request, Part filePart, User user) throws IOException, ServletException {
         String fileName = "";
-        try
-        {
+        try {
 //            Part filePart = request.getPart("avatar");
-            fileName = (String) getFileName(filePart);
-
+            fileName = user.getUsername() + "." + filePart.getContentType().split("/")[1];
             String applicationPath = request.getServletContext().getRealPath("");
             String basePath = applicationPath + File.separator + "images" + File.separator + "avatars" + File.separator;
             InputStream inputStream = null;
             OutputStream outputStream = null;
-            try
-            {
+            File directory = new File(basePath);
+            if(!directory.exists())
+                directory.mkdir();
+            try {
                 File outputFilePath = new File(basePath + fileName);
+                System.out.println(outputFilePath);
                 inputStream = filePart.getInputStream();
                 outputStream = new FileOutputStream(outputFilePath);
                 int read = 0;
                 final byte[] bytes = new byte[1024];
-                while ((read = inputStream.read(bytes)) != -1)
-                {
+                while ((read = inputStream.read(bytes)) != -1) {
                     outputStream.write(bytes, 0, read);
                 }
-            } catch (Exception e)
-            {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                System.out.println(e);
                 fileName = "";
-            } finally
-            {
-                if (inputStream != null)
-                {
+            }
+            finally {
+                if (inputStream != null) {
                     inputStream.close();
                 }
-                if (outputStream != null)
-                {
+                if (outputStream != null) {
                     outputStream.close();
                 }
             }
-        } catch (Exception e)
-        {
+        }
+        catch (IOException e) {
+            System.out.println(e);
             fileName = "";
         }
         return fileName;
     }
 
     public String getFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";"))
-        {
-            if (content.trim().startsWith("filename"))
-            {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
                 return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
             }
         }
         return null;
     }
 
-    public String postAttachmentUpload(HttpServletRequest request) throws IOException, ServletException {
+    public String postAttachmentUpload(HttpServletRequest request, int postId) throws IOException, ServletException {
         String fileName = "";
-        try
-        {
+        try {
             Part filePart = request.getPart("attachment");
-            fileName = (String) getFileName(filePart);
+            String file = getFileName(filePart);
+            String fileExtension = file.substring(file.indexOf("."));
+            fileName = String.valueOf(postId) + fileExtension;
 
             String applicationPath = request.getServletContext().getRealPath("");
             String basePath = applicationPath + File.separator + "post_file" + File.separator;
+            File directory = new File(basePath);
+            if(!directory.exists())
+                directory.mkdir();
             InputStream inputStream = null;
             OutputStream outputStream = null;
-            try
-            {
+            try {
                 File outputFilePath = new File(basePath + fileName);
+                System.out.println(outputFilePath);
                 inputStream = filePart.getInputStream();
                 outputStream = new FileOutputStream(outputFilePath);
                 int read = 0;
                 final byte[] bytes = new byte[1024];
-                while ((read = inputStream.read(bytes)) != -1)
-                {
+                while ((read = inputStream.read(bytes)) != -1) {
                     outputStream.write(bytes, 0, read);
                 }
-            } catch (IOException e)
-            {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 fileName = "";
-            } finally
-            {
-                if (inputStream != null)
-                {
+            }
+            finally {
+                if (inputStream != null) {
                     inputStream.close();
                 }
-                if (outputStream != null)
-                {
+                if (outputStream != null) {
                     outputStream.close();
                 }
             }
-        } catch (IOException | ServletException e)
-        {
+        }
+        catch (IOException | ServletException e) {
             fileName = "";
         }
         return fileName;
     }
 
     public void deleteFile(HttpServletRequest request, String filename) {
-        try
-        {
+        try {
             String filepath = request.getServletContext().getRealPath("") + File.separator + "post_file" + File.separator + filename;
             File file = new File(filepath);
-            if (!file.exists())
+            if (!file.exists()) {
                 throw new Exception("File not found");
-             else
+            }
+            else {
                 file.delete();
-        } catch (Exception e)
-        {
+            }
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

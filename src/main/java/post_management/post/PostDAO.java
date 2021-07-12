@@ -21,6 +21,27 @@ import utils.DBConnect;
  */
 public class PostDAO {
 
+    
+    public int getLatestPostIdByUser(User user){
+        int postId = -1;
+        try {
+            Connection  con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT MAX(id) as id FROM Post WHERE uploader_username = ?");
+                ps.setString(1, user.getUsername());
+                ResultSet rs = ps.executeQuery();
+                if(rs.next())
+                    postId = rs.getInt("id");
+                rs.close();
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+        }
+        return postId;
+    }
+    
     public int countPostsByUser(User user) {
         int count = 0;
         try {
@@ -371,5 +392,11 @@ public class PostDAO {
             }
         }
         return lst;
+    }
+    public static void main(String[] args) {
+        User user = new User();
+        user.setUsername("chicuong223");
+        PostDAO dao = new PostDAO();
+        System.out.println(dao.getLatestPostIdByUser(user));
     }
 }

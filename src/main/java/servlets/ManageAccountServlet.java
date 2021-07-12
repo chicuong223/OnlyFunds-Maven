@@ -48,16 +48,13 @@ public class ManageAccountServlet extends HttpServlet {
                 String newPassword = HashPassword.HashPassword(request.getParameter("newPassword"));
                 String confNewPassword = HashPassword.HashPassword(request.getParameter("confNewPassword"));
                 
-                System.out.println(curPassword);
-                System.out.println(user.getPassword());
+//                System.out.println(curPassword);
+//                System.out.println(user.getPassword());
                 
-                if (!curPassword.equals(user.getPassword())) { //check match current password
+                if (!curPassword.equals(user.getPassword())) //check match current password
                     errorList[0] = "Password does not match";
-                }
-                if (!newPassword.equals(confNewPassword)) { //check if new and conf equals
+                if (!newPassword.equals(confNewPassword)) //check if new and conf equals
                     errorList[1] = "New password does not match";
-                }
-                
                 if (errorList.length == 0) {
                     uDao.changePassword(user.getEmail(), newPassword);
                     user.setPassword(newPassword);
