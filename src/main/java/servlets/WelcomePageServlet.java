@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import map.UserCategoryMapDAO;
 
 /**
  *
@@ -34,7 +35,7 @@ public class WelcomePageServlet extends HttpServlet {
             String a = request.getParameter("action");
             RequestDispatcher rd = request.getRequestDispatcher(welcomePage);
             CategoryDAO cDao = new CategoryDAO();
-            
+            UserCategoryMapDAO uDao = new UserCategoryMapDAO();
             
             //load page on startup
             if (a == null) {
@@ -43,7 +44,6 @@ public class WelcomePageServlet extends HttpServlet {
                 //category list
                 ArrayList<Category> catList = cDao.getAllCategories();
                 getServletContext().setAttribute("catList", catList);
-                System.out.println(getServletContext().getAttribute("catList"));
                 rd.forward(request, response);
             }
                

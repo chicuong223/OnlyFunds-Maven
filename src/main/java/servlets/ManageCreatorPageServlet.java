@@ -6,6 +6,7 @@
 package servlets;
 
 import category.Category;
+import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -16,23 +17,59 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import map.UserCategoryMap;
 import map.UserCategoryMapDAO;
 import user_management.user.User;
+import user_management.user.UserDAO;
 
 /**
  *
  * @author ASUS GAMING
  */
-@WebServlet(name = "ManageCategoryServlet", urlPatterns = {"/ManageCategoryServlet"})
-public class ManageCategoryServlet extends HttpServlet {
+@WebServlet(name = "ManageCreatorPageServlet", urlPatterns = {"/ManageCreatorPage"})
+public class ManageCreatorPageServlet extends HttpServlet {
 
-    private final String manageCategoryPage = "manage_category.jsp";
+    private final String manageCreatorInfoPage = "manage_creator_page.jsp";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            String action = request.getParameter("action");
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            RequestDispatcher rd = request.getRequestDispatcher(manageCreatorInfoPage);
+            
+            UserDAO uDao = new UserDAO();
+            UserCategoryMapDAO dao = new UserCategoryMapDAO();
+            CategoryDAO cdao = new CategoryDAO();
+            
+            //change category
+            if (action.equals("category")) {
+                
+                ArrayList<Category> userCatList = new ArrayList();
+                String[] catList = request.getParameterValues("category");
+                
+                dao.removeAllCategoriesByUser(user);
+                if (catList!=null) {
+                    for (String catid : catList) {
+                        int id = Integer.parseInt(catid);
+                        Category cat = cdao.getCategoryByID(id);
+                        userCatList.add(cat);
+                        UserCategoryMap uCat = new UserCategoryMap(cat, user);
+                        dao.addCategoryMap(uCat);
+                    }
+                }
+                session.setAttribute("userCatList", userCatList);
+            }
+            
+            //change bio
+            if (action.equals("bio")) {
+                String bio = request.getParameter("bio");
+                uDao.changeBio(user.getUsername(), bio);
+            }
+            rd.forward(request, response);
         }
     }
 
@@ -52,7 +89,7 @@ public class ManageCategoryServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
-        RequestDispatcher rd = request.getRequestDispatcher(manageCategoryPage);
+        RequestDispatcher rd = request.getRequestDispatcher(manageCreatorInfoPage);
             
         request.setAttribute("userCategoryList", userCatList);
         rd.forward(request, response);
