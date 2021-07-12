@@ -3,8 +3,8 @@
     <Resource
        url="jdbc:sqlserver://only-funds-asia.database.windows.net;databaseName=SWP391_OnlyFunds_Copy" 
        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
-       password="123"
-       username="sa" 
+       password="OnlyFunds123"
+       username="admin123" 
        type="javax.sql.DataSource"
        auth="Container"
        name="DBConnection"

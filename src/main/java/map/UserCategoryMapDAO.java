@@ -129,6 +129,35 @@ public class UserCategoryMapDAO {
         }
         return lst;
     }
+    
+    // remove all categories selected by user
+    public boolean removeAllCategoriesByUser(User user) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        String sql = "DELETE FROM User_Category_Map WHERE username = ?";
+        
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                ps.setString(1, user.getUsername());
+                ps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         UserDAO uDAO = new UserDAO();

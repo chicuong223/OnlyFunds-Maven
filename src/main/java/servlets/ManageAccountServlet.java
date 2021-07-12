@@ -28,7 +28,7 @@ import utils.HashPassword;
 @WebServlet(name = "ManageAccountServlet", urlPatterns = {"/ManageAccount"})
 public class ManageAccountServlet extends HttpServlet {
 
-    private final String accountInfoPage = "account_info.jsp";
+    private final String accountInfoPage = "manage_account_info.jsp";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,7 +36,7 @@ public class ManageAccountServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String action = request.getParameter("action");
-            String[] errorList = new String[4];
+            String[] errorList = {};
             UserDAO uDao = new UserDAO();
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
@@ -48,12 +48,16 @@ public class ManageAccountServlet extends HttpServlet {
                 String newPassword = HashPassword.HashPassword(request.getParameter("newPassword"));
                 String confNewPassword = HashPassword.HashPassword(request.getParameter("confNewPassword"));
                 
+                System.out.println(curPassword);
+                System.out.println(user.getPassword());
+                
                 if (!curPassword.equals(user.getPassword())) { //check match current password
                     errorList[0] = "Password does not match";
                 }
                 if (!newPassword.equals(confNewPassword)) { //check if new and conf equals
                     errorList[1] = "New password does not match";
                 }
+                
                 if (errorList.length == 0) {
                     uDao.changePassword(user.getEmail(), newPassword);
                     user.setPassword(newPassword);
