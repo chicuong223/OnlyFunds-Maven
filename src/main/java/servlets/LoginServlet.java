@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import map.UserCategoryMapDAO;
 import notification.Notification;
 import notification.NotificationDAO;
+import utils.HashPassword;
 
 /**
  *
@@ -39,7 +40,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String password = HashPassword.HashPassword(request.getParameter("password"));
         UserDAO dao = new UserDAO();
         NotificationDAO ntDAO = new NotificationDAO();
         UserCategoryMapDAO ucDao = new UserCategoryMapDAO();

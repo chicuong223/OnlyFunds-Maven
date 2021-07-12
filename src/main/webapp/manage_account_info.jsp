@@ -52,6 +52,8 @@
                 <div>
                    <p class="head">Password: ********</p>
                    <button id="change-password-btn">Change password</button>
+                   
+                   <!-- Popup form (not implemented yet) -->
                    <form action="ManageAccount" method="POST" id="change-password-form" hidden>
                         Current password: <input type="password" name="currentPassword"><br>
                         <font color="red" id="passwordError">${requestScope.ERROR_LIST[0]}</font><br>
@@ -61,6 +63,7 @@
                         <font color="red" id="confPasswordError">${requestScope.ERROR_LIST[2]}</font><br>
                         <button type="submit" name="action" value="password">Submit</button>
                    </form>
+                        
                 </div>
             </fieldset>
         </section>

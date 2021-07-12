@@ -13,12 +13,18 @@
         <title>Manage Categories</title>
     </head>
     <body>
+        <!--Change bio description-->
         <div>
-            <p class="head">Current Interests:</p> <button id="change-interest-btn">Change interest:</button>
+            
+        </div>
+        
+        <!--Change interest-->
+        <div>
+            <p class="head">Current Interests:</p> 
             <div id="currentInterest">
                 <c:choose>
                     <c:when test="${!empty userCatList}">
-                        <c:forEach items="${applicationScope.userCatList}" var="ucat">
+                        <c:forEach items="${sessionScope.userCatList}" var="ucat">
                             <strong>${ucat.categoryName}</strong>
                         </c:forEach>
                     </c:when>
@@ -27,6 +33,8 @@
                     </c:otherwise>
                 </c:choose>
             </div>
+            <!--Interest form starts here-->
+            <button id="change-interest-btn">Change interest:</button>
             <form id="change-interest-form" method="POST" hidden>
                 <c:forEach items="${applicationScope.catList}" var="cat">
                     <div class="form-check">
@@ -37,5 +45,7 @@
                 <button type="submit" name="action" value="category">Submit</button>
             </form>
         </div>
+        
+        <script src="scripts/manage_creator_page_script.js"></script>
     </body>
 </html>

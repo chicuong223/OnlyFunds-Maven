@@ -25,10 +25,9 @@ public class UserDAO {
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
-                String hashedPassword = HashPassword(password);
                 PreparedStatement ps = con.prepareStatement("SELECT * FROM [User] WHERE username=? AND password=?");
                 ps.setString(1, username);
-                ps.setString(2, hashedPassword);
+                ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     String firstName = rs.getString("firstname");
@@ -456,6 +455,37 @@ public class UserDAO {
         }
         return lst;
     }
+    
+    //update bio
+    public boolean changeBio(String username, String bio) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        String sql = "UPDATE [User] SET bio = ? WHERE username = ?";
+        
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                ps.setString(1, bio);
+                ps.setString(2, username);
+                ps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return false;
+    } 
+    
 //    public static void main(String[] args) {
 //        UserDAO dao = new UserDAO();
 //        User user = dao.getUserByUsername("chicuong223");
