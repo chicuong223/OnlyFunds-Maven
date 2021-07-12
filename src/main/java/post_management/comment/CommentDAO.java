@@ -29,7 +29,7 @@ public class CommentDAO {
             if (con != null) {
                 lst = new ArrayList<>();
                 PreparedStatement ps;
-                ps = con.prepareStatement("SELECT * FROM Comment WHERE post_id = ? AND is_active = 1");
+                ps = con.prepareStatement("SELECT * FROM Comment WHERE post_id = ? AND is_active = 1 ORDER BY id DESC");
                 ps.setInt(1, postID);
                 ResultSet rs;
                 rs = ps.executeQuery();
@@ -134,7 +134,7 @@ public class CommentDAO {
             Connection con = DBConnect.makeConnection();
             if(con != null){
                 PreparedStatement ps;
-                ps = con.prepareStatement("INSERT INTO Comments(username, post_id, content, comment_date, is_active) \n"
+                ps = con.prepareStatement("INSERT INTO Comment(username, post_id, content, comment_date, is_active) \n"
                         + "VALUES (?, ?, ?, ?, ?)");
                 ps.setString(1, comment.getUser().getUsername());
                 ps.setInt(2, comment.getPost().getPostId());

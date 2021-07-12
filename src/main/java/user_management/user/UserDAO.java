@@ -33,9 +33,10 @@ public class UserDAO {
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String email = rs.getString("email");
+                    String bio = rs.getString("bio");
                     String avatarURL = rs.getString("avatarURL");
                     boolean isBanned = rs.getBoolean("is_banned");
-                    user = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                    user = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                 }
                 rs.close();
                 ps.close();
@@ -185,9 +186,10 @@ public class UserDAO {
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String email = rs.getString("email");
+                    String bio = rs.getString("bio");
                     String avatarURL = rs.getString("avatarURL");
                     boolean isBanned = rs.getBoolean("is_banned");
-                    user = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                    user = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                 }
             }
         } catch (SQLException ex) {
@@ -266,9 +268,10 @@ public class UserDAO {
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String email = rs.getString("email");
+                    String bio = rs.getString("bio");
                     String avatarURL = rs.getString("avatarURL");
                     boolean isBanned = rs.getBoolean("is_banned");
-                    User user = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                    User user = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                     lst.add(user);
                 }
             }
@@ -311,9 +314,10 @@ public class UserDAO {
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String email = rs.getString("email");
+                    String bio = rs.getString("bio");
                     String avatarURL = rs.getString("avatarURL");
                     boolean isBanned = rs.getBoolean("is_banned");
-                    User subscriber = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                     lst.add(subscriber);
                 }
             }
@@ -371,9 +375,10 @@ public class UserDAO {
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String email = rs.getString("email");
+                    String bio = rs.getString("bio");
                     String avatarURL = rs.getString("avatarURL");
                     boolean isBanned = rs.getBoolean("is_banned");
-                    User subscriber = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                     lst.add(subscriber);
                 }
             }
@@ -426,9 +431,10 @@ public class UserDAO {
                     String firstName = rs.getString("firstname");
                     String lastName = rs.getString("lastname");
                     String email = rs.getString("email");
+                    String bio = rs.getString("bio");
                     String avatarURL = rs.getString("avatarURL");
                     boolean isBanned = rs.getBoolean("is_banned");
-                    User subscriber = new User(username, password, lastName, firstName, email, avatarURL, isBanned);
+                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                     lst.add(subscriber);
                 }
             }

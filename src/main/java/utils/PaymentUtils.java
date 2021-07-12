@@ -45,7 +45,7 @@ public class PaymentUtils {
 
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setReturnUrl("http://localhost:8080/OnlyFunds/review_payment");
-        redirectUrls.setCancelUrl("http://localhost:8080/OnlyFunds/cancel.html");
+        redirectUrls.setCancelUrl("http://localhost:8080/OnlyFunds/cancel_payment");
 
         Details details = new Details();
         details.setSubtotal(String.valueOf(tier.getPrice()));
@@ -63,7 +63,7 @@ public class PaymentUtils {
         transaction.setDescription(tier.getTierTitle());
         transaction.setPayee(payee);
 
-        List<Transaction> transactions = new ArrayList<Transaction>();
+        List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
 
         Payment payment = new Payment();

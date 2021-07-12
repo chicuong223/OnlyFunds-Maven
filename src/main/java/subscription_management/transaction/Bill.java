@@ -15,17 +15,17 @@ import java.sql.Date;
 public class Bill {
     private int billId;
     private User sender;
-    private User recipent;
+    private User recipient;
     private String content;
     private int price;
     private Date transactionDate;
     
     public Bill(){}
 
-    public Bill(int billId, User sender, User recipent, String content, int price, Date transactionDate) {
+    public Bill(int billId, User sender, User recipient, String content, int price, Date transactionDate) {
         this.billId = billId;
         this.sender = sender;
-        this.recipent = recipent;
+        this.recipient = recipient;
         this.content = content;
         this.price = price;
         this.transactionDate = transactionDate;
@@ -47,12 +47,12 @@ public class Bill {
         this.sender = sender;
     }
 
-    public User getRecipent() {
-        return recipent;
+    public User getRecipient() {
+        return recipient;
     }
 
-    public void setRecipent(User recipent) {
-        this.recipent = recipent;
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
     }
 
     public String getContent() {
