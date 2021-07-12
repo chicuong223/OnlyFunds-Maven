@@ -17,18 +17,20 @@
                 <h1>Transactions History</h1>
             </header>
             <main>
-                <table class="table table-bordered">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>Content</th>
-                            <th>Sender</th>
-                            <th>Recipient</th>
-                            <th>Amount</th>
-                            <th>Transaction Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-success">
-                    <c:set var="user" value="${sessionScope.user}"></c:set>
+            <c:set var="user" value="${sessionScope.user}"></c:set>
+                <button class="btn btn-danger" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=send'">View Sending Transactions</button>
+            <button class="btn btn-danger" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=receive'">View Receiving Transactions</button>
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Content</th>
+                        <th>Sender</th>
+                        <th>Recipient</th>
+                        <th>Amount</th>
+                        <th>Transaction Date</th>
+                    </tr>
+                </thead>
+                <tbody class="table-success">
                     <c:forEach items="${transactions}" var="bill">
                         <tr <c:if test="${bill.sender.username eq user.username}">class="table-danger"</c:if>>
                             <td>${bill.content}</td>
@@ -42,9 +44,16 @@
             </table>
         </main>
         <footer>
-        <c:forEach begin="1" end="${end}" var="index">
-            <a href="ViewTransactionHistory?username=${username}&page=${index}">${index}</a>
-        </c:forEach>
+            <c:forEach begin="1" end="${end}" var="index">
+                <c:choose>
+                    <c:when test='${filter == null}'>
+                        <a href="ViewTransactionHistory?username=${user.username}&page=${index}">${index}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="ViewTransactionHistory?username=${user.username}&page=${index}&filter=${filter}">${index}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
         </footer>
     </body>
 </html>
