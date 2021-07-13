@@ -46,11 +46,10 @@ public class NotificationDAO {
     }
     
     public ArrayList<Notification> getUnreadNotificationsByRecipient(User user){
-        ArrayList<Notification> lst = null;
+        ArrayList<Notification> lst = new ArrayList<>();
         try {
             Connection con = DBConnect.makeConnection();
             if(con != null){
-                lst = new ArrayList<>();
                 try (PreparedStatement ps = con.prepareStatement("SELECT  * FROM Notification WHERE recipient_username = ? AND is_read = 0")) {
                     ps.setString(1, user.getUsername());
                     try (ResultSet rs = ps.executeQuery()) {

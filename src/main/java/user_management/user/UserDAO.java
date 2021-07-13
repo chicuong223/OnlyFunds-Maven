@@ -243,7 +243,7 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql = "SELECT DISTINCT TOP 10 [User].*, tierNo.sumNo\n"
                 + "FROM\n"
                 + "(\n"
@@ -259,7 +259,6 @@ public class UserDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 while (rs.next()) {
@@ -297,14 +296,13 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql = "SELECT DISTINCT * FROM [User] WHERE username in ("
                 + "SELECT subscriber_username FROM Subscription WHERE tier_id in ("
                 + "SELECT id FROM Tier WHERE username = ? ))";
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 ps.setString(1, user.getUsername());
                 rs = ps.executeQuery();
@@ -349,7 +347,7 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql
                 = "select top 10 uwc.* , count(distinct s.subscriber_username) as NumOfSubcriber\n"
                 + "from ((select u.*\n"
@@ -365,7 +363,6 @@ public class UserDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, cateId);
                 rs = ps.executeQuery();
@@ -405,7 +402,7 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql
                 = "select u.*\n"
                 + "from [User] u\n"
@@ -417,7 +414,6 @@ public class UserDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 search = "%" + search + "%";
                 ps.setString(1, search);

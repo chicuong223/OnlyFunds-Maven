@@ -67,13 +67,21 @@ public class WritePostServlet extends HttpServlet {
         String[] cats = request.getParameterValues("cat");
         String[] tiers = request.getParameterValues("tier");
         User user = (User) request.getSession().getAttribute("user");
-        int postId = dao.getLatestPostIdByUser(user) + 1;
-        String filename = fileUpload.postAttachmentUpload(request, postId);
+        String filename = fileUpload.getFileName(request.getPart("attachment"));
         long millis = System.currentTimeMillis();
         Date date = new java.sql.Date(millis);
         PostCategoryMapDAO categoryMapDAO = new map.PostCategoryMapDAO();
-        Post post = new Post(postId, user, title, desc, filename, date, postId, true);
+        Post post = new Post(0, user, title, desc, filename, date, 0, true);
+        
+        //add post
         dao.addPost(post);
+        
+        if(!filename.trim().equals("")){
+            int postId = dao.getLatestPostIdByUser(user);
+            filename = fileUpload.postAttachmentUpload(request, postId);
+            post.setAttachmentURL(filename);
+            dao.updatePost(post);
+        }
         //If user did not choose any category, add category Others to category map
         //else, add all checked categories to category map
         if (cats == null) {
@@ -93,6 +101,7 @@ public class WritePostServlet extends HttpServlet {
                 boolean result = tierMapDAO.addTierMap(tier, user);
             }
         }
+        ;
         sendNotifications(post, user);
         response.sendRedirect("YourPostsServlet");
     }

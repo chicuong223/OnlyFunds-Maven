@@ -67,11 +67,10 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement("SELECT * FROM\n"
                         + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
                         + "* FROM Post WHERE uploader_username = ? AND is_active = 1) as x\n"
@@ -247,11 +246,10 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement("SELECT * FROM Post WHERE id in \n"
                         + "(SELECT post_id FROM Post_Like WHERE username LIKE ?)");
                 ps.setString(1, user.getUsername());
@@ -291,7 +289,7 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         String sql
                 = "select top 10 p.*, count(pl.username) as NumOfLike\n"
                 + "from  Post_Category_Map pc, Post p Left join Post_Like pl on p.id=pl.post_id  \n"
@@ -303,7 +301,6 @@ public class PostDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, categoryID);
                 rs = ps.executeQuery();
@@ -345,7 +342,7 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         String sql
                 = "select p.*\n"
                 + "from Post p\n"
@@ -355,7 +352,6 @@ public class PostDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 search="%"+search+"%";
                 ps.setString(1, search);
