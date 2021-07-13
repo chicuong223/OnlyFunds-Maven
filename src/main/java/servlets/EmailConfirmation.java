@@ -35,7 +35,7 @@ public class EmailConfirmation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     String registerPage = "register.jsp";
-    String catSelect = "category_select.jsp";
+    String setUpCreatorPage = "manage_creator_page.jsp";
     String retypeOTP = "register_otp.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -65,7 +65,8 @@ public class EmailConfirmation extends HttpServlet {
                     if (udao.addUser(newUser)) {
                         request.setAttribute("username", newUser.getUsername());
                         request.setAttribute("password", newUser.getPassword());
-                        request.getRequestDispatcher(catSelect).forward(request, response);
+                        request.setAttribute("newUser", true);
+                        request.getRequestDispatcher(setUpCreatorPage).forward(request, response);
                     } else {
                         request.setAttribute("msg", "Session run out. Try again");
                         request.getRequestDispatcher(registerPage).forward(request, response);

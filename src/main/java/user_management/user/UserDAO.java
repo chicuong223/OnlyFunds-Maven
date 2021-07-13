@@ -408,7 +408,6 @@ public class UserDAO {
                 + "from [User] u\n"
                 + "where u.is_banned='0'\n"
                 + "     and(u.username Like ?\n"
-                + "	or u.email Like ?\n"
                 + "	or	u.firstname Like ?\n"
                 + "	or u.lastname Like ?)";
         try {
@@ -419,7 +418,6 @@ public class UserDAO {
                 ps.setString(1, search);
                 ps.setString(2, search);
                 ps.setString(3, search);
-                ps.setString(4, search);
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     String username = rs.getString("username");

@@ -109,7 +109,7 @@ public class RegisterServlet extends HttpServlet {
             errorList[5] = "Fail to confirm password";
         }
         
-        User newUser = new User(username, password, lname, fname, email, null, avatarURL, false);
+        User newUser = new User(username, password, fname, lname, email, null, avatarURL, false);
         if (error == false) {
             //if avatar is null, replace with a default one
             if (avatarURL.equals("")) {
@@ -119,12 +119,11 @@ public class RegisterServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", newUser);
             session.setAttribute("filepart", request.getPart("avatar"));
-            System.out.println(request.getPart("avatar").getSubmittedFileName());
         } else {
             request.setAttribute("ERROR_LIST", errorList);
         }
-//        System.err.println("error: " + error);
-//        System.err.println("url: " + url);
+        System.err.println("error: " + error);
+        System.err.println("url: " + url);
         RequestDispatcher rd = request.getRequestDispatcher(url);
         HttpSession session = request.getSession();
         session.setAttribute("user", newUser);
