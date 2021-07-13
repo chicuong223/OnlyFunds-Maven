@@ -20,30 +20,40 @@ import javax.servlet.http.HttpSession;
 import map.UserCategoryMap;
 import map.UserCategoryMapDAO;
 import user_management.user.User;
+import user_management.user.UserDAO;
 
 /**
  *
  * @author ASUS GAMING
  */
-@WebServlet(name = "CategorySelectServlet", urlPatterns = {"/CategorySelectServlet"})
-public class CategorySelectServlet extends HttpServlet {
+@WebServlet(name = "SetUpCreatorPageServlet", urlPatterns = {"/SetUpCreatorPageServlet"})
+public class SetUpCreatorPageServlet extends HttpServlet {
 
     private String url = "main_page.jsp";
+    private String errorUrl = "error.jsp";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            String bio = request.getParameter("bio");
             String[] catList = request.getParameterValues("category");
             HttpSession session = request.getSession();
             User newUser = (User) session.getAttribute("user");
             RequestDispatcher rd = request.getRequestDispatcher(url);
             ArrayList<Category> userCatList = new ArrayList();
             
+            UserDAO udao = new UserDAO();
             UserCategoryMapDAO dao = new UserCategoryMapDAO();
             CategoryDAO cdao = new CategoryDAO();
             
+            //update bio
+            if (!udao.changeBio(bio, newUser.getUsername())) {
+                response.sendRedirect(errorUrl);
+            }
+            
+            //add category list
             if (catList!=null) {
                 for (String catid : catList) {
                     int id = Integer.parseInt(catid);

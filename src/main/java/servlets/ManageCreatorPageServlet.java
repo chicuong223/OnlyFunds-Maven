@@ -92,6 +92,7 @@ public class ManageCreatorPageServlet extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher(manageCreatorInfoPage);
             
         request.setAttribute("userCategoryList", userCatList);
+        request.setAttribute("newUser", false);
         rd.forward(request, response);
     }
 
