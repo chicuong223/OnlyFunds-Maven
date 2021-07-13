@@ -125,7 +125,7 @@
                                         </a>
                                         <div class="dropdown-menu p-2" id="dropdown-noti">
                                             <c:forEach items="${sessionScope.notiList}" var="noti">
-                                                <a href="PostDetailServlet?id=${noti.post.postId}">${noti.content}</a>
+                                                <a href="PostDetailServlet?id=${noti.post.postId}&noti=${noti.notificationId}">${noti.content}</a>
                                             </c:forEach>
                                         </div>
                                     </div>

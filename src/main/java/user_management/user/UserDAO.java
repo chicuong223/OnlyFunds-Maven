@@ -486,10 +486,10 @@ public class UserDAO {
         return false;
     } 
     
-//    public static void main(String[] args) {
-//        UserDAO dao = new UserDAO();
-//        User user = dao.getUserByUsername("chicuong223");
-//        ArrayList<User> lst = dao.getSubscribers(user);
-//        lst.forEach(u -> System.out.println(u));
-//    }
+    public static void main(String[] args) {
+        UserDAO dao = new UserDAO();
+//        User user = dao.getUserByUsername("");
+        ArrayList<User> lst = dao.getUsersMostSubscriber();
+        lst.forEach(u -> System.out.println(u));
+    }
 }

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import map.UserCategoryMapDAO;
+import user_management.user.User;
+import user_management.user.UserDAO;
 
 /**
  *
@@ -26,27 +28,28 @@ import map.UserCategoryMapDAO;
 public class WelcomePageServlet extends HttpServlet {
 
     String welcomePage = "welcome_page.jsp";
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
             String a = request.getParameter("action");
             RequestDispatcher rd = request.getRequestDispatcher(welcomePage);
             CategoryDAO cDao = new CategoryDAO();
             UserCategoryMapDAO uDao = new UserCategoryMapDAO();
-            
+            UserDAO userDAO = new UserDAO();
+
             //load page on startup
             if (a == null) {
                 //pass data for creator list
-                
                 //category list
                 ArrayList<Category> catList = cDao.getAllCategories();
+                ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
                 getServletContext().setAttribute("catList", catList);
+                request.setAttribute("userList", popularCreators);
                 rd.forward(request, response);
             }
-               
         }
     }
 

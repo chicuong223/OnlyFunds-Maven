@@ -74,4 +74,22 @@ public class NotificationDAO {
         }
         return lst;
     }
+    
+    public boolean setIsRead(Notification noti){
+        boolean result = false;
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("UPDATE Notification SET is_read = 1 WHERE id = ?");
+                ps.setInt(1, noti.getNotificationId());
+                result = ps.executeUpdate() > 0;
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
 }

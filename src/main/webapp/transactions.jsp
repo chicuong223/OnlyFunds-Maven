@@ -18,8 +18,9 @@
             </header>
             <main>
             <c:set var="user" value="${sessionScope.user}"></c:set>
-                <button class="btn btn-danger" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=send'">View Sending Transactions</button>
-            <button class="btn btn-danger" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=receive'">View Receiving Transactions</button>
+            <button class="btn btn-primary" onclick="location.href = 'ViewTransactionHistory?username=${username}'">All</button>
+            <button class="btn btn-danger" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=send'">Sending Transactions</button>
+            <button class="btn btn-success" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=receive'">Receiving Transactions</button>
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
