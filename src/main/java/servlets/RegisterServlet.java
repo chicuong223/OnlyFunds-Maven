@@ -109,7 +109,7 @@ public class RegisterServlet extends HttpServlet {
             errorList[5] = "Fail to confirm password";
         }
         
-        User newUser = new User(username, password, fname, lname, email, avatarURL, false);
+        User newUser = new User(username, password, fname, lname, email, null, avatarURL, false);
         if (error == false) {
             //if avatar is null, replace with a default one
             if (avatarURL.equals("")) {
