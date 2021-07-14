@@ -38,6 +38,7 @@ public class SetUpCreatorPageServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String bio = request.getParameter("bio");
+            System.out.println(bio);
             String[] catList = request.getParameterValues("category");
             HttpSession session = request.getSession();
             User newUser = (User) session.getAttribute("user");
@@ -49,9 +50,7 @@ public class SetUpCreatorPageServlet extends HttpServlet {
             CategoryDAO cdao = new CategoryDAO();
             
             //update bio
-            if (!udao.changeBio(bio, newUser.getUsername())) {
-                response.sendRedirect(errorUrl);
-            }
+            udao.changeBio(newUser.getUsername(), bio);
             
             //add category list
             if (catList!=null) {

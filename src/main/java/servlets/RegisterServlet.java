@@ -45,7 +45,7 @@ public class RegisterServlet extends HttpServlet {
     private final String invalidPage = "register.jsp";
 
     private final String registerForm = "register.jsp";
-    private final String verifyEmailPage = "SendEmailConfirmCode";
+    private final String verifyEmailPage = "set_up_creator_page.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException {
