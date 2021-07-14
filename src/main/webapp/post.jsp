@@ -121,7 +121,7 @@
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
                                     --%>
                                     <c:choose> 
-                                        <c:when test="${isLike}">
+                                        <c:when test="${isPostLiked}">
                                             <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
                                                 <span id="countPostLike">${requestScope.postLikeCount}</span>
                                             </i>
