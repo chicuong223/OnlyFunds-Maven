@@ -49,7 +49,7 @@
             <h2 class="motto">Create your own works and earn money!</h2>
         </header>
         <div class="mx-auto p-3 shadow" style="width: 40%;">
-            <form id="register-form" action="RegisterServlet?action=register" method="POST" enctype="multipart/form-data">
+            <form id="register-form" action="RegisterServlet" method="POST" enctype="multipart/form-data">
                 <h2 class="text-center">Register</h2>
                 <c:set var="newUser" value="${sessionScope.user}"/>
                 <div class="row">

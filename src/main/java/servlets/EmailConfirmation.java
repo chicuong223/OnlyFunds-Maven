@@ -64,7 +64,6 @@ public class EmailConfirmation extends HttpServlet {
                     if (udao.addUser(newUser)) {
                         request.setAttribute("username", newUser.getUsername());
                         request.setAttribute("password", newUser.getPassword());
-                        request.setAttribute("newUser", true);
                         request.getRequestDispatcher(setUpCreatorPage).forward(request, response);
                     } else {
                         request.setAttribute("msg", "Session run out. Try again");
