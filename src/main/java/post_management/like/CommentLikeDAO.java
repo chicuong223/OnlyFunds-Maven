@@ -16,10 +16,10 @@ import utils.DBConnect;
  * @author DELL
  */
 public class CommentLikeDAO {
-    public boolean AddPostLike(User user, int postId) {
-        return AddPostLike(user.getUsername(), postId);
+    public boolean AddCommentLike(User user, int commentId) {
+        return AddCommentLike(user.getUsername(), commentId);
     }
-    public boolean AddPostLike(String username, int postId) {
+    public boolean AddCommentLike(String username, int commentId) {
         Connection con = null;
         PreparedStatement ps = null;
         String sql;
@@ -30,7 +30,7 @@ public class CommentLikeDAO {
             if (con != null) {
                 ps=con.prepareStatement(sql);
                 ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setInt(1, commentId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
@@ -41,10 +41,10 @@ public class CommentLikeDAO {
         }
         return false;
     }
-    public boolean DeletePostLike(User user, int postId){
-        return DeletePostLike(user.getUsername(), postId);
+    public boolean DeleteCommentLike(User user, int commentId){
+        return DeleteCommentLike(user.getUsername(), commentId);
     }
-    public boolean DeletePostLike(String username, int postId){
+    public boolean DeleteCommentLike(String username, int commentId){
         Connection con=null;
         PreparedStatement ps = null;
         String sql;
@@ -55,7 +55,7 @@ public class CommentLikeDAO {
             if (con != null) {
                 ps=con.prepareStatement(sql);
                 ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setInt(1, commentId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();

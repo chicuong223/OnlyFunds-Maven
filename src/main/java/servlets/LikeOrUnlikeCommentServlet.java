@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import post_management.like.CommentLikeDAO;
 
 /**
  *
@@ -36,11 +37,10 @@ public class LikeOrUnlikeCommentServlet extends HttpServlet {
         String username = request.getParameter("username");
         if (action.equals("like")) {
             CommentLikeDAO plDAO = new CommentLikeDAO();
-            plDAO.AddPostLike(username, postId);
+            plDAO.AddCommentLike(username, postId);
         } else {
             CommentLikeDAO plDAO = new CommentLikeDAO();
-            plDAO.DeletePostLike(username, postId);
-        }
+            plDAO.DeleteCommentLike(username, postId);
         }
     }
 
