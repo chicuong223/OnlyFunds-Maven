@@ -7,45 +7,19 @@ package post_management.like;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import post_management.post.Post;
 import user_management.user.User;
-import user_management.user.UserDAO;
 import utils.DBConnect;
 
 /**
  *
- * @author chiuy
+ * @author DELL
  */
-public class PostLikeDAO {
-    public int  countPostLikeByPost(Post post){
-        int count = 0;
-        try {
-            Connection con = DBConnect.makeConnection();
-            if(con != null){
-                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(username) as countNo FROM Post_Like WHERE post_id = ?")) {
-                    ps.setInt(1, post.getPostId());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        UserDAO uDAO = new UserDAO();
-                        if(rs.next()){
-                            count = rs.getInt("countNo");
-                        }
-                    }
-                }
-                con.close();
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return count;
+public class CommentLikeDAO {
+    public boolean AddCommentLike(User user, int commentId) {
+        return AddCommentLike(user.getUsername(), commentId);
     }
-
-    public boolean AddPostLike(User user, int postId) {
-        return AddPostLike(user.getUsername(), postId);
-    }
-    public boolean AddPostLike(String username, int postId) {
+    public boolean AddCommentLike(String username, int commentId) {
         Connection con = null;
         PreparedStatement ps = null;
         String sql;
@@ -56,7 +30,7 @@ public class PostLikeDAO {
             if (con != null) {
                 ps=con.prepareStatement(sql);
                 ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setInt(1, commentId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
@@ -67,10 +41,10 @@ public class PostLikeDAO {
         }
         return false;
     }
-    public boolean DeletePostLike(User user, int postId){
-        return DeletePostLike(user.getUsername(), postId);
+    public boolean DeleteCommentLike(User user, int commentId){
+        return DeleteCommentLike(user.getUsername(), commentId);
     }
-    public boolean DeletePostLike(String username, int postId){
+    public boolean DeleteCommentLike(String username, int commentId){
         Connection con=null;
         PreparedStatement ps = null;
         String sql;
@@ -81,7 +55,7 @@ public class PostLikeDAO {
             if (con != null) {
                 ps=con.prepareStatement(sql);
                 ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setInt(1, commentId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
