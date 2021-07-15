@@ -25,45 +25,46 @@
         <script>
             function clickLikePost(username, postId) {
                 alert("here");
+                alert(postId + typeof (postId));
                 var likePost = document.querySelector("#postLike");
                 var countPostLike = document.querySelector("#countPostLike");
                 var numOfLike = countPostLike.innerHTML;
-                if (likePost.className === "fa fa-heart"/*Replace with icon when liked*/) {
+                if (likePost.className == "fa fa-heart"/*icon when liked*/) {
                     //call action likePost
                     numOfLike--;
                     countPostLike.innerHTML = numOfLike;
-                    likePost.className = ("fa fa-heart");/*Replace with icon when liked*/
+                    likePost.className = ("fa fa-heart-o");/*Replace with icon when liked, turn to unlike button*/
                     $.ajax({
-                    type: "POST",
-                    url: 'LikeOrUnlikePostServlet',
-                    data: {
-                        username: username,
-                        postId: postId,
-                        action:"unlike"
-                    },
-                    cache: false,
-                    success: function () {
-                        alert("unliked post");
-                    }
-                });
+                        type: "POST",
+                        url: 'LikeOrUnlikePostServlet',
+                        data: {
+                            username: username,
+                            postId: postId,
+                            action: "unlike"
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("unliked post");
+                        }
+                    });
                 } else {
                     numOfLike++;
                     countPostLike.innerHTML = numOfLike;
-                    likePost.className = ("fa fa-heart");/*Replace with icon when liked*/
+                    likePost.className = ("fa fa-heart");/*Replace with icon when liked, turn to like icon*/
+                    $.ajax({
+                        type: "POST",
+                        url: 'LikeOrUnlikePostServlet',
+                        data: {
+                            username: username,
+                            postId: postId,
+                            action: "like"
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("liked post");
+                        }
+                    });
                 }
-                $.ajax({
-                    type: "POST",
-                    url: 'LikeOrUnlikePostServlet',
-                    data: {
-                        username: username,
-                        postId: postId,
-                        action:"like"
-                    },
-                    cache: false,
-                    success: function () {
-                        alert("liked post");
-                    }
-                });
             }
             function clickLikeCmt(username, cmtId, postId) {
                 alert("here");
@@ -120,18 +121,22 @@
                                     <%--
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
                                     --%>
-                                    <c:choose> 
-                                        <c:when test="${isPostLiked}">
-                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                    <c:if test="${sessionScope.user != null}">
+                                        is Post Liked: ${requestScope.isPostLiked }
+                                        <c:choose> 
+                                            <c:when test="${isPostLiked}">
+                                                <%-- when user already liked post --%>
+                                            <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
                                                 <span id="countPostLike">${requestScope.postLikeCount}</span>
                                             </i>
                                         </c:when>
                                         <c:otherwise>
-                                            <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
                                                 <span id="countPostLike">${requestScope.postLikeCount}</span>
                                             </i>
                                         </c:otherwise>
                                     </c:choose>
+                                </c:if>
 
                                 <i class="fa fa-comments" aria-hidden="true">${cmtList.size()}</i>
                                 <c:choose>
@@ -167,6 +172,7 @@
                             </div>
                             <!-- Comment Section -->
                             <section class="text-break" id="commentSection" style="height: 300px; overflow-x: hidden; overflow-y: scroll">
+                                user is not empty? ${sessionScope.user != null}
                                 <c:if test="${sessionScope.user != null}">
                                     <form action="WriteCommentServlet" method="POST">
                                         <div class="row">

@@ -50,12 +50,12 @@ public boolean CheckPostLike(String username, int postId) {
         try {
             con = DBConnect.makeConnection();
             sql="Select *\n"
-                    + "From Post_Like(username, post_id)\n"
+                    + "From Post_Like\n"
                     + "Where username=? and post_id=?";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setString(1, username);
+                ps.setInt(2, postId);
                 rs=ps.executeQuery();
                 if(rs.next())
                     result=true;
@@ -81,8 +81,8 @@ public boolean CheckPostLike(String username, int postId) {
                     + "Values(?, ?)";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setString(1, username);
+                ps.setInt(2, postId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
@@ -103,11 +103,11 @@ public boolean CheckPostLike(String username, int postId) {
         try {
             con = DBConnect.makeConnection();
             sql="DELETE FROM Post_Like \n"
-                    + "WHERE username=? and post_id\n";
+                    + "WHERE username=? and post_id=?\n";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setString(1, username);
+                ps.setInt(2, postId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();

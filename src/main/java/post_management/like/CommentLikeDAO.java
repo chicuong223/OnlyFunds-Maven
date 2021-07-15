@@ -29,8 +29,8 @@ public class CommentLikeDAO {
                     + "Values(?, ?)";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, commentId);
+                ps.setString(1, username);
+                ps.setInt(2, commentId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
@@ -54,8 +54,8 @@ public class CommentLikeDAO {
                     + "WHERE username=? and post_id\n";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, commentId);
+                ps.setString(1, username);
+                ps.setInt(2, commentId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
