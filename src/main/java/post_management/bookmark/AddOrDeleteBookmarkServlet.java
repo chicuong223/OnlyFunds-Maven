@@ -32,7 +32,7 @@ public class AddOrDeleteBookmarkServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 String action = request.getParameter("action");
-        int postId = Integer.parseInt(request.getParameter("commentId"));
+        int postId = Integer.parseInt(request.getParameter("postId"));
         String username = request.getParameter("username");
         if (action.equals("add")) {
             BookmarkDAO plDAO = new BookmarkDAO();

@@ -84,7 +84,6 @@ public class PostDetailServlet extends HttpServlet {
         request.setAttribute("postLikeCount", postLikeCount);
         request.setAttribute("cmtList", cmtList);
         request.setAttribute("post", post);
-        request.getRequestDispatcher("post.jsp").forward(request, response);
         
         if (currentUser != null) {
             //check if user already liked post
@@ -97,11 +96,17 @@ public class PostDetailServlet extends HttpServlet {
             //check if user already liked comment
             CommentLikeDAO clDAO = new CommentLikeDAO();
             ArrayList<Boolean> isCommnetLikedList = new ArrayList<Boolean>();
+            ArrayList<Integer> countCommentLikeList=new ArrayList<Integer>();
             for (Comment comment : cmtList) {
                 boolean isCommnetLiked = clDAO.CheckCommentLike(currentUser.getUsername(), comment.getCommentID());
                 isCommnetLikedList.add(isCommnetLiked);
+                int countCommentLike=clDAO.countCommentLikeByCommentId(comment.getCommentID());
+                countCommentLikeList.add(countCommentLike);
             }
+            request.setAttribute("isCommnetLikedList", isCommnetLikedList);
+            request.setAttribute("countCommentLikeList", countCommentLikeList);
         }
+        request.getRequestDispatcher("post.jsp").forward(request, response);
     }
 
     @Override

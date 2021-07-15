@@ -54,13 +54,14 @@ public class BookmarkDAO {
         String sql;
         try {
             con = DBConnect.makeConnection();
-            sql="Insert into Comment_Like(username, post_id)\n"
+            sql="Insert into Bookmark(username, post_id)\n"
                     + "Values(?, ?)";
             if (con != null) {
                 ps=con.prepareStatement(sql);
                 ps.setString(1, username);
                 ps.setInt(2, postId);
                 boolean result = ps.executeUpdate() > 0;
+                System.err.println("ok add");
                 ps.close();
                 con.close();
                 return result;
@@ -79,7 +80,7 @@ public class BookmarkDAO {
         String sql;
         try {
             con = DBConnect.makeConnection();
-            sql="DELETE FROM Comment_Like \n"
+            sql="DELETE FROM Bookmark \n"
                     + "WHERE username=? and post_id=?\n";
             if (con != null) {
                 ps=con.prepareStatement(sql);

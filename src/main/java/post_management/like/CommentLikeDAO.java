@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import post_management.comment.Comment;
 import user_management.user.User;
 import utils.DBConnect;
 
@@ -17,7 +18,30 @@ import utils.DBConnect;
  * @author DELL
  */
 public class CommentLikeDAO {
-    public boolean CheckCommentLike(String username, int postId) {
+    public int countCommentLikeByComment(Comment cmt) {
+        return countCommentLikeByCommentId(cmt.getCommentID());
+    }
+    public int countCommentLikeByCommentId(int cmtId) {
+        int count = 0;
+        try {
+            Connection con = DBConnect.makeConnection();
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(username) as countNo FROM Comment_Like WHERE post_id = ?")) {
+                    ps.setInt(1, cmtId);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            count = rs.getInt("countNo");
+                        }
+                    }
+                }
+                con.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return count;
+    }
+    public boolean CheckCommentLike(String username, int commentId) {
         boolean result = false;
         Connection con = null;
         PreparedStatement ps = null;
@@ -31,7 +55,7 @@ public class CommentLikeDAO {
             if (con != null) {
                 ps = con.prepareStatement(sql);
                 ps.setString(1, username);
-                ps.setInt(2, postId);
+                ps.setInt(2, commentId);
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     result = true;

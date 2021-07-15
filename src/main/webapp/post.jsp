@@ -24,41 +24,44 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
             function clickBookmarkPost(username, postId) {
-        event.preventDefault();
-        var btnBookmark = document.querySelector("#btnBookmark");
-        if (btnBookmark.className === "far fa-bookmark") {
+                window.alert("clickBookmarkPost");
+                event.preventDefault();
+                var btnBookmark = document.querySelector("#btnBookmark");
+                if (btnBookmark.className === "fas fa-bookmark") {
 
-            //Call action Bookmark/AddBookmark
-            $.ajax({
-                type: "POST",
-                url: '',
-                //url: '@Url.Action("AddBookmark", "Bookmark")',
-                data: {
-                    username: username,
-                    postId: postId
-                },
-                cache: false,
-                success: function () {
-                            btnBookmark.className = "fas fa-bookmark";
-                        }
-                    });
-                } else {
-                    //Call action Bookmark/RemoveBookmark
+                    //Call action Bookmark/AddBookmark
                     $.ajax({
                         type: "POST",
-                        url: '/Bookmark/RemoveBookmark',
-                        //url: '@Url.Action("RemoveBookmark", "Bookmark")',
+                        url: 'AddOrDeleteBookmarkServlet',
                         data: {
                             username: username,
-                            postId: postId
+                            postId: postId,
+                            action:'delete'
                         },
                         cache: false,
                         success: function () {
-                            btnBookmark.className = "far fa-bookmark";
-                        }
-                    });
+                                    btnBookmark.className = "far fa-bookmark";
+                                    alert('delete bm');
+                                }
+                            });
+                    } else {
+                        //Call action Bookmark/RemoveBookmark
+                        $.ajax({
+                            type: "POST",
+                            url: 'AddOrDeleteBookmarkServlet',
+                            data: {
+                                username: username,
+                                postId: postId,
+                                action:'add'
+                            },
+                            cache: false,
+                            success: function () {
+                                btnBookmark.className = "fas fa-bookmark";
+                                alert('add bm');
+                            }
+                        });
+                    }
                 }
-            }
             function clickLikePost(username, postId) {
                 alert("here");
                 alert(postId + typeof (postId));
@@ -102,29 +105,42 @@
                     });
                 }
             }
-            function clickLikeCmt(username, cmtId, postId) {
-                alert("here");
-                console.log(username, cmtId, postId);
+            function clickLikeComment(username, cmtId) {
+                alert("clickLikeComment");
+                console.log(username, cmtId);
                 event.preventDefault();
                 var likeCmt = document.querySelector("#cmtLike-" + cmtId);
-                var countCmtLike = document.querySelector("#countCmtLink-" + cmtId);
+                var countCmtLike = document.querySelector("#countCommentLike-" + cmtId);
                 var numOfLike = countCmtLike.innerHTML;
-                if (likeCmt.className === "fas fa-thumbs-up") {
+                if (likeCmt.className === "fa fa-heart") {
                     //call action likeCmt
                     numOfLike--;
                     countCmtLike.innerHTML = numOfLike;
-                    likeCmt.className = ("far fa-thumbs-up");
-                } else {
-                    numOfLike++;
-                    countCmtLike.innerHTML = numOfLike;
-                    likeCmt.className = ("fas fa-thumbs-up");
+                    likeCmt.className = ("fa fa-heart-o");
                     $.ajax({
                         type: "POST",
                         url: 'LikeOrUnlikeCommentServlet',
                         data: {
                             username: username,
                             commentId: cmtId,
-                            postId: postId
+                            action:'unlike'
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("unliked comment");
+                        }
+                    });
+                } else {
+                    numOfLike++;
+                    countCmtLike.innerHTML = numOfLike;
+                    likeCmt.className = ("fa fa-heart");
+                    $.ajax({
+                        type: "POST",
+                        url: 'LikeOrUnlikeCommentServlet',
+                        data: {
+                            username: username,
+                            commentId: cmtId,
+                            action:'like'
                         },
                         cache: false,
                         success: function () {
@@ -197,11 +213,6 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:when>
-                                        <c:otherwise>
-                                            <span class="me-2" style="cursor: pointer; float: right;">
-                                                <i id="btnBookmark" class="far fa-bookmark"></i>
-                                            </span>
-                                        </c:otherwise>
                                     </c:choose>
                                     
 
@@ -260,6 +271,30 @@
                                             <p class="fw-bold">${cmt.user.username}</p>
                                             <p>${cmt.content}</p>
                                         </div>
+                                        <c:choose>
+                                        <c:when test="${sessionScope.user != null}">
+                                        yo ${cmtLoop.index}
+                                        yo 2 ${empty countCommentLikeList}
+                                            <c:choose>
+                                                <c:when test="${isCommnetLikedList[cmtLoop.index]}">
+                                                    <%-- when user already liked post --%>
+                                                    <i id="cmtLike-${cmt.commentID}" class="fa fa-heart" aria-hidden="true" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                    </i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i id="cmtLike-${cmt.commentID}" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                    </i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i id="cmtLike-${cmt.commentID}" class="fa fa-heart-o" aria-hidden="true">
+                                                <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                            </i>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </div>
                                 </c:forEach>
                             </section>
