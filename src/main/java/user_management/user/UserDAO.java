@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -538,7 +540,7 @@ public class UserDAO {
             }
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error getCreatorsThatUserFollows", e);
         }
         finally {
             if (con != null)
@@ -549,6 +551,7 @@ public class UserDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        Collections.shuffle(lst);
         return lst;
     }
 
@@ -588,6 +591,7 @@ public class UserDAO {
                 Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        Collections.shuffle(lst);
         return lst;
     }
 

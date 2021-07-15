@@ -76,8 +76,18 @@ public class WritePostServlet extends HttpServlet {
         //add post
         dao.addPost(post);
         
+        //Reason: Because we use identity for post ID in database,
+        //we can only get the correct post id of the added post after it has been inserted into the database
+        //Steps:
+        //1. Get the latest added post id of the current user
+        //2. Change the in-memory post id to the id gotten from step 1
+        //3. change file name to the post id and upload it to the server
+        //4. change the in-memory post's attachment URL
+        //5. Update the post in the database
         if(!filename.trim().equals("")){
             int postId = dao.getLatestPostIdByUser(user);
+//            Post post = dao.getLatestPostByUser(user)
+            post.setPostId(postId);
             filename = fileUpload.postAttachmentUpload(request, postId);
             post.setAttachmentURL(filename);
             dao.updatePost(post);
@@ -98,10 +108,9 @@ public class WritePostServlet extends HttpServlet {
         if (tiers != null) {
             for (String tierID : tiers) {
                 Tier tier = tierDAO.getTierById(Integer.parseInt(tierID));
-                boolean result = tierMapDAO.addTierMap(tier, user);
+                tierMapDAO.addTierMap(tier, user);
             }
         }
-        ;
         sendNotifications(post, user);
         response.sendRedirect("YourPostsServlet");
     }
@@ -113,12 +122,18 @@ public class WritePostServlet extends HttpServlet {
         ArrayList<User> subscribers = userDAO.getSubscribers(user);
         ArrayList<User> recipients = new ArrayList<>();
         NotificationDAO ntDAO = new NotificationDAO();
-        for (User follower : followers) {
+        
+        //add followers to recipients
+        followers.forEach(follower -> {
             recipients.add(follower);
-        }
-        for (User subscriber : subscribers) {
+        });
+        
+        //add subscribers to recipients
+        subscribers.forEach(subscriber -> {
             recipients.add(subscriber);
-        }
+        });
+        
+        //remove duplicated users in recipients
         for (int i = 0; i < recipients.size(); i++) {
             for (int j = i + 1; j < recipients.size(); j++) {
                 if (recipients.get(i).getUsername().equalsIgnoreCase(recipients.get(j).getUsername())) {
@@ -127,9 +142,9 @@ public class WritePostServlet extends HttpServlet {
                 }
             }
         }
-        for (User recipient : recipients) {
+        recipients.forEach(recipient -> {
             ntDAO.generateNotification(post, recipient);
-        }
+        });
     }
 
 }

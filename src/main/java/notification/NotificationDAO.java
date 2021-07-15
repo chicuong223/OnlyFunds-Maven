@@ -74,6 +74,40 @@ public class NotificationDAO {
         return lst;
     }
     
+    public ArrayList<Notification> getNotificationsByRecipient(User recipient){
+        ArrayList<Notification> lst = new ArrayList<>();
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                try (PreparedStatement ps = con.prepareStatement("SELECT  id, content, post_id FROM Notification WHERE recipient_username = ? ORDER BY id DESC")) {
+                    ps.setString(1, recipient.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        PostDAO pDAO = new PostDAO();
+                        while(rs.next()){
+                            int id = rs.getInt("id");
+                            String content = rs.getString("content");
+//                            Date date = rs.getDate("notification_date");
+                            boolean isRead = rs.getBoolean("is_read");
+                            int postId = rs.getInt("post_id");
+                            Post post = pDAO.getPostByID(postId);
+                            Notification noti = new Notification();
+                            noti.setNotificationId(id);
+                            noti.setContent(content);
+                            noti.setPost(post);
+                            noti.setIsRead(isRead);
+//                            Notification noti = new Notification(id, recipient, content, date, isRead, post);
+                            lst.add(noti);
+                        }
+                    }
+                }
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+        }
+        return lst;
+    }
+    
     public boolean setIsRead(Notification noti){
         boolean result = false;
         try {
