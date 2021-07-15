@@ -71,7 +71,6 @@ public class ManageCreatorPageServlet extends HttpServlet {
                         ucList.put(cat, true);
                     }
                 }
-                System.out.println(ucList);
                 session.setAttribute("ucList", ucList);
             }
             

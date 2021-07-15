@@ -35,7 +35,7 @@ public class EmailConfirmation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     String registerPage = "register.jsp";
-    String setUpCreatorPage = "manage_creator_page.jsp";
+    String setUpCreatorPage = "set_up_creator_page.jsp";
     String retypeOTP = "register_otp.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
