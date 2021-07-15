@@ -23,6 +23,42 @@
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
+            function clickBookmarkPost(username, postId) {
+        event.preventDefault();
+        var btnBookmark = document.querySelector("#btnBookmark");
+        if (btnBookmark.className === "far fa-bookmark") {
+
+            //Call action Bookmark/AddBookmark
+            $.ajax({
+                type: "POST",
+                url: '',
+                //url: '@Url.Action("AddBookmark", "Bookmark")',
+                data: {
+                    username: username,
+                    postId: postId
+                },
+                cache: false,
+                success: function () {
+                            btnBookmark.className = "fas fa-bookmark";
+                        }
+                    });
+                } else {
+                    //Call action Bookmark/RemoveBookmark
+                    $.ajax({
+                        type: "POST",
+                        url: '/Bookmark/RemoveBookmark',
+                        //url: '@Url.Action("RemoveBookmark", "Bookmark")',
+                        data: {
+                            username: username,
+                            postId: postId
+                        },
+                        cache: false,
+                        success: function () {
+                            btnBookmark.className = "far fa-bookmark";
+                        }
+                    });
+                }
+            }
             function clickLikePost(username, postId) {
                 alert("here");
                 alert(postId + typeof (postId));
@@ -121,22 +157,53 @@
                                     <%--
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
                                     --%>
-                                    <c:if test="${sessionScope.user != null}">
-                                        is Post Liked: ${requestScope.isPostLiked }
-                                        <c:choose> 
-                                            <c:when test="${isPostLiked}">
-                                                <%-- when user already liked post --%>
-                                            <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
-                                                <span id="countPostLike">${requestScope.postLikeCount}</span>
-                                            </i>
+                                    <%--Like post button--%>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user != null}">
+                                            <c:choose>
+                                                <c:when test="${isPostLiked}">
+                                                    <%-- when user already liked post --%>
+                                                    <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                        <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                                    </i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                        <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                                    </i>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
                                         <c:otherwise>
-                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true">
                                                 <span id="countPostLike">${requestScope.postLikeCount}</span>
                                             </i>
                                         </c:otherwise>
                                     </c:choose>
-                                </c:if>
+                                    <%-- Bookmark button --%>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user != null}">
+                                            <c:choose>
+                                                <c:when test="${isBookmarked}">
+                                                    <%-- when user already bookmarked post --%>
+                                                    <span class="me-2" style="cursor: pointer; float: right;">
+                                                        <i id="btnBookmark" onclick="clickBookmarkPost('${user.username}',${post.postId})" class="fas fa-bookmark"></i>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="me-2" style="cursor: pointer; float: right;">
+                                                        <i id="btnBookmark" onclick="clickBookmarkPost('${user.username}',${post.postId})" class="far fa-bookmark"></i>
+                                                    </span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="me-2" style="cursor: pointer; float: right;">
+                                                <i id="btnBookmark" class="far fa-bookmark"></i>
+                                            </span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    
 
                                 <i class="fa fa-comments" aria-hidden="true">${cmtList.size()}</i>
                                 <c:choose>
@@ -172,7 +239,6 @@
                             </div>
                             <!-- Comment Section -->
                             <section class="text-break" id="commentSection" style="height: 300px; overflow-x: hidden; overflow-y: scroll">
-                                user is not empty? ${sessionScope.user != null}
                                 <c:if test="${sessionScope.user != null}">
                                     <form action="WriteCommentServlet" method="POST">
                                         <div class="row">
@@ -187,7 +253,7 @@
                                         </div>
                                     </form>
                                 </c:if>
-                                <c:forEach items="${cmtList}" var="cmt">
+                                <c:forEach items="${cmtList}" var="cmt" varStatus="cmtLoop">
                                     <div class="row">
                                         <div class="col-2"><img src="${pageContext.request.contextPath}/images/avatars/${cmt.user.avatarURL}" alt="avatar" class="img-thumbnail"/></div>
                                         <div class="col">

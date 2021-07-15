@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import post_management.bookmark.Bookmark;
+import post_management.bookmark.BookmarkDAO;
+import post_management.like.CommentLikeDAO;
 import post_management.like.PostLike;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
@@ -76,19 +79,29 @@ public class PostDetailServlet extends HttpServlet {
                 request.setAttribute("tiererror", "You are not allowed to view this post");
             }
         }
-        
-        if (currentUser != null ) {
-            boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
-            request.setAttribute("isPostLiked", isPostLiked);
-            System.err.println(isPostLiked);
-        }
-        
         ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
         int postLikeCount = postLikeDAO.countPostLikeByPost(post);
         request.setAttribute("postLikeCount", postLikeCount);
         request.setAttribute("cmtList", cmtList);
         request.setAttribute("post", post);
         request.getRequestDispatcher("post.jsp").forward(request, response);
+        
+        if (currentUser != null) {
+            //check if user already liked post
+            boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
+            request.setAttribute("isPostLiked", isPostLiked);
+            //check if user already
+            BookmarkDAO bmDAO=new BookmarkDAO();
+            boolean isBookmarked=bmDAO.CheckBookmark(currentUser.getUsername(), postID);
+            request.setAttribute("isBookmarked", isBookmarked);
+            //check if user already liked comment
+            CommentLikeDAO clDAO = new CommentLikeDAO();
+            ArrayList<Boolean> isCommnetLikedList = new ArrayList<Boolean>();
+            for (Comment comment : cmtList) {
+                boolean isCommnetLiked = clDAO.CheckCommentLike(currentUser.getUsername(), comment.getCommentID());
+                isCommnetLikedList.add(isCommnetLiked);
+            }
+        }
     }
 
     @Override
