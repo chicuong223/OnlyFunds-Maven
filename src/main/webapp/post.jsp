@@ -21,6 +21,83 @@
                 text-decoration: none;
             }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function clickLikePost(username, postId) {
+                alert("here");
+                alert(postId + typeof (postId));
+                var likePost = document.querySelector("#postLike");
+                var countPostLike = document.querySelector("#countPostLike");
+                var numOfLike = countPostLike.innerHTML;
+                if (likePost.className == "fa fa-heart"/*icon when liked*/) {
+                    //call action likePost
+                    numOfLike--;
+                    countPostLike.innerHTML = numOfLike;
+                    likePost.className = ("fa fa-heart-o");/*Replace with icon when liked, turn to unlike button*/
+                    $.ajax({
+                        type: "POST",
+                        url: 'LikeOrUnlikePostServlet',
+                        data: {
+                            username: username,
+                            postId: postId,
+                            action: "unlike"
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("unliked post");
+                        }
+                    });
+                } else {
+                    numOfLike++;
+                    countPostLike.innerHTML = numOfLike;
+                    likePost.className = ("fa fa-heart");/*Replace with icon when liked, turn to like icon*/
+                    $.ajax({
+                        type: "POST",
+                        url: 'LikeOrUnlikePostServlet',
+                        data: {
+                            username: username,
+                            postId: postId,
+                            action: "like"
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("liked post");
+                        }
+                    });
+                }
+            }
+            function clickLikeCmt(username, cmtId, postId) {
+                alert("here");
+                console.log(username, cmtId, postId);
+                event.preventDefault();
+                var likeCmt = document.querySelector("#cmtLike-" + cmtId);
+                var countCmtLike = document.querySelector("#countCmtLink-" + cmtId);
+                var numOfLike = countCmtLike.innerHTML;
+                if (likeCmt.className === "fas fa-thumbs-up") {
+                    //call action likeCmt
+                    numOfLike--;
+                    countCmtLike.innerHTML = numOfLike;
+                    likeCmt.className = ("far fa-thumbs-up");
+                } else {
+                    numOfLike++;
+                    countCmtLike.innerHTML = numOfLike;
+                    likeCmt.className = ("fas fa-thumbs-up");
+                    $.ajax({
+                        type: "POST",
+                        url: 'LikeOrUnlikeCommentServlet',
+                        data: {
+                            username: username,
+                            commentId: cmtId,
+                            postId: postId
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("liked comment");
+                        }
+                    });
+                }
+            }
+        </script>
     </head>
     <body>
         <c:choose>
@@ -41,7 +118,26 @@
                                 <c:if test="${!requestScope.post.attachmentURL.isEmpty()}">
                                     <a href="${pageContext.request.contextPath}/post_file/${requestScope.post.attachmentURL}" class="link-primary"><i class="fa fa-paperclip"></i>${requestScope.post.attachmentURL}</a> <br>
                                     </c:if>
+                                    <%--
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
+                                    --%>
+                                    <c:if test="${sessionScope.user != null}">
+                                        is Post Liked: ${requestScope.isPostLiked }
+                                        <c:choose> 
+                                            <c:when test="${isPostLiked}">
+                                                <%-- when user already liked post --%>
+                                            <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                            </i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                            </i>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:if>
+
                                 <i class="fa fa-comments" aria-hidden="true">${cmtList.size()}</i>
                                 <c:choose>
                                     <c:when test="${sessionScope.user != null && sessionScope.user.username != post.uploader.username}">
@@ -76,6 +172,7 @@
                             </div>
                             <!-- Comment Section -->
                             <section class="text-break" id="commentSection" style="height: 300px; overflow-x: hidden; overflow-y: scroll">
+                                user is not empty? ${sessionScope.user != null}
                                 <c:if test="${sessionScope.user != null}">
                                     <form action="WriteCommentServlet" method="POST">
                                         <div class="row">
