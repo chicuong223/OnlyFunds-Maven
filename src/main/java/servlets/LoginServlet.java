@@ -66,13 +66,10 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
         ArrayList<Notification> unreadNotiList = ntDAO.getUnreadNotificationsByRecipient(user);
-        for (Notification notification : unreadNotiList) {
-            System.out.println(notification.getContent());
-        }
         session.setAttribute("user", user);
         session.setAttribute("userCatList", userCatList);
         session.setAttribute("notiList", unreadNotiList);
-        response.sendRedirect("main_page.jsp");
+        response.sendRedirect("homepage");
     }
 
 }
