@@ -16,8 +16,10 @@
         <c:set var="user" value="${sessionScope.user}"/>
         <c:set var="ucList" value="${sessionScope.ucList}"/>
         
-        <h1>Let other users know more about you and your interests! (These can be changed later)</h1>
+        <!--Navigation bar-->
+        <c:import url="navbar.jsp"></c:import>
         
+        <<h1>Manage Creator Page</h1>
         <!--Change bio description-->
         <form action="ManageCreatorPage" method="POST">
                 <p class="head">Bio:</p> 

@@ -50,17 +50,19 @@ public class PostDetailServlet extends HttpServlet {
         PostLikeDAO postLikeDAO = new PostLikeDAO();
         TierDAO tierDAO = new TierDAO();
         ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
+        // check if post includes any tier
         if (postTiers.size() > 0) {
             HttpSession session = request.getSession();
             User currentUser = (User) session.getAttribute("user");
             boolean cmp = false;
-            if (currentUser == null) {
+            if (currentUser == null) { //check user/visitor
                 cmp = false;
             }
-            else if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
+            //check if user is the uploader
+            else if (currentUser.getUsername().equals(post.getUploader().getUsername())) { 
                 cmp = true;
             }
-            else {
+            else { //check if user has alr subscribed
                 ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
                 for (Tier userTier : userTiers) {
                     for (Tier postTier : postTiers) {

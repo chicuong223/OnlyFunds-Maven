@@ -38,7 +38,6 @@ public class SetUpCreatorPageServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String bio = request.getParameter("bio");
-            System.out.println(bio);
             String[] catList = request.getParameterValues("category");
             HttpSession session = request.getSession();
             User newUser = (User) session.getAttribute("user");
@@ -51,7 +50,7 @@ public class SetUpCreatorPageServlet extends HttpServlet {
             
             //update bio
             udao.changeBio(newUser.getUsername(), bio);
-            
+            newUser.setBio(bio);
             //add category list
             if (catList!=null) {
                 for (String catid : catList) {
@@ -62,6 +61,7 @@ public class SetUpCreatorPageServlet extends HttpServlet {
                     dao.addCategoryMap(uCat);
                 }
             }
+            session.setAttribute("user", newUser);
             session.setAttribute("userCatList", userCatList);
             rd.forward(request, response);
         }

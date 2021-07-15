@@ -27,6 +27,9 @@
     </style>
     <body>
         <c:set var="user" value="${sessionScope.user}"/>
+        <!--Navigation bar-->
+        <c:import url="navbar.jsp"></c:import>
+        
         <form method="POST" action="SetUpCreatorPageServlet">
             <h1>Let other users know more about you and your interests! (These can be changed later)</h1>
             <!--Change bio description-->
