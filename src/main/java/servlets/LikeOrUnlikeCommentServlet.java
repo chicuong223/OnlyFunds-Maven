@@ -5,66 +5,45 @@
  */
 package servlets;
 
-import category.Category;
-import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import map.UserCategoryMap;
-import map.UserCategoryMapDAO;
-import user_management.user.User;
-import user_management.user.UserDAO;
+import post_management.like.CommentLikeDAO;
 
 /**
  *
- * @author ASUS GAMING
+ * @author DELL
  */
-@WebServlet(name = "SetUpCreatorPageServlet", urlPatterns = {"/SetUpCreatorPageServlet"})
-public class SetUpCreatorPageServlet extends HttpServlet {
+@WebServlet(name = "LikeOrUnlikeCommentServlet", urlPatterns = {"/LikeOrUnlikeCommentServlet"})
+public class LikeOrUnlikeCommentServlet extends HttpServlet {
 
-    private String url = "main_page.jsp";
-    private String errorUrl = "error.jsp";
-    
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            String bio = request.getParameter("bio");
-            String[] catList = request.getParameterValues("category");
-            HttpSession session = request.getSession();
-            User newUser = (User) session.getAttribute("user");
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            ArrayList<Category> userCatList = new ArrayList();
-            
-            UserDAO udao = new UserDAO();
-            UserCategoryMapDAO dao = new UserCategoryMapDAO();
-            CategoryDAO cdao = new CategoryDAO();
-            
-            //update bio
-            udao.changeBio(newUser.getUsername(), bio);
-            newUser.setBio(bio);
-            //add category list
-            if (catList!=null) {
-                for (String catid : catList) {
-                    int id = Integer.parseInt(catid);
-                    Category cat = cdao.getCategoryByID(id);
-                    userCatList.add(cat);
-                    UserCategoryMap uCat = new UserCategoryMap(cat, newUser);
-                    dao.addCategoryMap(uCat);
-                }
-            }
-            session.setAttribute("user", newUser);
-            session.setAttribute("userCatList", userCatList);
-            rd.forward(request, response);
+        String action = request.getParameter("action");
+        int postId = Integer.parseInt(request.getParameter("commentId"));
+        String username = request.getParameter("username");
+        if (action.equals("like")) {
+            CommentLikeDAO plDAO = new CommentLikeDAO();
+            plDAO.AddCommentLike(username, postId);
+        } else {
+            CommentLikeDAO plDAO = new CommentLikeDAO();
+            plDAO.DeleteCommentLike(username, postId);
         }
+                System.out.print("LikeOrUnlikePostServlet called\n username: "+username+", postId: "+postId);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

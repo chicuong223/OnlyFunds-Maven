@@ -76,32 +76,38 @@ public class PostDetailServlet extends HttpServlet {
 
         //get tiers of the post
         ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-        //if post contains any tier
-        //check subscription of the user
+
+        // check if post includes any tier
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
+
         if (postTiers.size() > 0) {
-            User currentUser = (User) session.getAttribute("user");
-            // a variable to check if the user is allowed to view the post
-            //false: not allowed to view
-            //true: allowed to view
             boolean cmp = false;
-            //if user is not logged in -> not allowed to view the post
-            if (currentUser == null) {
+            if (currentUser == null) { //check user/visitor
                 cmp = false;
             }
-            //if user is the author of the post -> allowed to view the post
-            else if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
+            //check if user is the uploader
+            else if (currentUser.getUsername().equals(post.getUploader().getUsername())) { 
                 cmp = true;
             }
-            //if user is not the author of the post
-            //get tiers that the user has subscribed to
-            //if user has subscribed to a tier that is in the post tiers -> allowed to view the post
-            else {
+            else { //check if user has alr subscribed
                 ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
                 for (Tier userTier : userTiers) {
                     for (Tier postTier : postTiers) {
                         if (userTier.getTierId() == postTier.getTierId()) {
                             cmp = true;
                             break;
+            } else {
+                if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
+                    cmp = true;
+                } else {
+                    ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
+                    for (Tier userTier : userTiers) {
+                        for (Tier postTier : postTiers) {
+                            if (userTier.getTierId() == postTier.getTierId()) {
+                                cmp = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -110,7 +116,13 @@ public class PostDetailServlet extends HttpServlet {
                 request.setAttribute("tiererror", "You are not allowed to view this post");
             }
         }
-        //get comments of the post
+        
+        if (currentUser != null ) {
+            boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
+            request.setAttribute("isPostLiked", isPostLiked);
+            System.err.println(isPostLiked);
+        }
+        
         ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
 
         //count likes of the post
