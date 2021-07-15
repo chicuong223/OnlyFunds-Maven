@@ -33,15 +33,18 @@ public class LikeOrUnlikePostServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        int postId = Integer.parseInt(request.getParameter("post"));
+        int postId = Integer.parseInt(request.getParameter("postId"));
         String username = request.getParameter("username");
         if (action.equals("like")) {
             PostLikeDAO plDAO = new PostLikeDAO();
             plDAO.AddPostLike(username, postId);
+            //System.out.print("Like called\n username: " + username + ", postId: " + postId);
         } else {
             PostLikeDAO plDAO = new PostLikeDAO();
             plDAO.DeletePostLike(username, postId);
+            //System.out.print("Unlike called\n username: " + username + ", postId: " + postId);
         }
+        System.out.print("LikeOrUnlikePostServlet called\n username: " + username + ", postId: " + postId);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

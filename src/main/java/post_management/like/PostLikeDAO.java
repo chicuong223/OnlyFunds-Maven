@@ -41,7 +41,33 @@ public class PostLikeDAO {
         }
         return count;
     }
-
+public boolean CheckPostLike(String username, int postId) {
+    boolean result=false;     
+    Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs=null;
+        String sql;
+        try {
+            con = DBConnect.makeConnection();
+            sql="Select *\n"
+                    + "From Post_Like\n"
+                    + "Where username=? and post_id=?";
+            if (con != null) {
+                ps=con.prepareStatement(sql);
+                ps.setString(1, username);
+                ps.setInt(2, postId);
+                rs=ps.executeQuery();
+                if(rs.next())
+                    result=true;
+                ps.close();
+                con.close();
+                return result;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
     public boolean AddPostLike(User user, int postId) {
         return AddPostLike(user.getUsername(), postId);
     }
@@ -55,8 +81,8 @@ public class PostLikeDAO {
                     + "Values(?, ?)";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setString(1, username);
+                ps.setInt(2, postId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();
@@ -77,11 +103,11 @@ public class PostLikeDAO {
         try {
             con = DBConnect.makeConnection();
             sql="DELETE FROM Post_Like \n"
-                    + "WHERE username=? and post_id\n";
+                    + "WHERE username=? and post_id=?\n";
             if (con != null) {
                 ps=con.prepareStatement(sql);
-                ps.setString(0, username);
-                ps.setInt(1, postId);
+                ps.setString(1, username);
+                ps.setInt(2, postId);
                 boolean result = ps.executeUpdate() > 0;
                 ps.close();
                 con.close();

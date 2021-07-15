@@ -50,32 +50,39 @@ public class PostDetailServlet extends HttpServlet {
         PostLikeDAO postLikeDAO = new PostLikeDAO();
         TierDAO tierDAO = new TierDAO();
         ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
         if (postTiers.size() > 0) {
-            HttpSession session = request.getSession();
-            User currentUser = (User) session.getAttribute("user");
             boolean cmp = false;
             if (currentUser == null) {
                 cmp = false;
-            }
-            else if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
-                cmp = true;
-            }
-            else {
-                ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
-                for (Tier userTier : userTiers) {
-                    for (Tier postTier : postTiers) {
-                        if (userTier.getTierId() == postTier.getTierId()) {
-                            cmp = true;
-                            break;
+            } else {
+                if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
+                    cmp = true;
+                } else {
+                    ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
+                    for (Tier userTier : userTiers) {
+                        for (Tier postTier : postTiers) {
+                            if (userTier.getTierId() == postTier.getTierId()) {
+                                cmp = true;
+                                break;
+                            }
                         }
                     }
-                }
 
+                }
             }
             if (cmp == false) {
                 request.setAttribute("tiererror", "You are not allowed to view this post");
             }
         }
+        
+        if (currentUser != null ) {
+            boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
+            request.setAttribute("isPostLiked", isPostLiked);
+            System.err.println(isPostLiked);
+        }
+        
         ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
         int postLikeCount = postLikeDAO.countPostLikeByPost(post);
         request.setAttribute("postLikeCount", postLikeCount);

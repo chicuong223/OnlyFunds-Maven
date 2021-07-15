@@ -33,7 +33,7 @@ public class LikeOrUnlikeCommentServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        int postId = Integer.parseInt(request.getParameter("post"));
+        int postId = Integer.parseInt(request.getParameter("commentId"));
         String username = request.getParameter("username");
         if (action.equals("like")) {
             CommentLikeDAO plDAO = new CommentLikeDAO();
@@ -42,6 +42,8 @@ public class LikeOrUnlikeCommentServlet extends HttpServlet {
             CommentLikeDAO plDAO = new CommentLikeDAO();
             plDAO.DeleteCommentLike(username, postId);
         }
+                System.out.print("LikeOrUnlikePostServlet called\n username: "+username+", postId: "+postId);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
