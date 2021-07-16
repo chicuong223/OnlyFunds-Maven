@@ -36,8 +36,6 @@
                                 <p class="border-bottom p-3">${post.key.title}</p>
                                 <div class="overflow-auto text-center" style="height: 150px">
                                     <p class="p-3 text-break">You must subscribe a tier of this post to view</p>
-                                    <button class="btn btn-success" onclick="location.href='login'">Login</button>
-                                    <button class="btn btn-danger" onclick="location.href='RegisterServlet'">Register</button>
                                 </div>
                             </div>
                         </c:otherwise>

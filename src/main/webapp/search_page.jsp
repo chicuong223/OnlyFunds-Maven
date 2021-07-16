@@ -20,10 +20,10 @@
             <div class="creator-list">
                 <c:forEach items="${userList}" var="user">
                     <div>
-                        <a href="UserPageServlet?username=${user.username}">
+                        <a href="CreatorInfoServlet?username=${user.username}">
                             <div>
                                 <h3>${user.username}</h3>
-                                <img src="${user.avatarURL}">
+                                <img src="images/avatars/${user.avatarURL}" alt="${user.avatarURL}" width="100">
                             </div>
                         </a>
                     </div>                    
