@@ -114,9 +114,6 @@
                 var numOfLike = countCmtLike.innerHTML;
                 if (likeCmt.className === "fa fa-heart") {
                     //call action likeCmt
-                    numOfLike--;
-                    countCmtLike.innerHTML = numOfLike;
-                    likeCmt.className = ("fa fa-heart-o");
                     $.ajax({
                         type: "POST",
                         url: 'LikeOrUnlikeCommentServlet',
@@ -128,12 +125,12 @@
                         cache: false,
                         success: function () {
                             alert("unliked comment");
+                            numOfLike--;
+                            countCmtLike.innerHTML = numOfLike;
+                            likeCmt.className = ("fa fa-heart-o");
                         }
                     });
                 } else {
-                    numOfLike++;
-                    countCmtLike.innerHTML = numOfLike;
-                    likeCmt.className = ("fa fa-heart");
                     $.ajax({
                         type: "POST",
                         url: 'LikeOrUnlikeCommentServlet',
@@ -145,6 +142,9 @@
                         cache: false,
                         success: function () {
                             alert("liked comment");
+                            numOfLike++;
+                            countCmtLike.innerHTML = numOfLike;
+                            likeCmt.className = ("fa fa-heart");
                         }
                     });
                 }

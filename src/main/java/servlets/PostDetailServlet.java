@@ -84,28 +84,32 @@ public class PostDetailServlet extends HttpServlet {
         request.setAttribute("postLikeCount", postLikeCount);
         request.setAttribute("cmtList", cmtList);
         request.setAttribute("post", post);
-        
+
         if (currentUser != null) {
             //check if user already liked post
             boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
             request.setAttribute("isPostLiked", isPostLiked);
             //check if user already
-            BookmarkDAO bmDAO=new BookmarkDAO();
-            boolean isBookmarked=bmDAO.CheckBookmark(currentUser.getUsername(), postID);
+            BookmarkDAO bmDAO = new BookmarkDAO();
+            boolean isBookmarked = bmDAO.CheckBookmark(currentUser.getUsername(), postID);
             request.setAttribute("isBookmarked", isBookmarked);
-            //check if user already liked comment
-            CommentLikeDAO clDAO = new CommentLikeDAO();
-            ArrayList<Boolean> isCommnetLikedList = new ArrayList<Boolean>();
-            ArrayList<Integer> countCommentLikeList=new ArrayList<Integer>();
-            for (Comment comment : cmtList) {
+        }
+        //check if user already liked comment
+        CommentLikeDAO clDAO = new CommentLikeDAO();
+        ArrayList<Boolean> isCommnetLikedList = new ArrayList<Boolean>();
+        ArrayList<Integer> countCommentLikeList = new ArrayList<Integer>();
+        for (Comment comment : cmtList) {
+            if (currentUser != null) {
                 boolean isCommnetLiked = clDAO.CheckCommentLike(currentUser.getUsername(), comment.getCommentID());
                 isCommnetLikedList.add(isCommnetLiked);
-                int countCommentLike=clDAO.countCommentLikeByCommentId(comment.getCommentID());
-                countCommentLikeList.add(countCommentLike);
+            } else {
+                isCommnetLikedList.add(Boolean.FALSE);
             }
-            request.setAttribute("isCommnetLikedList", isCommnetLikedList);
-            request.setAttribute("countCommentLikeList", countCommentLikeList);
+            int countCommentLike = clDAO.countCommentLikeByCommentId(comment.getCommentID());
+            countCommentLikeList.add(countCommentLike);
         }
+        request.setAttribute("isCommnetLikedList", isCommnetLikedList);
+        request.setAttribute("countCommentLikeList", countCommentLikeList);
         request.getRequestDispatcher("post.jsp").forward(request, response);
     }
 

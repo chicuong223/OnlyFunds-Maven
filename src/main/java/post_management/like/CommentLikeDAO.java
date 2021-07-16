@@ -26,7 +26,7 @@ public class CommentLikeDAO {
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
-                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(username) as countNo FROM Comment_Like WHERE post_id = ?")) {
+                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(username) as countNo FROM Comment_Like WHERE comment_id = ?")) {
                     ps.setInt(1, cmtId);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
