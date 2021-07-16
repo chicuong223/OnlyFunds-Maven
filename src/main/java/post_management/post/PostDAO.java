@@ -24,14 +24,12 @@ public class PostDAO {
     public int getLatestPostIdByUser(User user) {
         int postId = -1;
         try (Connection con = DBConnect.makeConnection()) {
-            if (con != null) {
+            if (con != null)
                 try (PreparedStatement ps = con.prepareStatement("SELECT MAX(id) as id FROM Post WHERE uploader_username = ?")) {
-                    ps.setString(1, user.getUsername());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            postId = rs.getInt("id");
-                        }
-                    }
+                ps.setString(1, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next())
+                        postId = rs.getInt("id");
                 }
             }
         }
@@ -42,15 +40,13 @@ public class PostDAO {
 
     public int countPostsByUser(User user) {
         int count = 0;
-        try (Connection con = DBConnect.makeConnection()){
-            if (con != null) {
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
                 try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 1")) {
-                    ps.setString(1, user.getUsername());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            count = rs.getInt("countNo");
-                        }
-                    }
+                ps.setString(1, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next())
+                        count = rs.getInt("countNo");
                 }
             }
         }
@@ -93,15 +89,12 @@ public class PostDAO {
         }
         finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -139,15 +132,12 @@ public class PostDAO {
         }
         finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -171,12 +161,10 @@ public class PostDAO {
         }
         finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -208,12 +196,10 @@ public class PostDAO {
         }
         finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -241,12 +227,10 @@ public class PostDAO {
         }
         finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -283,15 +267,12 @@ public class PostDAO {
         }
         finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -339,15 +320,12 @@ public class PostDAO {
         }
         finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -395,15 +373,12 @@ public class PostDAO {
         }
         finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
             }
             catch (SQLException e) {
             }
@@ -411,10 +386,81 @@ public class PostDAO {
         return lst;
     }
 
+    public ArrayList<Post> getFreePosts(int start, int end) {
+        ArrayList<Post> lst = new ArrayList<>();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SELECT * FROM (\n"
+                        + "SELECT ROW_NUMBER() OVER (Order BY id DESC) as r, * FROM Post \n"
+                        + "WHERE id NOT IN(SELECT post_id FROM Tier_Map)\n"
+                        + "AND uploader_username IN (SELECT followed_username FROM Follow WHERE follower_username = 'chicuong')\n"
+                        + "AND is_active = 1) as x\n"
+                        + "WHERE x.r BETWEEN ? AND ? ";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            lst.add(post);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return lst;
+    }
+
+    public ArrayList<Post> getPostsThatUserCanView(User user, int start, int end) {
+        ArrayList<Post> lst = new ArrayList<>();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SELECT * FROM (\n"
+                        + "SELECT ROW_number() OVER (ORDER BY id DESC) as r, id, title, uploader_username description FROM Post \n"
+                        + "WHERE id not in(\n"
+                        + "	SELECT post_id from Tier_Map\n"
+                        + ")AND is_active = 1 OR id in (\n"
+                        + "	SELECT post_id FROM Tier_Map WHERE tier_id in (\n"
+                        + "		SELECT tier_id FROM Subscription WHERE subscriber_username = ? \n"
+                        + "	)\n"
+                        + ") AND is_active = 1) as x\n"
+                        + "WHERE x.r between ? and ?";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    ps.setInt(2, start);
+                    ps.setInt(3, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            lst.add(post);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return lst;
+    }
+
     public static void main(String[] args) {
         User user = new User();
-        user.setUsername("chicuong223");
+        user.setUsername("chicuong");
         PostDAO dao = new PostDAO();
-        System.out.println(dao.getLatestPostIdByUser(user));
+
+//        System.out.println(dao.getLatestPostIdByUser(user));
+        ArrayList<Post> lst = dao.getPostsThatUserCanView(user, 1, 3);
+        lst.forEach(p -> System.out.println(p.getPostId()));
+//        System.out.println(lst.size());
     }
 }

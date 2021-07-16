@@ -292,7 +292,6 @@
                             </div>
                             <!-- Comment Section -->
                             <section class="text-break" id="commentSection" style="height: 300px; overflow-x: hidden; overflow-y: scroll">
-                                user is not empty? ${sessionScope.user != null}
                                 <c:if test="${sessionScope.user != null}">
                                     <form action="WriteCommentServlet" method="POST">
                                         <div class="row">
@@ -364,8 +363,6 @@
                                         </div>
                                         <c:choose>
                                             <c:when test="${sessionScope.user != null}">
-                                                yo ${cmtLoop.index}
-                                                yo 2 ${empty countCommentLikeList}
                                                 <c:choose>
                                                     <c:when test="${isCommnetLikedList[cmtLoop.index]}">
                                                         <%-- when user already liked post --%>
