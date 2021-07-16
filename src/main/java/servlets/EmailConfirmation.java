@@ -35,7 +35,7 @@ public class EmailConfirmation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     String registerPage = "register.jsp";
-    String setUpCreatorPage = "manage_creator_page.jsp";
+    String setUpCreatorPage = "set_up_creator_page.jsp";
     String retypeOTP = "register_otp.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -50,21 +50,21 @@ public class EmailConfirmation extends HttpServlet {
             } else {
                 String sessionOtp = (String) session.getAttribute("otp");
                 String enteredOtp = (String) request.getParameter("otp");
-                System.err.println(enteredOtp.equals(sessionOtp));
+//                System.err.println(enteredOtp.equals(sessionOtp));
                 if (!enteredOtp.equals(sessionOtp)) {
                     request.setAttribute("msg", "Wrong OTP. Please try again");
                     request.getRequestDispatcher(retypeOTP).forward(request, response);
                 } else if (enteredOtp.equals(sessionOtp)) {
                     User newUser = (User) session.getAttribute("user");
-                    System.out.println(newUser);
+//                    System.out.println(newUser);
                     Part filePart = (Part)session.getAttribute("filepart");
-                    String avatarURL = new UploadFile().uploadFile(request, filePart);
+                    System.out.println(filePart.getSubmittedFileName());
+                    String avatarURL = new UploadFile().uploadFile(request, filePart, newUser);
                     newUser.setAvatarURL(avatarURL);
                     UserDAO udao = new UserDAO();
                     if (udao.addUser(newUser)) {
                         request.setAttribute("username", newUser.getUsername());
                         request.setAttribute("password", newUser.getPassword());
-                        request.setAttribute("newUser", true);
                         request.getRequestDispatcher(setUpCreatorPage).forward(request, response);
                     } else {
                         request.setAttribute("msg", "Session run out. Try again");

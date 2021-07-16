@@ -30,10 +30,10 @@ import utils.UploadFile;
  *
  * @author chiuy
  */
-@WebServlet(name = "EditPostServlet", urlPatterns =
-{
-    "/EditPostServlet"
-})
+@WebServlet(name = "EditPostServlet", urlPatterns
+        = {
+            "/EditPostServlet"
+        })
 @MultipartConfig(
         fileSizeThreshold = 10 * 1024 * 1024,
         maxFileSize = 1024 * 1024 * 100,
@@ -45,16 +45,18 @@ public class EditPostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int postID = Integer.parseInt(request.getParameter("id"));
+        System.out.println(postID);
         PostDAO dao = new PostDAO();
         Post post = dao.getPostByID(postID);
         CategoryDAO catDAO = new CategoryDAO();
         TierDAO tDAO = new TierDAO();
         ArrayList<Category> catList = catDAO.getAllCategories();
 //        User user = (User) request.getSession().getAttribute("user");
-        HttpSession session = request.getSession();
-        session.setAttribute("post", post);
+//        HttpSession session = request.getSession();
+//        session.setAttribute("post", post);
         ArrayList<Tier> tierList = tDAO.getTiersByUser(post.getUploader());
         ArrayList<Tier> postTiers = tDAO.getTiersByPost(post);
+        request.setAttribute("post", post);
         request.setAttribute("postTiers", postTiers);
         request.setAttribute("tierList", tierList);
         request.setAttribute("catList", catList);
@@ -66,23 +68,28 @@ public class EditPostServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String cancel = request.getParameter("cancel");
-        if (cancel != null)
-        {
+        if (cancel != null) {
             response.sendRedirect("PostDetailServlet?id=" + cancel);
             return;
         }
+        String strPostId = request.getParameter("postid");
+        if (strPostId == null) {
+            request.setAttribute("posterror", "Post not found at Edit Post Servlet");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+        PostDAO postDAO = new PostDAO();
+        Post post = postDAO.getPostByID(Integer.parseInt(strPostId));
         String title = request.getParameter("title");
         String desc = request.getParameter("desc");
         UploadFile upload = new UploadFile();
         String filename = upload.getFileName(request.getPart("attachment"));
-        PostDAO postDAO = new PostDAO();
-        Post post = (Post) request.getSession().getAttribute("post");
         post.setTitle(title);
         post.setDescription(desc);
-        if (!filename.isEmpty())
-        {
-            upload.deleteFile(request, post.getAttachmentURL());
-            filename = upload.postAttachmentUpload(request);
+        if (!filename.isEmpty()) {
+            System.out.println(post.getAttachmentURL());
+            upload.deleteFile(request, post.getAttachmentURL(), "post_file");
+            filename = upload.postAttachmentUpload(request, post.getPostId());
             post.setAttachmentURL(filename);
         }
         postDAO.updatePost(post);

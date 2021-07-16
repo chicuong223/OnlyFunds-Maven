@@ -46,11 +46,10 @@ public class NotificationDAO {
     }
     
     public ArrayList<Notification> getUnreadNotificationsByRecipient(User user){
-        ArrayList<Notification> lst = null;
+        ArrayList<Notification> lst = new ArrayList<>();
         try {
             Connection con = DBConnect.makeConnection();
             if(con != null){
-                lst = new ArrayList<>();
                 try (PreparedStatement ps = con.prepareStatement("SELECT  * FROM Notification WHERE recipient_username = ? AND is_read = 0")) {
                     ps.setString(1, user.getUsername());
                     try (ResultSet rs = ps.executeQuery()) {
@@ -73,5 +72,57 @@ public class NotificationDAO {
         catch (SQLException e) {
         }
         return lst;
+    }
+    
+    public ArrayList<Notification> getNotificationsByRecipient(User recipient){
+        ArrayList<Notification> lst = new ArrayList<>();
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                try (PreparedStatement ps = con.prepareStatement("SELECT  id, content, post_id FROM Notification WHERE recipient_username = ? ORDER BY id DESC")) {
+                    ps.setString(1, recipient.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        PostDAO pDAO = new PostDAO();
+                        while(rs.next()){
+                            int id = rs.getInt("id");
+                            String content = rs.getString("content");
+//                            Date date = rs.getDate("notification_date");
+                            boolean isRead = rs.getBoolean("is_read");
+                            int postId = rs.getInt("post_id");
+                            Post post = pDAO.getPostByID(postId);
+                            Notification noti = new Notification();
+                            noti.setNotificationId(id);
+                            noti.setContent(content);
+                            noti.setPost(post);
+                            noti.setIsRead(isRead);
+//                            Notification noti = new Notification(id, recipient, content, date, isRead, post);
+                            lst.add(noti);
+                        }
+                    }
+                }
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+        }
+        return lst;
+    }
+    
+    public boolean setIsRead(Notification noti){
+        boolean result = false;
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("UPDATE Notification SET is_read = 1 WHERE id = ?");
+                ps.setInt(1, noti.getNotificationId());
+                result = ps.executeUpdate() > 0;
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
     }
 }

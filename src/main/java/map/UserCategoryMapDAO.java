@@ -96,11 +96,10 @@ public class UserCategoryMapDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Category> lst = null;
+        ArrayList<Category> lst = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement("SELECT * FROM Category WHERE id in(\n"
                         + "SELECT category_id FROM User_Category_Map WHERE username LIKE ?)");
                 ps.setString(1, user.getUsername());

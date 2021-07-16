@@ -14,61 +14,52 @@
     </head>
     <body>
         <c:set var="user" value="${sessionScope.user}"/>
-        <%--<c:set var="new" scope="request" value="${new}"/>--%>
-        <h1>Let other users know more about you and your interests! (These can be changed later)</h1>
-        <!--Change bio description-->
-        <div>
-            <p class="head">Bio:</p> 
-            <textarea name="bio" rows="10">${user.bio}</textarea>
-        </div>
+        <c:set var="ucList" value="${sessionScope.ucList}"/>
         
+        <!--Navigation bar-->
+        <c:import url="navbar.jsp"></c:import>
+        
+        <<h1>Manage Creator Page</h1>
+        <!--Change bio description-->
+        <form action="ManageCreatorPage" method="POST">
+                <p class="head">Bio:</p> 
+                <textarea name="bio" rows="10">${user.bio}</textarea>
+                <button type="submit" name="action" value="bio">Submit</button>
+        </form>
+            
         <!--Change interest-->
         <div>
-            <c:choose>
-                
-                <c:when test="${newUser}">
-                    <form action="CategorySelectServlet" method="POST">
-                        Please select topics you are interested in (these can be changed later):
-                        <c:forEach items="${applicationScope.catList}" var="cat">
-                            <div class="form-check">
-                                <input name="category" class="form-check-input" type="checkbox" id="${cat.categoryId}" value="${cat.categoryId}" />
-                                <label class="form-check-label" for="${cat.categoryId}">${cat.categoryName}</label>
-                            </div>
-                        </c:forEach>
-                        <button type="submit">Submit</button>
-                    </form>
-                </c:when>
-                
-                <c:otherwise>
-                    <p class="head">Current Interests:</p> 
-                    <div id="currentInterest">
-                        <c:choose>
-                            <c:when test="${!empty userCatList}">
-                                <c:forEach items="${sessionScope.userCatList}" var="ucat">
-                                    <strong>${ucat.categoryName}</strong>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <strong>None</strong>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                    <!--Interest form starts here-->
-                    <button id="change-interest-btn">Change interest:</button>
-                    <form id="change-interest-form" method="POST" hidden>
-                        <c:forEach items="${applicationScope.catList}" var="cat">
-                            <div class="form-check">
-                                <input name="category" class="form-check-input" type="checkbox" id="${cat.categoryId}" value="${cat.categoryId}" />
-                                <label class="form-check-label" for="${cat.categoryId}">${cat.categoryName}</label>
-                            </div>
-                        </c:forEach>
-                        <button type="submit" name="action" value="category">Submit</button>
-                    </form>
-                </c:otherwise>
-                    
-            </c:choose>
+            <p class="head">Current Interests:</p> 
+            <div id="currentInterest">
+                <c:set var="check" value="${false}"/>
+                <c:forEach items="${ucList}" var="ucat">
+                    <c:if test="${ucat.value}">
+                        <c:set var="check" value="${true}"/>
+                        <strong>${ucat.key.categoryName}</strong>
+                    </c:if>
+                </c:forEach>
+                <c:if test="${!check}">
+                    <strong>None</strong>
+                </c:if>
+            </div>
+            <!--Interest form starts here-->
+            <button id="change-interest-btn">Change interest:</button>
+            <form id="change-interest-form" action="ManageCreatorPage" method="POST" hidden>
+                <c:forEach items="${ucList}" var="cat">
+                    <c:choose>
+                        <c:when test="${cat.value}">
+                            <input checked name="category" class="form-check-input" type="checkbox" id="${cat.key.categoryId}" value="${cat.key.categoryId}" />
+                            <label class="form-check-label" for="${cat.key.categoryId}">${cat.key.categoryName}</label>
+                        </c:when>
+                        <c:otherwise>
+                            <input name="category" class="form-check-input" type="checkbox" id="${cat.key.categoryId}" value="${cat.key.categoryId}" />
+                            <label class="form-check-label" for="${cat.key.categoryId}">${cat.key.categoryName}</label>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                <button type="submit" name="action" value="category">Submit</button>
+            </form>
         </div>
-        
         <script src="scripts/manage_creator_page_script.js"></script>
     </body>
 </html>

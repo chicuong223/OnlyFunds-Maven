@@ -29,14 +29,14 @@ import user_management.user.User;
  */
 public class PaymentUtils {
 
-    private static final String CLIENT_ID = "Ab5Rjne9qxEsslwqVLnv-fEZz81LUwa1ePC59mHYbdlNjy7p6p4hIV-pu9PBWlBJzFpdO3ewmxD1TFHM";
-    private static final String CLIENT_SECRET = "EJEV8H0grl22HApFs8gD9NwOM_XOuQsGSfORo9NZ1AU3UBTTPtMz3Ywqpp0ZxVbvY9fT9r3R_LF_bNab";
+    private static final String CLIENT_ID = "Aa07Q8vSpgreGRK6-izbEStccsSyXODoOUbQTlZEVlstbeLCek9CHonbtqCSK5cVQqA2m2lygpE5hBAJ";
+    private static final String CLIENT_SECRET = "EFHpA_Bkl3l7XHIb0ezXGvheKup-w_C8vUVsSHtfmaU4PFpIhP965tbI6dzV9Wcoyr7cfe0BKMFZ8pso";
     private static final String MODE = "sandbox";
 
     public Payment definePayment(Tier tier, User subscriber) {
         PayerInfo payerInfo = new PayerInfo();
-        payerInfo.setFirstName(subscriber.getFirstName());
-        payerInfo.setLastName(subscriber.getLastName());
+//        payerInfo.setFirstName(subscriber.getFirstName());
+//        payerInfo.setLastName(subscriber.getLastName());
         payerInfo.setEmail(subscriber.getEmail());
 
         Payer payer = new Payer();
@@ -55,19 +55,19 @@ public class PaymentUtils {
         amount.setTotal(String.valueOf(tier.getPrice()));
         amount.setDetails(details);
 
-        Payee payee = new Payee();
-        payee.setEmail(tier.getCreator().getEmail());
+//        Payee payee = new Payee();
+//        payee.setEmail(tier.getCreator().getEmail());
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setDescription(tier.getTierTitle());
-        transaction.setPayee(payee);
+//        transaction.setPayee(payee);
 
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
 
         Payment payment = new Payment();
-        payment.setIntent("sale");
+        payment.setIntent("authorize");
         payment.setPayer(payer);
         payment.setRedirectUrls(redirectUrls);
         payment.setTransactions(transactions);
