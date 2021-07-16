@@ -23,13 +23,52 @@
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
+            function clickBookmarkPost(username, postId) {
+                window.alert("clickBookmarkPost");
+                event.preventDefault();
+                var btnBookmark = document.querySelector("#btnBookmark");
+                if (btnBookmark.className === "fas fa-bookmark") {
+
+                    //Call action Bookmark/AddBookmark
+                    $.ajax({
+                        type: "POST",
+                        url: 'AddOrDeleteBookmarkServlet',
+                        data: {
+                            username: username,
+                            postId: postId,
+                            action:'delete'
+                        },
+                        cache: false,
+                        success: function () {
+                                    btnBookmark.className = "far fa-bookmark";
+                                    alert('delete bm');
+                                }
+                            });
+                    } else {
+                        //Call action Bookmark/RemoveBookmark
+                        $.ajax({
+                            type: "POST",
+                            url: 'AddOrDeleteBookmarkServlet',
+                            data: {
+                                username: username,
+                                postId: postId,
+                                action:'add'
+                            },
+                            cache: false,
+                            success: function () {
+                                btnBookmark.className = "fas fa-bookmark";
+                                alert('add bm');
+                            }
+                        });
+                    }
+                }
             function clickLikePost(username, postId) {
                 alert("here");
                 alert(postId + typeof (postId));
                 var likePost = document.querySelector("#postLike");
                 var countPostLike = document.querySelector("#countPostLike");
                 var numOfLike = countPostLike.innerHTML;
-                if (likePost.className === "fa fa-heart"/*icon when liked*/) {
+                if (likePost.className == "fa fa-heart"/*icon when liked*/) {
                     //call action likePost
                     numOfLike--;
                     countPostLike.innerHTML = numOfLike;
@@ -66,33 +105,46 @@
                     });
                 }
             }
-            function clickLikeCmt(username, cmtId, postId) {
-                alert("here");
-                console.log(username, cmtId, postId);
+            function clickLikeComment(username, cmtId) {
+                alert("clickLikeComment");
+                console.log(username, cmtId);
                 event.preventDefault();
                 var likeCmt = document.querySelector("#cmtLike-" + cmtId);
-                var countCmtLike = document.querySelector("#countCmtLink-" + cmtId);
+                var countCmtLike = document.querySelector("#countCommentLike-" + cmtId);
                 var numOfLike = countCmtLike.innerHTML;
-                if (likeCmt.className === "fas fa-thumbs-up") {
+                if (likeCmt.className === "fa fa-heart") {
                     //call action likeCmt
-                    numOfLike--;
-                    countCmtLike.innerHTML = numOfLike;
-                    likeCmt.className = ("far fa-thumbs-up");
-                } else {
-                    numOfLike++;
-                    countCmtLike.innerHTML = numOfLike;
-                    likeCmt.className = ("fas fa-thumbs-up");
                     $.ajax({
                         type: "POST",
                         url: 'LikeOrUnlikeCommentServlet',
                         data: {
                             username: username,
-                            commentID: cmtId,
-                            postId: postId
+                            commentId: cmtId,
+                            action:'unlike'
+                        },
+                        cache: false,
+                        success: function () {
+                            alert("unliked comment");
+                            numOfLike--;
+                            countCmtLike.innerHTML = numOfLike;
+                            likeCmt.className = ("fa fa-heart-o");
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: 'LikeOrUnlikeCommentServlet',
+                        data: {
+                            username: username,
+                            commentId: cmtId,
+                            action:'like'
                         },
                         cache: false,
                         success: function () {
                             alert("liked comment");
+                            numOfLike++;
+                            countCmtLike.innerHTML = numOfLike;
+                            likeCmt.className = ("fa fa-heart");
                         }
                     });
                 }
@@ -121,22 +173,48 @@
                                     <%--
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
                                     --%>
-                                    <c:if test="${sessionScope.user != null}">
-                                    is Post Liked: ${requestScope.isPostLiked }
-                                    <c:choose> 
-                                        <c:when test="${isPostLiked}">
-                                            <%-- when user already liked post --%>
-                                            <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
-                                                <span id="countPostLike">${requestScope.postLikeCount}</span>
-                                            </i>
+                                    <%--Like post button--%>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user != null}">
+                                            <c:choose>
+                                                <c:when test="${isPostLiked}">
+                                                    <%-- when user already liked post --%>
+                                                    <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                        <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                                    </i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                        <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                                    </i>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
                                         <c:otherwise>
-                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
+                                            <i id="postLike" class="fa fa-heart-o" aria-hidden="true">
                                                 <span id="countPostLike">${requestScope.postLikeCount}</span>
                                             </i>
                                         </c:otherwise>
                                     </c:choose>
-                                </c:if>
+                                    <%-- Bookmark button --%>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user != null}">
+                                            <c:choose>
+                                                <c:when test="${isBookmarked}">
+                                                    <%-- when user already bookmarked post --%>
+                                                    <span class="me-2" style="cursor: pointer; float: right;">
+                                                        <i id="btnBookmark" onclick="clickBookmarkPost('${user.username}',${post.postId})" class="fas fa-bookmark"></i>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="me-2" style="cursor: pointer; float: right;">
+                                                        <i id="btnBookmark" onclick="clickBookmarkPost('${user.username}',${post.postId})" class="far fa-bookmark"></i>
+                                                    </span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+                                    </c:choose>
+                                    
 
                                 <i class="fa fa-comments" aria-hidden="true">${cmtList.size()}</i>
                                 <c:choose>
@@ -187,7 +265,7 @@
                                         </div>
                                     </form>
                                 </c:if>
-                                <c:forEach items="${cmtList}" var="cmt">
+                                <c:forEach items="${cmtList}" var="cmt" varStatus="cmtLoop">
                                     <div class="row">
                                         <div class="col-2">
                                             <img src="images/avatars/${cmt.user.avatarURL}" alt="${cmt.user.avatarURL}" class="img-thumbnail"/>
@@ -242,6 +320,30 @@
                                                 </div>
                                             </c:if>
                                         </div>
+                                        <c:choose>
+                                        <c:when test="${sessionScope.user != null}">
+                                        yo ${cmtLoop.index}
+                                        yo 2 ${empty countCommentLikeList}
+                                            <c:choose>
+                                                <c:when test="${isCommnetLikedList[cmtLoop.index]}">
+                                                    <%-- when user already liked post --%>
+                                                    <i id="cmtLike-${cmt.commentID}" class="fa fa-heart" aria-hidden="true" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                    </i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i id="cmtLike-${cmt.commentID}" class="fa fa-heart-o" aria-hidden="true" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                    </i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i id="cmtLike-${cmt.commentID}" class="fa fa-heart-o" aria-hidden="true">
+                                                <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                            </i>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </div>
                                 </c:forEach>
                             </section>

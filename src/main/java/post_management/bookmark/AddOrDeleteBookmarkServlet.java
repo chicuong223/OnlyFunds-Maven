@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package post_management.bookmark;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,14 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import post_management.like.CommentLikeDAO;
 
 /**
  *
  * @author DELL
  */
-@WebServlet(name = "LikeOrUnlikeCommentServlet", urlPatterns = {"/LikeOrUnlikeCommentServlet"})
-public class LikeOrUnlikeCommentServlet extends HttpServlet {
+@WebServlet(name = "AddOrDeleteBookmarkServlet", urlPatterns = {"/AddOrDeleteBookmarkServlet"})
+public class AddOrDeleteBookmarkServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,21 +31,16 @@ public class LikeOrUnlikeCommentServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.err.println("LikeOrUnlikeCommnetServlet called");
-        String action = request.getParameter("action");
-        int commentId = Integer.parseInt(request.getParameter("commentId"));
+String action = request.getParameter("action");
+        int postId = Integer.parseInt(request.getParameter("postId"));
         String username = request.getParameter("username");
-        if (action.equals("like")) {
-            CommentLikeDAO plDAO = new CommentLikeDAO();
-            plDAO.AddCommentLike(username, commentId);
-            System.err.println("Like");
+        if (action.equals("add")) {
+            BookmarkDAO plDAO = new BookmarkDAO();
+            plDAO.AddBookmark(username, postId);
         } else {
-            CommentLikeDAO plDAO = new CommentLikeDAO();
-            plDAO.DeleteCommentLike(username, commentId);
-            System.err.println("UnLike");
+            BookmarkDAO plDAO = new BookmarkDAO();
+            plDAO.DeleteBookmark(username, postId);
         }
-        System.out.print("LikeOrUnlikeCommnetServlet called\n username: " + username + ", postId: " + commentId);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
