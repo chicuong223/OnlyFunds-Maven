@@ -29,7 +29,7 @@
                 var likePost = document.querySelector("#postLike");
                 var countPostLike = document.querySelector("#countPostLike");
                 var numOfLike = countPostLike.innerHTML;
-                if (likePost.className == "fa fa-heart"/*icon when liked*/) {
+                if (likePost.className === "fa fa-heart"/*icon when liked*/) {
                     //call action likePost
                     numOfLike--;
                     countPostLike.innerHTML = numOfLike;
@@ -87,7 +87,7 @@
                         url: 'LikeOrUnlikeCommentServlet',
                         data: {
                             username: username,
-                            commentId: cmtId,
+                            commentID: cmtId,
                             postId: postId
                         },
                         cache: false,
@@ -122,10 +122,10 @@
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
                                     --%>
                                     <c:if test="${sessionScope.user != null}">
-                                        is Post Liked: ${requestScope.isPostLiked }
-                                        <c:choose> 
-                                            <c:when test="${isPostLiked}">
-                                                <%-- when user already liked post --%>
+                                    is Post Liked: ${requestScope.isPostLiked }
+                                    <c:choose> 
+                                        <c:when test="${isPostLiked}">
+                                            <%-- when user already liked post --%>
                                             <i id="postLike" class="fa fa-heart" aria-hidden="true" onclick="clickLikePost('${user.username}',${post.postId})">
                                                 <span id="countPostLike">${requestScope.postLikeCount}</span>
                                             </i>
@@ -189,10 +189,58 @@
                                 </c:if>
                                 <c:forEach items="${cmtList}" var="cmt">
                                     <div class="row">
-                                        <div class="col-2"><img src="images/avatars/${cmt.user.avatarURL}" alt="avatar" class="img-thumbnail"/></div>
+                                        <div class="col-2">
+                                            <img src="images/avatars/${cmt.user.avatarURL}" alt="${cmt.user.avatarURL}" class="img-thumbnail"/>
+                                        </div>
                                         <div class="col">
                                             <p class="fw-bold">${cmt.user.username}</p>
                                             <p>${cmt.content}</p>
+                                            <c:if test="${cmt.user.username eq sessionScope.user.username}">
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-modal-${cmt.commentID}">Edit</button>
+                                                <div class="editform modal" id="edit-modal-${cmt.commentID}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Edit comment</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="EditCommentServlet" method="post" id="edit-form-${cmt.commentID}">
+                                                                    <input type="hidden" name="cmtID" value="${cmt.commentID}"/>
+                                                                    <p>New Content: </p>
+                                                                    <textarea class="form-control" style="resize:none">${cmt.content}</textarea>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <input class="btn btn-warning" type="submit" form="edit-form-${cmt.commentID}" value="Edit"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal-${cmt.commentID}">Delete</button>
+                                                <div class="modal" id="delete-modal-${cmt.commentID}">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Delete comment</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="DeleteCommentServlet" method="post" id="delete-form-${cmt.commentID}">
+                                                                    <input type="hidden" name="cmtID" value="${cmt.commentID}"/>
+                                                                    <p>You and other users will not be able to see this comment anymore</p>
+                                                                    <p class="text-danger">Are you sure ?</p>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <input class="btn btn-danger" type="submit" form="delete-form-${cmt.commentID}" value="Edit"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </c:forEach>
