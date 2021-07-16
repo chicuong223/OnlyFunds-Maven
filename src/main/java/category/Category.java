@@ -5,8 +5,6 @@
  */
 package category;
 
-import java.util.Objects;
-
 /**
  *
  * @author chiuy
@@ -42,36 +40,5 @@ public class Category {
     public String toString() {
         return "Category{" + "categoryId=" + categoryId + ", categoryName=" + categoryName + '}';
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + this.categoryId;
-        hash = 11 * hash + Objects.hashCode(this.categoryName);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Category other = (Category) obj;
-        if (this.categoryId != other.categoryId) {
-            return false;
-        }
-        if (!Objects.equals(this.categoryName, other.categoryName)) {
-            return false;
-        }
-        return true;
-    }
-    
-    
     
 }

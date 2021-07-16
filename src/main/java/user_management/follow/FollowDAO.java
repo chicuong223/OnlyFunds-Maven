@@ -20,10 +20,11 @@ import utils.DBConnect;
 public class FollowDAO {
 
     public ArrayList<User> GetFollowersByUser(User user) {
-        ArrayList<User> lst = new ArrayList<>();
+        ArrayList<User> lst = null;
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
+                lst = new ArrayList<>();
                 try (PreparedStatement ps = con.prepareStatement("SELECT * FROM [User] WHERE username IN \n"
                         + "(SELECT follower_username FROM Follow WHERE followed_username = ?) AND is_banned = 0")) {
                     ps.setString(1, user.getUsername());

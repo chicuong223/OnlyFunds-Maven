@@ -39,18 +39,17 @@ public class PostCategoryMapDAO {
     }
     
     public boolean deleteCategoryMapsByPost(Post post){
-        boolean result = false;
-        try(Connection con = DBConnect.makeConnection()){
+        try{
+            Connection con = DBConnect.makeConnection();
             if(con != null){
-                try(PreparedStatement ps = con.prepareStatement("DELETE FROM Post_Category_Map WHERE post_id = ?")){
-                    ps.setInt(1, post.getPostId());
-                    result = ps.executeUpdate() > 0;
-                }
+                PreparedStatement ps = con.prepareStatement("DELETE FROM Post_Category_Map WHERE post_id = ?");
+                ps.setInt(1, post.getPostId());
+                return ps.executeUpdate() > 0;
             }
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-        return result;
+        return false;
     }
 }

@@ -25,11 +25,11 @@ public class TierDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Tier> lst = new ArrayList<>();
+        ArrayList<Tier> lst = null;
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-//                lst = new ArrayList<>();
+                lst = new ArrayList<>();
                 ps = con.prepareStatement("SELECT * FROM Tier WHERE username = ? AND is_active = 1");
                 ps.setString(1, user.getUsername());
                 rs = ps.executeQuery();

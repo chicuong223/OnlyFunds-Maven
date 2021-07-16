@@ -20,28 +20,21 @@
             <main>
             <c:forEach items="${postList}" var="post">
                 <div class="w-50 mx-auto border my-3 rounded">
-                    <c:choose>
-                        <c:when test="${post.value == true}">
-                            <a href="PostDetailServlet?id=${post.key.postId}"class="post text-dark" style="text-decoration: none">
-                                <div>
-                                    <p class="border-bottom p-3">${post.key.title}</p>
-                                    <div class="overflow-auto" style="height: 150px">
+                    <a href="PostDetailServlet?id=${post.key.postId}"class="post text-dark" style="text-decoration: none">
+                        <div>
+                            <p class="border-bottom p-3">${post.key.title}</p>
+                            <div class="overflow-auto" style="height: 150px">
+                                <c:choose>
+                                    <c:when test="${post.value == false}">
+                                        <p class="p-3 text-break">You must subscribe a tier of this post to view</p>
+                                    </c:when>
+                                    <c:otherwise>
                                         <p class="p-3 text-break">${post.key.description}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </c:when>
-                        <c:otherwise>
-                            <div>
-                                <p class="border-bottom p-3">${post.key.title}</p>
-                                <div class="overflow-auto text-center" style="height: 150px">
-                                    <p class="p-3 text-break">You must subscribe a tier of this post to view</p>
-                                    <button class="btn btn-success" onclick="location.href='login'">Login</button>
-                                    <button class="btn btn-danger" onclick="location.href='RegisterServlet'">Register</button>
-                                </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
-                        </c:otherwise>
-                    </c:choose>
+                        </div>
+                    </a>
                 </div>
             </c:forEach>
         </main>

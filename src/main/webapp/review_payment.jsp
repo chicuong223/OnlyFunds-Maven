@@ -18,13 +18,14 @@
             <input type="hidden" name="PayerID" value="${param.PayerID}" />
             <div>
                 <h4>Payment Description</h4>
-                <p>Creator: ${sessionScope.tier.creator.username} </p>
+                <p>Creator: ${sessionScope.tier.creator.firstName} ${sessionScope.tier.creator.lastName} </p>
                 <p>Tier Title: ${transaction.description}</p>
                 <p>Price: ${transaction.amount.total} USD</p>
             </div>
             <div>
                 <h4>Subscriber Description</h4>
-                <p>Username: ${sessionScope.user.username}}</p>
+                <p>First Name: ${payer.firstName}</p>
+                <p>Last Name: ${payer.lastName}</p>
                 <p>Email: ${payer.email}</p>
             </div>
             <div>

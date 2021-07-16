@@ -33,32 +33,25 @@ public class ViewTransactionHistory extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String strPageIndex = request.getParameter("page");
-//        String filter = request.getParameter("filter")
-        doPost(request, response);
-    }
-
-//View own transaction
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
         String username = request.getParameter("username");
-        User user = (User) request.getSession().getAttribute("user");
-//        if (user == null) {
-//            request.setAttribute("usererror", "User not found");
-//            request.getRequestDispatcher("error.jsp").forward(request, response);
-//            return;
-//        }
+        User user = new UserDAO().getUserByUsername(username);
+        if (user == null) {
+            request.setAttribute("usererror", "User not found");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         BillDAO billDAO = new BillDAO();
         ArrayList<Bill> billList = new ArrayList<>();
         String filter = request.getParameter("filter");
-        System.out.println(filter);
-        if (filter == null)
+        if (filter == null) {
             billList = billDAO.getTransactionsByUser(user);
-        else if (filter.equalsIgnoreCase("receive"))
+        }
+        else if (filter.equalsIgnoreCase("receive")) {
             billList = billDAO.getReceiveTransactions(user);
-        else if (filter.equalsIgnoreCase("send"))
+        }
+        else if (filter.equalsIgnoreCase("send")) {
             billList = billDAO.getSendTransactions(user);
+        }
         else {
             request.setAttribute("actionerror", "Invalid parameter");
             request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -67,27 +60,39 @@ public class ViewTransactionHistory extends HttpServlet {
         int count = billList.size();
         int pageSize = 5;
         int end = count / pageSize;
-        if (count % pageSize != 0)
+        if (count % pageSize != 0) {
             end++;
+        }
         String strPageIndex = request.getParameter("page");
-        System.out.println(strPageIndex);
         int pageIndex = 0;
-        if (strPageIndex == null)
+        if (strPageIndex == null) {
             pageIndex = 1;
-        else
+        }
+        else {
             pageIndex = Integer.parseInt(strPageIndex);
+        }
         ArrayList<Bill> result = new ArrayList<>();
         for (int i = pageIndex * pageSize - (pageSize - 1) - 1; i <= pageIndex * pageSize - 1; i++) {
-            if (i >= billList.size())
+            if (i >= billList.size()) {
                 break;
+            }
             result.add(billList.get(i));
         }
-        if (filter != null)
+        if (filter != null) {
             request.setAttribute("filter", filter);
-//        for (Bill bill : result)
-//            System.out.println(bill.getContent());
+        }
+        for (Bill bill : result) {
+            System.out.println(bill.getContent());
+        }
+        request.setAttribute("username", username);
         request.setAttribute("end", end);
         request.setAttribute("transactions", result);
         request.getRequestDispatcher("transactions.jsp").forward(request, response);
+    }
+
+//View own transaction
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
     }
 }

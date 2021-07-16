@@ -23,10 +23,11 @@ import utils.DBConnect;
 public class CommentDAO {
 
     public ArrayList<Comment> getCommentsByPost(int postID) {
-        ArrayList<Comment> lst = new ArrayList<>();
+        ArrayList<Comment> lst = null;
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
+                lst = new ArrayList<>();
                 PreparedStatement ps;
                 ps = con.prepareStatement("SELECT * FROM Comment WHERE post_id = ? AND is_active = 1 ORDER BY id DESC");
                 ps.setInt(1, postID);
@@ -94,10 +95,11 @@ public class CommentDAO {
     }
     
     public ArrayList<Comment>  getReportedComments(){
-        ArrayList<Comment> lst = new ArrayList<>();
+        ArrayList<Comment> lst = null;
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
+                lst = new ArrayList<>();
                 PreparedStatement ps;
                 ps = con.prepareStatement(""
                         + "SELECT * FROM Comment WHERE id IN\n"

@@ -125,7 +125,7 @@
                                         </a>
                                         <div class="dropdown-menu p-2" id="dropdown-noti">
                                             <c:forEach items="${sessionScope.notiList}" var="noti">
-                                                <a href="PostDetailServlet?id=${noti.post.postId}&noti=${noti.notificationId}">${noti.content}</a>
+                                                <a href="PostDetailServlet?id=${noti.post.postId}">${noti.content}</a>
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -133,16 +133,14 @@
                                     <div class="nav-item" id="user-dropdown">
                                         <a href="#User-info" class="nav-link" id="navbarDropdown" role="button"
                                            data-bs-toggle="dropdown"><img class="rounded-pill"
-                                                                       src="images/avatars/${sessionScope.user.avatarURL}" 
+                                                                       src="${pageContext.request.contextPath}/images/avatars/${sessionScope.user.avatarURL}" 
                                                                        width=40px height=40px alt="Avatar">
                                         </a>
                                         <div class="dropdown-menu m-0 p-0" style="width: 200px; position: absolute; left: 85vw;">
                                             <a href="ManageAccount" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage account</a>
-                                            <a href="ManageCreatorPage" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage creator page</a>
                                             <a href="ManageSubscription" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage subscription</a>
-                                            <form class="col-12 nav-link m-0 p-0 text-center border-bottom" action="ViewTransactionHistory" method="post">
-                                                <input type="submit" style="outline: none; background: none; border: none" value="Transactions History"/>
-                                            </form>
+                                            <a href="ManageCreatorPage" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage creator page</a>
+                                            <a href="ViewTransactionHistory?username=${sessionScope.user.username}" class="col-12 nav-link m-0 p-0 text-center border-bottom">Transaction History</a>
                                             <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
                                         </div>
                                     </div>

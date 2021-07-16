@@ -9,7 +9,6 @@ import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.PayerInfo;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.Transaction;
-import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -41,9 +40,7 @@ public class ReviewPaymentServlet extends HttpServlet {
             String url = "review_payment.jsp?paymentId=" + paymentID + "&PayerID=" + payerID;
             request.getRequestDispatcher(url).forward(request, response);
         }
-        catch (PayPalRESTException | IOException | ServletException e) {
-            System.out.println(e.getMessage());
-            log("Error reviewing payment", e);
+        catch (Exception e) {
         }
     }
 

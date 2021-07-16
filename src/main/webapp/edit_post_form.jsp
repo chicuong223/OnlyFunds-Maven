@@ -34,7 +34,6 @@
         <main>
             <div class="w-75 mx-auto">
                 <form action="EditPostServlet" method="POST" id="postForm" enctype="multipart/form-data">
-                    <input type="hidden" name="postid" value="${post.postId}"/>
                     <div>
                         <label for="title" name="title" class="fw-bold">Title</label> <span class="fw-bold text-danger">*</span><span class="error text-danger ms-3" id="titleError">${titleError}</span>
                         <input type="text" class="form-control" name="title" value="${post.title}" placeholder="Max 30 characters" id="title"/>
@@ -45,7 +44,7 @@
                     </div>
                     <div>
                         <p class="fw-bold" style="margin-bottom: 0">Old attachment</p>
-                        <a href="post_file/${post.attachmentURL}">${post.attachmentURL}</a>
+                        <a href="${pageContext.request.contextPath}/post_file/${post.attachmentURL}">${post.attachmentURL}</a>
                     </div>
                     <div>
                         <label for="file" class="label-form fw-bold">Attachment</label>

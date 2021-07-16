@@ -10,8 +10,6 @@ import user_management.user.UserDAO;
 import user_management.user.User;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -67,11 +65,14 @@ public class LoginServlet extends HttpServlet {
         }
         HttpSession session = request.getSession();
         ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
-        List<Notification> unreadNotiList = ntDAO.getNotificationsByRecipient(user).stream().limit(10).collect(Collectors.toList());
+        ArrayList<Notification> unreadNotiList = ntDAO.getUnreadNotificationsByRecipient(user);
+        for (Notification notification : unreadNotiList) {
+            System.out.println(notification.getContent());
+        }
         session.setAttribute("user", user);
         session.setAttribute("userCatList", userCatList);
         session.setAttribute("notiList", unreadNotiList);
-        response.sendRedirect("homepage");
+        response.sendRedirect("main_page.jsp");
     }
 
 }

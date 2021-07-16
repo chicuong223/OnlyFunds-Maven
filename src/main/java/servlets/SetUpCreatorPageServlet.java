@@ -49,8 +49,10 @@ public class SetUpCreatorPageServlet extends HttpServlet {
             CategoryDAO cdao = new CategoryDAO();
             
             //update bio
-            udao.changeBio(newUser.getUsername(), bio);
-            newUser.setBio(bio);
+            if (!udao.changeBio(bio, newUser.getUsername())) {
+                response.sendRedirect(errorUrl);
+            }
+            
             //add category list
             if (catList!=null) {
                 for (String catid : catList) {
@@ -61,7 +63,6 @@ public class SetUpCreatorPageServlet extends HttpServlet {
                     dao.addCategoryMap(uCat);
                 }
             }
-            session.setAttribute("user", newUser);
             session.setAttribute("userCatList", userCatList);
             rd.forward(request, response);
         }

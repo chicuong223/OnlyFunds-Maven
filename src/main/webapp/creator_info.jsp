@@ -15,7 +15,7 @@
         </head>
         <body>
             <div class='w-25 mx-auto'>
-                <img src='images/avatars/${creator.avatarURL}' width="100%"/>
+                <img src='${pageContext.request.contextPath}/images/avatars/${creator.avatarURL}' width="100%"/>
         </div>
         <c:if test="${sessionScope.user.username != creator.username}">
             <c:if test="${subscribed != null}">

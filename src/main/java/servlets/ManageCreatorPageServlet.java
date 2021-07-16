@@ -10,8 +10,6 @@ import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,35 +48,26 @@ public class ManageCreatorPageServlet extends HttpServlet {
             //change category
             if (action.equals("category")) {
                 
-                ArrayList<Category> userCatArrayList = new ArrayList();
-                LinkedHashMap<Category, Boolean> ucList = (LinkedHashMap) session.getAttribute("ucList");
-                String[] userCatList = request.getParameterValues("category");
+                ArrayList<Category> userCatList = new ArrayList();
+                String[] catList = request.getParameterValues("category");
                 
-                // delete all cat in db
                 dao.removeAllCategoriesByUser(user);
-                // change all value in hashmap to false
-                ucList.replaceAll((Category, Boolean) -> Boolean=false);
-                
-                if (userCatList!=null) {
-                    for (String catid : userCatList) {
-                        // add category into database
+                if (catList!=null) {
+                    for (String catid : catList) {
                         int id = Integer.parseInt(catid);
                         Category cat = cdao.getCategoryByID(id);
-                        userCatArrayList.add(cat);
+                        userCatList.add(cat);
                         UserCategoryMap uCat = new UserCategoryMap(cat, user);
                         dao.addCategoryMap(uCat);
-                        // change hash map value
-                        ucList.put(cat, true);
                     }
                 }
-                session.setAttribute("ucList", ucList);
+                session.setAttribute("userCatList", userCatList);
             }
             
             //change bio
             if (action.equals("bio")) {
                 String bio = request.getParameter("bio");
                 uDao.changeBio(user.getUsername(), bio);
-                user.setBio(bio);
             }
             rd.forward(request, response);
         }
@@ -100,27 +89,10 @@ public class ManageCreatorPageServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
-        ArrayList<Category> catList = (ArrayList) getServletContext().getAttribute("catList");
         RequestDispatcher rd = request.getRequestDispatcher(manageCreatorInfoPage);
-        LinkedHashMap<Category, Boolean> ucList = new LinkedHashMap<>();
-        
-        System.out.println(catList);
-//        catList.removeAll(userCatList);
-//        System.out.println(catList);
-       
-        catList.forEach(cat -> {
-            ucList.put(cat, false);
-        });
-        System.out.println(ucList);
-        userCatList.forEach(ucat -> {
-            catList.forEach(cat -> {
-                if (ucat.getCategoryId() == cat.getCategoryId()) {
-                    ucList.put(cat, true);
-                }
-            });
-        });
-        
-        session.setAttribute("ucList", ucList);
+            
+        request.setAttribute("userCategoryList", userCatList);
+        request.setAttribute("newUser", false);
         rd.forward(request, response);
     }
 

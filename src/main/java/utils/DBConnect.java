@@ -20,29 +20,29 @@ import javax.sql.DataSource;
 public class DBConnect {
 
     public static Connection makeConnection() {
-//        Connection con = null;
-//        try {
-//            Context context = new InitialContext();
-//            Context end = (Context) context.lookup("java:comp/env");
-//            DataSource ds = (DataSource) end.lookup("DBConnection");
-//            con = ds.getConnection();
-//        }
-//        catch (SQLException | NamingException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return con;
+        Connection con = null;
         try {
-            //1
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP391_OnlyFunds";
-
-            //2
-            Connection con = DriverManager.getConnection(url, "sa", "123");
-            return con;
+            Context context = new InitialContext();
+            Context end = (Context) context.lookup("java:comp/env");
+            DataSource ds = (DataSource) end.lookup("DBConnection");
+            con = ds.getConnection();
         }
-        catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        catch (SQLException | NamingException e) {
+            System.out.println(e.getMessage());
         }
-        return null;
+        return con;
+//        try {
+//            //1
+//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+//            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP391_OnlyFunds";
+//
+//            //2
+//            Connection con = DriverManager.getConnection(url, "sa", "123");
+//            return con;
+//        }
+//        catch (ClassNotFoundException | SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 }

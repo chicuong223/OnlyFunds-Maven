@@ -38,7 +38,9 @@ public class ExecutePaymentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if(request.getParameter("cancel") != null){
-            response.sendRedirect("CancelPaymentServlet");
+            Tier tier = (Tier) request.getSession().getAttribute("tier");
+            request.getSession().removeAttribute("tier");
+            response.sendRedirect("CreatorInfoServlet?username=" + tier.getCreator().getUsername());
             return;
         }
         try {
