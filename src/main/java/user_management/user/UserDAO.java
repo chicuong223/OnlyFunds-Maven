@@ -11,6 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.DBConnect;
 import static utils.HashPassword.HashPassword;
 
@@ -42,9 +48,10 @@ public class UserDAO {
                 ps.close();
                 con.close();
             }
-        } catch (Exception e) {
         }
-        System.out.println(user);
+        catch (Exception e) {
+        }
+//        System.out.println(user);
         return user;
     }
 
@@ -62,24 +69,23 @@ public class UserDAO {
                 ps.setString(1, username);
                 rs = ps.executeQuery();
                 //  if username exists
-                if (rs.next()) {
+                if (rs.next())
                     return true;
-                }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -101,24 +107,23 @@ public class UserDAO {
                 ps.setString(1, email);
                 rs = ps.executeQuery();
                 //  if email exists
-                if (rs.next()) {
+                if (rs.next())
                     return true;
-                }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -149,17 +154,18 @@ public class UserDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -192,19 +198,19 @@ public class UserDAO {
                     user = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
                 }
             }
-        } catch (SQLException ex) {
-        } finally {
+        }
+        catch (SQLException ex) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException ex) {
+            }
+            catch (SQLException ex) {
             }
         }
         return user;
@@ -224,16 +230,17 @@ public class UserDAO {
                 ps.executeUpdate();
                 success = true;
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return success;
@@ -243,7 +250,7 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql = "SELECT DISTINCT TOP 10 [User].*, tierNo.sumNo\n"
                 + "FROM\n"
                 + "(\n"
@@ -259,7 +266,6 @@ public class UserDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 rs = ps.executeQuery();
                 while (rs.next()) {
@@ -275,19 +281,19 @@ public class UserDAO {
                     lst.add(user);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
@@ -297,14 +303,13 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql = "SELECT DISTINCT * FROM [User] WHERE username in ("
                 + "SELECT subscriber_username FROM Subscription WHERE tier_id in ("
                 + "SELECT id FROM Tier WHERE username = ? ))";
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 ps.setString(1, user.getUsername());
                 rs = ps.executeQuery();
@@ -321,19 +326,19 @@ public class UserDAO {
                     lst.add(subscriber);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
@@ -349,7 +354,7 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql
                 = "select top 10 uwc.* , count(distinct s.subscriber_username) as NumOfSubcriber\n"
                 + "from ((select u.*\n"
@@ -365,7 +370,6 @@ public class UserDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, cateId);
                 rs = ps.executeQuery();
@@ -382,19 +386,19 @@ public class UserDAO {
                     lst.add(subscriber);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
@@ -405,7 +409,7 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = null;
+        ArrayList<User> lst = new ArrayList<>();
         String sql
                 = "select u.*\n"
                 + "from [User] u\n"
@@ -416,7 +420,6 @@ public class UserDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 search = "%" + search + "%";
                 ps.setString(1, search);
@@ -436,30 +439,30 @@ public class UserDAO {
                     lst.add(subscriber);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
     }
-    
+
     //update bio
     public boolean changeBio(String username, String bio) {
         Connection con = null;
         PreparedStatement ps = null;
         String sql = "UPDATE [User] SET bio = ? WHERE username = ?";
-        
+
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -469,25 +472,173 @@ public class UserDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
-    } 
-    
-//    public static void main(String[] args) {
-//        UserDAO dao = new UserDAO();
-//        User user = dao.getUserByUsername("chicuong223");
-//        ArrayList<User> lst = dao.getSubscribers(user);
-//        lst.forEach(u -> System.out.println(u));
-//    }
+    }
+
+    public ArrayList<User> getCreatorThatUserFollows(User user) {
+        ArrayList<User> lst = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM [User] WHERE username in (\n"
+                        + "SELECT followed_username FROM Follow WHERE follower_username = ?)")) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            User creator = new User();
+                            creator.setUsername(rs.getString("username"));
+                            creator.setBio(rs.getString("bio"));
+                            creator.setAvatarURL(rs.getString("avatarURL"));
+                            lst.add(creator);
+                        }
+                    }
+                }
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error getCreatorsThatUserFollows", e);
+        }
+        finally {
+            if (con != null)
+                try {
+                con.close();
+            }
+            catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Collections.shuffle(lst);
+        return lst;
+    }
+
+    public ArrayList<User> getCreatorThatUserSubscribedTo(User user) {
+        ArrayList<User> lst = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement("select username, bio, avatarURL from [User] where username in (\n"
+                        + "select username from Tier where id in (\n"
+                        + "select tier_id from Subscription\n"
+                        + "where subscriber_username = ?\n"
+                        + "))")) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            User creator = new User();
+                            creator.setUsername(rs.getString("username"));
+                            creator.setBio(rs.getString("bio"));
+                            creator.setAvatarURL(rs.getString("avatarURL"));
+                            lst.add(creator);
+                        }
+                    }
+                }
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            if (con != null)
+                try {
+                con.close();
+            }
+            catch (SQLException ex) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        Collections.shuffle(lst);
+        return lst;
+    }
+
+    public boolean updateUser(User user) {
+        boolean result = false;
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE [User] SET avatar_URL = ? WHERE username = ?");
+                ps.setString(1, user.getAvatarURL());
+                ps.setString(2, user.getUsername());
+                result = ps.executeUpdate() > 0;
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<User> getCreatorsSameCategoryAsUser(User user) {
+        ArrayList<User> lst = new ArrayList<>();
+        String sql = "SELECT DISTINCT TOP 10  username, avatarURL, bio FROM [User]  WHERE username in (\n"
+                + "SELECT username FROM User_Category_Map where NOT username = ? and category_id in (\n"
+                + "SELECT category_id FROM User_Category_Map WHERE username = ? \n"
+                + ")) AND is_banned = 0";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try(PreparedStatement ps = con.prepareStatement(sql)){
+                    ps.setString(1, user.getUsername());
+                    ps.setString(2, user.getUsername());
+                    try(ResultSet rs = ps.executeQuery()){
+                        while(rs.next()){
+                            User creator = new User();
+                            creator.setUsername(rs.getString("username"));
+                            creator.setBio(rs.getString("bio"));
+                            creator.setAvatarURL(rs.getString("avatarURL"));
+                            lst.add(creator);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+        }
+        Collections.shuffle(lst);
+        return lst;
+    }
+
+    public static void main(String[] args) {
+        UserDAO dao = new UserDAO();
+//        User user = dao.getUserByUsername("");
+        User user = new User();
+        user.setUsername("chicuong");
+        ArrayList<User> lst = dao.getCreatorsSameCategoryAsUser(user);
+        lst.forEach(u -> System.out.println(u));
+//        ArrayList<User> lst = dao.getCreatorThatUserSubscribedTo(user);
+//        ArrayList<User> fList = dao.getCreatorThatUserFollows(user);
+////        ArrayList<User> com = new ArrayList<>(lst);
+//        for (User user1 : fList)
+//            System.out.println(user1.hashCode());
+//        for (User user1 : lst)
+//            System.out.println(user1.hashCode());
+////        System.out.println(lst);
+    }
+
 }

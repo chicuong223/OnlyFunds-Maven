@@ -21,10 +21,28 @@ import utils.DBConnect;
  */
 public class PostDAO {
 
+    public int getLatestPostIdByUser(User user) {
+        int postId = -1;
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement("SELECT MAX(id) as id FROM Post WHERE uploader_username = ?")) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            postId = rs.getInt("id");
+                        }
+                    }
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        return postId;
+    }
+
     public int countPostsByUser(User user) {
         int count = 0;
-        try {
-            Connection con = DBConnect.makeConnection();
+        try (Connection con = DBConnect.makeConnection()){
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 1")) {
                     ps.setString(1, user.getUsername());
@@ -34,9 +52,9 @@ public class PostDAO {
                         }
                     }
                 }
-                con.close();
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
         }
         return count;
     }
@@ -46,11 +64,10 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement("SELECT * FROM\n"
                         + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
                         + "* FROM Post WHERE uploader_username = ? AND is_active = 1) as x\n"
@@ -71,8 +88,10 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -83,7 +102,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
@@ -114,8 +134,10 @@ public class PostDAO {
                     post = new Post(postID, uploader, postTitle, postDescription, attachmentURL, uploadDate, viewCount, isActive);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -126,7 +148,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return post;
@@ -143,8 +166,10 @@ public class PostDAO {
                 ps.setInt(1, post.getPostId());
                 success = ps.executeUpdate() >= 1;
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -152,7 +177,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return success;
@@ -176,9 +202,11 @@ public class PostDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -186,7 +214,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
@@ -206,9 +235,11 @@ public class PostDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -216,7 +247,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
@@ -226,11 +258,10 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement("SELECT * FROM Post WHERE id in \n"
                         + "(SELECT post_id FROM Post_Like WHERE username LIKE ?)");
                 ps.setString(1, user.getUsername());
@@ -247,8 +278,10 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -259,7 +292,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
@@ -270,7 +304,7 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         String sql
                 = "select top 10 p.*, count(pl.username) as NumOfLike\n"
                 + "from  Post_Category_Map pc, Post p Left join Post_Like pl on p.id=pl.post_id  \n"
@@ -282,7 +316,6 @@ public class PostDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, categoryID);
                 rs = ps.executeQuery();
@@ -301,8 +334,10 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -313,7 +348,8 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
@@ -324,7 +360,7 @@ public class PostDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = null;
+        ArrayList<Post> lst = new ArrayList<>();
         String sql
                 = "select p.*\n"
                 + "from Post p\n"
@@ -334,9 +370,8 @@ public class PostDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                lst = new ArrayList<>();
                 ps = con.prepareStatement(sql);
-                search="%"+search+"%";
+                search = "%" + search + "%";
                 ps.setString(1, search);
                 ps.setString(2, search);
                 rs = ps.executeQuery();
@@ -355,8 +390,10 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -367,9 +404,17 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return lst;
+    }
+
+    public static void main(String[] args) {
+        User user = new User();
+        user.setUsername("chicuong223");
+        PostDAO dao = new PostDAO();
+        System.out.println(dao.getLatestPostIdByUser(user));
     }
 }

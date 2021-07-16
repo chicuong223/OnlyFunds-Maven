@@ -26,6 +26,7 @@
                 border: none;
             }
         </style>
+        <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
     <body>
         <h1>Create a new post</h1>
@@ -34,14 +35,14 @@
                 <form action="WritePostServlet" method="POST" enctype="multipart/form-data" id="postForm">
                     <div class="form-group">
                         <label for="title" class="label-form fw-bold">Title</label><span class="text-danger">*</span><span class="error text-danger ms-3" id="titleError">${titleError}</span>
-                        <input type="text" name="title" id="title"  placeholder="Max 30 characters" class="form-control"/><span class="error text-danger" id="titleError">${titleError}</span>
+                    <input type="text" name="title" id="title"  placeholder="Max 30 characters" class="form-control"/><span class="error text-danger" id="titleError">${titleError}</span>
                 </div>
                 <div class="form-group">
                     <label for="desc" class="label-form fw-bold">Description</label><span class="text-danger">*</span><span class="error text-danger ms-3" id="descError">${descError}</span>
                     <textarea name="desc" id="desc"  rows="10" cols="100" placeholder="Max 1000 characters" class="form-control"></textarea><span class="error text-danger" id="descError">${descError}</span>
                 </div>
                 <div class="form-group">
-                    <label for="file" class="label-form fw-bold">Attachment</label>
+                    <label for="file" class="label-form fw-bold">Attachment</label> <span class="text-danger" id="fileError"></span>
                     <input type="file" id="file" name="attachment" class="form-control"/>
                 </div>
                 <div class="form-group">
@@ -76,5 +77,15 @@
             </div>
         </div>
         <script defer src="scripts/post_form_script.js"></script>
+        <script>
+            $('#postForm').submit(function (event) {
+                var fileInput = document.getElementById('file');
+                var fileSize = (fileInput.files[0].size / 1024 / 1024).toFixed(2);
+                if (fileSize > 100) {
+                    event.preventDefault();
+                    document.getElementById('fileError').textContent = 'Maximum file size: 100 mb';
+                }
+            });
+        </script>
     </body>
 </html>

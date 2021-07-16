@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/OnlyFunds">
-    <Resource
-       url="jdbc:sqlserver://only-funds-asia.database.windows.net;databaseName=SWP391_OnlyFunds_Copy" 
-       driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
-       password="OnlyFunds123"
-       username="admin123" 
-       type="javax.sql.DataSource"
-       auth="Container"
-       name="DBConnection"
-    >
+  <Resource auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" name="DBConnection" password="123" type="javax.sql.DataSource" url="jdbc:sqlserver://localhost:1433;databaseName=SWP391_OnlyFunds" username="sa">
     </Resource>
 </Context>
