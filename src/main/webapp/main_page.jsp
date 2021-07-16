@@ -47,7 +47,7 @@
                         <div class="justify-content-center col-4">
                             <div class="card shadow" style="width: 15rem">
                                 <!-- Creator avatar -->
-                                <img src="${pageContext.request.contextPath}/images/avatars/${creator.avatarURL}" alt="${creator.username}"/>
+                                <img src="images/avatars/${creator.avatarURL}" alt="${creator.username}"/>
                                 <div class="card-body">
                                     <!-- Creator username -->
                                     <div class="card-title fw-bold mb-4">${creator.username}</div>
@@ -74,7 +74,7 @@
                         <div class="justify-content-center col-4">
                             <div class="card shadow" style="width: 15rem">
                                 <!-- Creator avatar -->
-                                <img src="${pageContext.request.contextPath}/images/avatars/${creator.avatarURL}" alt="${creator.username}"/>
+                                <img src="images/avatars/${creator.avatarURL}" alt="${creator.username}"/>
                                 <div class="card-body">
                                     <!-- Creator username -->
                                     <div class="card-title fw-bold mb-4">${creator.username}</div>
@@ -94,57 +94,19 @@
                     <div class="col-12 mb-3 h3" style="text-decoration: underline;">Creators you might be
                         interested to
                     </div>
-                    <div class="col-4 d-flex justify-content-center">
-                        <div class="card shadow" style="width: 15rem;">
-                            <!-- Creator's logo -->
-                            <img src="images/Cat.jpg" class="card-img-top" alt="logo" width="100px">
-                            <div class="card-body">
-                                <!-- Creator's name -->
-                                <div class="card-title fw-bold mb-4">Mike Johnson</div>
-                                <!-- Upload date & Basic calculation if possible -->
-                                <div class="card-body m-0 p-0">
-                                    <span class="new-post m-0 p-0" style="color: red;">2 new posts</span>
-                                    <span class="date float-end" style="color: #B5AFAF">Yesterday</span>
-                                    <!-- Link to creator's page -->
-                                    <a href="#Creator's info" class="stretched-link"></a>
+                    <c:forEach var="creator" items="${cateCreators}">
+                        <div class="col-4 d-flex justify-content-center">
+                            <div class="card shadow" style="width: 15rem;">
+                                <!-- Creator's logo -->
+                                <img src="images/avatars/${creator.avatarURL}" class="card-img-top" alt="logo" width="100px">
+                                <div class="card-body">
+                                    <!-- Creator's name -->
+                                    <div class="card-title fw-bold mb-4">${creator.username}</div>
+                                    <a href="CreatorInfoServlet?username=${creator.username}" class="stretched-link"></a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4 d-flex justify-content-center">
-                        <div class="card shadow" style="width: 15rem;">
-                            <!-- Creator's logo -->
-                            <img src="images/Cat.jpg" class="card-img-top" alt="logo" width="100px">
-                            <div class="card-body">
-                                <!-- Creator's name -->
-                                <div class="card-title fw-bold mb-4">Mike Johnson</div>
-                                <!-- Upload date & Basic calculation if possible -->
-                                <div class="card-body m-0 p-0">
-                                    <span class="new-post m-0 p-0" style="color: red;">2 new posts</span>
-                                    <span class="date float-end" style="color: #B5AFAF">Yesterday</span>
-                                    <!-- Link to creator's page -->
-                                    <a href="#Creator's info" class="stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 d-flex justify-content-center">
-                        <div class="card shadow" style="width: 15rem;">
-                            <!-- Creator's logo -->
-                            <img src="images/Cat.jpg" class="card-img-top" alt="logo" width="100px">
-                            <div class="card-body">
-                                <!-- Creator's name -->
-                                <div class="card-title fw-bold mb-4">Mike Johnson</div>
-                                <!-- Upload date & Basic calculation if possible -->
-                                <div class="card-body m-0 p-0">
-                                    <span class="new-post m-0 p-0" style="color: red;">2 new posts</span>
-                                    <span class="date float-end" style="color: #B5AFAF">Yesterday</span>
-                                    <!-- Link to creator's page -->
-                                    <a href="#Creator's info" class="stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </main>

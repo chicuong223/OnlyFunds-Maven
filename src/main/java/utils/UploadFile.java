@@ -25,7 +25,9 @@ public class UploadFile {
         String fileName = "";
         try {
 //            Part filePart = request.getPart("avatar");
-            fileName = user.getUsername() + "." + filePart.getContentType().split("/")[1];
+            String file = getFileName(filePart);
+            String fileExtension = file.substring(file.indexOf("."));
+            fileName = user.getUsername() + fileExtension;
             String applicationPath = request.getServletContext().getRealPath("");
             String basePath = applicationPath + File.separator + "images" + File.separator + "avatars" + File.separator;
             InputStream inputStream = null;
@@ -118,9 +120,9 @@ public class UploadFile {
         return fileName;
     }
 
-    public void deleteFile(HttpServletRequest request, String filename) {
+    public void deleteFile(HttpServletRequest request, String filename, String folder) {
         try {
-            String filepath = request.getServletContext().getRealPath("") + File.separator + "post_file" + File.separator + filename;
+            String filepath = request.getServletContext().getRealPath("") + File.separator + folder + File.separator + filename;
             File file = new File(filepath);
             if (!file.exists()) {
                 throw new Exception("File not found");

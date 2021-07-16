@@ -116,7 +116,7 @@
                             <div class="border-bottom border-2 text-break p-3">
                                 <p>${requestScope.post.description}</p>
                                 <c:if test="${!requestScope.post.attachmentURL.isEmpty()}">
-                                    <a href="${pageContext.request.contextPath}/post_file/${requestScope.post.attachmentURL}" class="link-primary"><i class="fa fa-paperclip"></i>${requestScope.post.attachmentURL}</a> <br>
+                                    <a href="post_file/${requestScope.post.attachmentURL}" class="link-primary"><i class="fa fa-paperclip"></i>${requestScope.post.attachmentURL}</a> <br>
                                     </c:if>
                                     <%--
                                 <i class="fa fa-heart-o" aria-hidden="true">${requestScope.postLikeCount}</i>
@@ -177,7 +177,7 @@
                                     <form action="WriteCommentServlet" method="POST">
                                         <div class="row">
                                             <div class="col-2">
-                                                <img src="${pageContext.request.contextPath}/images/avatars/${sessionScope.user.avatarURL}" alt="avatar" class="img-thumbnail" width="100px"/>
+                                                <img src="images/avatars/${sessionScope.user.avatarURL}" alt="avatar" class="img-thumbnail" width="100px"/>
                                             </div>
                                             <div class="col">
                                                 <input type="text" name="content"  placeholder="Write your thought here" class="w-75 p-3 rounded border-1"/>
@@ -189,7 +189,7 @@
                                 </c:if>
                                 <c:forEach items="${cmtList}" var="cmt">
                                     <div class="row">
-                                        <div class="col-2"><img src="${pageContext.request.contextPath}/images/avatars/${cmt.user.avatarURL}" alt="avatar" class="img-thumbnail"/></div>
+                                        <div class="col-2"><img src="images/avatars/${cmt.user.avatarURL}" alt="avatar" class="img-thumbnail"/></div>
                                         <div class="col">
                                             <p class="fw-bold">${cmt.user.username}</p>
                                             <p>${cmt.content}</p>

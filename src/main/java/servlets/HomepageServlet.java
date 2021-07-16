@@ -34,8 +34,11 @@ public class HomepageServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         List<User> subList = userDAO.getCreatorThatUserSubscribedTo(user).stream().limit(3).collect(Collectors.toList());
         List<User> followList = userDAO.getCreatorThatUserFollows(user).stream().limit(3).collect(Collectors.toList());
+        List<User> userCatList = userDAO.getCreatorsSameCategoryAsUser(user).stream().limit(3).collect(Collectors.toList());
 //        System.out.println(followList);
 //        System.out.println(followList);
+//        System.out.println(userCatList);
+        request.setAttribute("cateCreators", userCatList);
         request.setAttribute("subCreators", subList);
         request.setAttribute("followCreators", followList);
         request.getRequestDispatcher("main_page.jsp").forward(request, response);

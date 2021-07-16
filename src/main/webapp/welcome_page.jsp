@@ -49,7 +49,7 @@
                                 <div class="container carousel-item ${active}" data-bs-interval="10000">
                                     <div class="mx-auto w-50">
                                         <div class="card mx-auto">
-                                            <img src="${pageContext.request.contextPath}/images/avatars/${user.avatarURL}" class="card-img-top" alt="...">
+                                            <img src="images/avatars/${user.avatarURL}" class="card-img-top" alt="...">
                                             <div class="card-body">
                                                 <h5 class="card-title">${user.firstName} ${user.lastName}</h5>
                                                 <p class="card-text">

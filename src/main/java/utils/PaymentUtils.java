@@ -35,8 +35,8 @@ public class PaymentUtils {
 
     public Payment definePayment(Tier tier, User subscriber) {
         PayerInfo payerInfo = new PayerInfo();
-        payerInfo.setFirstName(subscriber.getFirstName());
-        payerInfo.setLastName(subscriber.getLastName());
+//        payerInfo.setFirstName(subscriber.getFirstName());
+//        payerInfo.setLastName(subscriber.getLastName());
         payerInfo.setEmail(subscriber.getEmail());
 
         Payer payer = new Payer();

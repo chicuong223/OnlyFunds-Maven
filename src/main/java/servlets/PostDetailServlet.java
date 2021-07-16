@@ -57,7 +57,6 @@ public class PostDetailServlet extends HttpServlet {
 //            session.setAttribute("notiList", notiList);
             notiDAO.setIsRead(notification);
         }
-
         //get post info
         //if not found -> redirect to error page
         int postID = Integer.parseInt(request.getParameter("id"));
@@ -68,60 +67,48 @@ public class PostDetailServlet extends HttpServlet {
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-
         CommentDAO cDAO = new CommentDAO();
         PostLikeDAO postLikeDAO = new PostLikeDAO();
         TierDAO tierDAO = new TierDAO();
-
         //get tiers of the post
         ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-
         // check if post includes any tier
         User currentUser = (User) session.getAttribute("user");
-
         if (postTiers.size() > 0) {
             boolean cmp = false;
-            if (currentUser == null) { //check user/visitor
+            if (currentUser == null) //check user/visitor
                 cmp = false;
-            }
             //check if user is the uploader
-            else if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
+            else if (currentUser.getUsername().equals(post.getUploader().getUsername()))
                 cmp = true;
-            }
             else { //check if user has alr subscribed
                 ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
                 for (Tier userTier : userTiers) {
-                    for (Tier postTier : postTiers) {
+                    for (Tier postTier : postTiers)
                         if (userTier.getTierId() == postTier.getTierId()) {
                             cmp = true;
                             break;
                         }
-                        else {
-                            if (currentUser.getUsername().equals(post.getUploader().getUsername())) {
+                        else
+                            if (currentUser.getUsername().equals(post.getUploader().getUsername()))
                                 cmp = true;
-                            }
-                        }
-                    }
-                    if (cmp == false) {
+                    if (cmp == false)
                         request.setAttribute("tiererror", "You are not allowed to view this post");
-                    }
                 }
-
                 if (currentUser != null) {
                     boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
                     request.setAttribute("isPostLiked", isPostLiked);
                     System.err.println(isPostLiked);
                 }
 
-                ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
-
-                //count likes of the post
-                int postLikeCount = postLikeDAO.countPostLikeByPost(post);
-                request.setAttribute("postLikeCount", postLikeCount);
-                request.setAttribute("cmtList", cmtList);
-                request.setAttribute("post", post);
-                request.getRequestDispatcher("post.jsp").forward(request, response);
             }
         }
+        ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
+        //count likes of the post
+        int postLikeCount = postLikeDAO.countPostLikeByPost(post);
+        request.setAttribute("postLikeCount", postLikeCount);
+        request.setAttribute("cmtList", cmtList);
+        request.setAttribute("post", post);
+        request.getRequestDispatcher("post.jsp").forward(request, response);
     }
 }
