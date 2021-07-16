@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import post_management.post.Post;
 import post_management.post.PostDAO;
 import user_management.user.User;
@@ -190,7 +192,25 @@ public class CommentDAO {
         }
         return count;
     }
-    
+     
+     public boolean editComment(int commentID, String content){
+         boolean result = false;
+         String sql = "UPDATE Comment SET content = ? WHERE id = ?";
+         try(Connection con = DBConnect.makeConnection()){
+             if(con != null){
+                 try(PreparedStatement ps = con.prepareStatement(sql)){
+                     ps.setString(1, content);
+                     ps.setInt(2, commentID);
+                     result = ps.executeUpdate() > 0;
+                 }
+             }
+         }
+         catch(Exception ex){
+             System.out.println(ex.getMessage());
+         }
+         return result;
+     }
+        
     public static void main(String[] args) {
         CommentDAO dao = new CommentDAO();
 //        dao.getCommentsByPost(3).forEach(com -> {
