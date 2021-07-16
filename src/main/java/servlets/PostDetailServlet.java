@@ -89,19 +89,17 @@ public class PostDetailServlet extends HttpServlet {
                             cmp = true;
                             break;
                         }
-                        else
-                            if (currentUser.getUsername().equals(post.getUploader().getUsername()))
-                                cmp = true;
+                        else if (currentUser.getUsername().equals(post.getUploader().getUsername()))
+                            cmp = true;
                     if (cmp == false)
                         request.setAttribute("tiererror", "You are not allowed to view this post");
                 }
-                if (currentUser != null) {
-                    boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
-                    request.setAttribute("isPostLiked", isPostLiked);
-                    System.err.println(isPostLiked);
-                }
-
             }
+        }
+        if (currentUser != null) {
+            boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
+            request.setAttribute("isPostLiked", isPostLiked);
+            System.err.println(isPostLiked);
         }
         ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
         //count likes of the post
