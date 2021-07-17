@@ -20,7 +20,6 @@
             $(document).ready(function () {
                 var start = 1;
                 var end = 3;
-                var reachedMax = false;
                 getPostData();
                 $(window).scroll(function () {
                     if ($(window).scrollTop() === $(document).height() - $(window).height()) {
@@ -29,18 +28,11 @@
                 });
 
                 function getPostData() {
-                    $.ajax({
-                        url: 'WelcomePageServlet',
-                        method: 'GET',
-                        dataType: 'text',
-                        cache: false,
-                        data: {start: start, end: end, action:"load"},
-                        success: function (response) {
-                            start += 3;
-                            end += 3;
-                            $("#posts").append(response);
-                        }
-                    });
+                    $.get('WelcomePageServlet', {start: start, end: end, action: 'load'}, function(response){
+                        start += 3;
+                        end += 3;
+                        $('#posts').append(response);
+                    }, 'text');
                 }
             });
         </script>

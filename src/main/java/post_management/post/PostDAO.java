@@ -422,7 +422,7 @@ public class PostDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 String sql = "SELECT * FROM (\n"
-                        + "SELECT ROW_number() OVER (ORDER BY id DESC) as r, id, title, uploader_username description FROM Post \n"
+                        + "SELECT ROW_number() OVER (ORDER BY id DESC) as r, id, title, uploader_username, description FROM Post \n"
                         + "WHERE id not in(\n"
                         + "	SELECT post_id from Tier_Map\n"
                         + ")AND is_active = 1 OR id in (\n"

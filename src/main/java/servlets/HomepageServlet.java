@@ -63,7 +63,7 @@ public class HomepageServlet extends HttpServlet {
                     + "<div class=\"card-header\">\n"
                     + "<p class=\"card-title\">" + post.getTitle() + "</p>\n"
                     + "</div>\n"
-                    + "<div class=\"card-body\">\n"
+                    + "<div class=\"card-body overflow-hidden\" style=\"height: 150px\">\n"
                     + post.getDescription() + "\n"
                     + "</div>\n"
                     + "<div class=\"card-footer\">\n"

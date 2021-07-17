@@ -10,6 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${creator.username}</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
     <body>
         <c:set var="currUser" value="${sessionScope.user}"></c:set>
@@ -45,9 +47,17 @@
         </main>
         <footer>
             <div class="paging card-footer text-center fs-5">
-                <c:forEach begin="1" end="${end}" var="i">
-                    <a href="CreatorInfoServlet?username=${creator.username}&page=${i}" class="pageIndex">${i}</a>
-                </c:forEach>
+                <ul class="pagination justify-content-center">
+                    <c:forEach begin="1" end="${end}" var="i">
+                        <c:if test="${i == param.page}">
+                            <c:set var="active" value="active"></c:set>
+                        </c:if>
+                        <c:if test="${i != param.page}">
+                            <c:set var="active" value=""></c:set>
+                        </c:if>
+                        <li class='page-item ${active}'><a href="CreatorInfoServlet?username=${creator.username}&page=${i}" class="page-link">${i}</a></li>
+                        </c:forEach>
+                </ul>
             </div>
         </footer>
     </body>

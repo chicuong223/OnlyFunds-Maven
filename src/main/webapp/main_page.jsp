@@ -15,27 +15,18 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var start = 1;
-                var end = 7;
-                var reachedMax = false;
-                getPostData();
+                getPostData(start, start + 5);
+                start += 6;
                 $(window).scroll(function () {
                     if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-                        getPostData();
+                        getPostData(start, start + 2);
+                        start += 3;
                     }
                 });
-                function getPostData() {
-                    $.ajax({
-                        url: 'homepage',
-                        method: 'POST',
-                        dataType: 'text',
-                        cache: false,
-                        data: {start: start, end: end},
-                        success: function (response) {
-                            start += 7;
-                            end += 7;
-                            $("#postList").append(response);
-                        }
-                    });
+                function getPostData(startNo, endNo) {
+                    $.post('homepage', {start: startNo, end: endNo}, function (response) {
+                        $("#postList").append(response);
+                    }, 'text');
                 }
             });
         </script>
