@@ -25,7 +25,9 @@ public class Report {
     private String status;
     private Date solveDate;
 
-    public Report(int id, User reportUser, String reportedObjectId, String type, Staff solveStaff, String title, String description, Date reportDate, String status, Date solveDate) {
+    public Report(int id, User reportUser, String reportedObjectId, String type,
+            Staff solveStaff, String title, String description, Date reportDate,
+            String status, Date solveDate) {
         this.id=id;
         this.reportUser = reportUser;
         this.reportedObjectId = reportedObjectId;
