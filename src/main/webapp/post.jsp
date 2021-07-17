@@ -4,6 +4,7 @@
     Author     : chiuy
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:import url="navbar.jsp"/>
@@ -206,7 +207,7 @@
                 <main>
                     <div class="w-75 mx-auto">
                         <!-- Post Details -->
-                        <p>${requestScope.post.uploadDate}</p>
+                        <p class="fw-bold" style="font-size: 120%">Upload date: <fmt:formatDate value="${requestScope.post.uploadDate}" pattern="dd-MMM-yyyy"/></p>
                         <div class="border border-2 rounded" id="postDetails">
                             <div class="border-bottom border-2 text-break p-3">
                                 <p>${requestScope.post.description}</p>

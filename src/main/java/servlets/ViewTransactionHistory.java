@@ -7,6 +7,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -69,17 +70,19 @@ public class ViewTransactionHistory extends HttpServlet {
             return;
         }
         String color = "";
+        SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
         for (Bill bill : billList){
             if(bill.getSender().getUsername().equals(user.getUsername()))
                 color = "table-danger";
             else
                 color = "table-success";
+            String date = format.format(bill.getTransactionDate());
             response.getWriter().write("<tr class=\"" + color + "\">\n"
                     + "<td>" + bill.getContent() + "</td>\n"
                     + "<td>" + bill.getSender().getUsername() + "</td>\n"
                     + "<td>" + bill.getRecipient().getUsername() + "</td>\n"
                     + "<td>" + bill.getPrice() + "</td>\n"
-                    + "<td>" + bill.getTransactionDate() + "</td>\n"
+                    + "<td>" + date + "</td>\n"
                     + "</tr>");
         }
     }

@@ -43,8 +43,8 @@
                     }
                     $(window).scroll(() => {
                         if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-                            getTransactions(start, start + 1);
-                            start += 2;
+                            getTransactions(start, start);
+                            start += 1;
                         }
                     });
                     function getTransactions(startNo, endNo) {
