@@ -6,13 +6,8 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import subscription_management.transaction.Bill;
 import subscription_management.transaction.BillDAO;
 import user_management.user.User;
-import user_management.user.UserDAO;
 
 /**
  *
@@ -64,6 +58,10 @@ public class ViewTransactionHistory extends HttpServlet {
             billList = billDAO.getReceiveTransactions(user, start, end);
         else if (filter.equalsIgnoreCase("Sent"))
             billList = billDAO.getSendTransactions(user, start, end);
+        else if (filter.equalsIgnoreCase("search")){
+            String creator = request.getParameter("creator");
+            billList = billDAO.searchBillByCreatorAndSubscriber(creator, user, start, end);
+        }
         else {
             request.setAttribute("actionerror", "Invalid parameter");
             request.getRequestDispatcher("error.jsp").forward(request, response);

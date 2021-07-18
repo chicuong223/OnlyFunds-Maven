@@ -29,35 +29,46 @@
                         getTransactions(start, start + 7);
                         start += 8;
                     }
-
                     //add events to all filter buttons
                     $('.filter').each(function () {
                         $(this).click(() => {
                             changeFilter($(this).text());
                         });
                     });
-
                     if ($(document).height() === $(window).height()) {
-                        getTransactions(start, start + 7);
+                        getTransactions(start, start + 7, "");
                         start += 8;
                     }
                     $(window).scroll(() => {
                         if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-                            getTransactions(start, start);
+                            getTransactions(start, start, "");
                             start += 1;
                         }
                     });
-                    function getTransactions(startNo, endNo) {
-                        $.post('ViewTransactionHistory', {filter: filter, start: startNo, end: endNo}, function (response) {
+                    function getTransactions(startNo, endNo, creator) {
+                        $.post('ViewTransactionHistory', {filter: filter, start: startNo, end: endNo, creator: creator}, function (response) {
                             $('#billList').append(response);
                         }, 'text');
                     }
+
+                    $('#btnSearchTrans').click(() => {
+                        var creatorName = document.getElementById("creatorName").value;
+                        filter = "search";
+                        $('#billList').empty();
+                        start = 1;
+                        getTransactions(start, start+7, creatorName);
+                        start += 8;
+                    });
                 });
             </script>
             <header>
                 <h1>Transactions History</h1>
             </header>
             <main>
+                <div class="input-group">
+                    <input type="input" name="searchText" id="creatorName"/>
+                    <button class="btn btn-secondary fas fa-search" id="btnSearchTrans"></button>
+                </div>
             <c:set var="user" value="${sessionScope.user}"></c:set>
             <button class="btn btn-primary filter">All</button>
             <button class="btn btn-danger filter">Sent</button>
@@ -73,16 +84,16 @@
                     </tr>
                 </thead>
                 <tbody class="table-success" id="billList">
-
+                    <!-- the list of transactions is here -->
                 </tbody>
             </table>
         </main>
-            <footer>
-                <nav>
-                    <ul class="pagination" id="pages">
-                        
-                    </ul>
-                </nav>
-            </footer>
+        <footer>
+            <nav>
+                <ul class="pagination" id="pages">
+
+                </ul>
+            </nav>
+        </footer>
     </body>
 </html>
