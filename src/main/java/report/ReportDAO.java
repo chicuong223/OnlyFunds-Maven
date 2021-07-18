@@ -178,6 +178,57 @@ public class ReportDAO {
         }
         return reportList;
     }
+    //no check
+    public ArrayList<Report> getReportsByStatusAndType(String status, String type) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Report> reportList = new ArrayList<Report>();
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("SELECT * FROM Report where status=? and type=?");
+                ps.setString(1, status);
+                ps.setString(2, type);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    UserDAO uDAO = new UserDAO();
+                    User reportUser = uDAO.getUserByUsername(rs.getString("report_username"));
+                    String reportedObjectId = rs.getString("reported_id");
+                    String staffUsername = rs.getString("solved_by_staff");
+                    Staff solveStaff = null;
+                    if (staffUsername != null && staffUsername.isEmpty()) {
+                        StaffDAO sDAO = new StaffDAO();
+                        solveStaff = sDAO.getStaffByUsername(staffUsername);
+                    }
+                    String title = rs.getString("title");
+                    String description = rs.getString("description");
+                    Date reportDate = rs.getDate("report_date");
+                    Date solveDate = rs.getDate("solve_date");
+                    Report report = new Report(id, reportUser, reportedObjectId, type,
+                            solveStaff, title, description, reportDate,
+                            status, solveDate);
+                    reportList.add(report);
+                }
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return reportList;
+    }
 
     //no check
     public boolean addPost(Report report) {

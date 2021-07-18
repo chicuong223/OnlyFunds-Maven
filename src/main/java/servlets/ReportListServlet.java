@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import report.Report;
+import report.ReportDAO;
 
 /**
  *
@@ -24,6 +25,8 @@ public class ReportListServlet extends HttpServlet {
 
     final int numReportInPage = 5;
     final String reportListPage = "";
+    String currentType="all";
+    String currentStatus="all";//approved, declined, pending
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,7 +35,24 @@ public class ReportListServlet extends HttpServlet {
         if (request.getParameter("pageNum") != null) {
             pageNum = Integer.parseInt(request.getParameter("pageNum"));
         }
-        ArrayList<Report> reportList = new ArrayList<>();//change
+        if (request.getParameter("currentStatus") != null) {
+            currentStatus = request.getParameter("currentStatus");
+        }
+        if (request.getParameter("currentType") != null) {
+            currentType = request.getParameter("currentType");
+        }
+        request.setAttribute("currentStatus", currentStatus);
+        request.setAttribute("currentType", currentType);
+        
+        ArrayList<Report> reportList=new ArrayList<Report>();
+        ReportDAO rDAO=new ReportDAO();
+        if(currentType.equalsIgnoreCase("all")&&currentStatus.equalsIgnoreCase("all"))
+            reportList =rDAO.getReports();
+        else if(currentType.equalsIgnoreCase("all"))
+            reportList=rDAO.getReportsByStatus(currentStatus);
+        else if(currentStatus.equalsIgnoreCase("all"))
+            reportList=rDAO.getReportsByType(currentType);
+        else reportList=rDAO.getReportsByStatusAndType(currentStatus, currentType);
         
         int numPage = reportList.size() / numReportInPage 
                 + (reportList.size() % numReportInPage == 0 ? 0 : 1);
