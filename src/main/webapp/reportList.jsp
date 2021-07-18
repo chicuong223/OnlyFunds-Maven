@@ -13,6 +13,7 @@
         <title>Report List</title>
     </head>
     <body>
+        <h1>Report List</h1>
         <c:forEach var="report" items="${reportList}">
             <div class="report type-${report.type} solved-${status}">
                 <div>ID: ${report.id}</div>

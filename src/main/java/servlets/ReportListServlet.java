@@ -24,13 +24,13 @@ import report.ReportDAO;
 public class ReportListServlet extends HttpServlet {
 
     final int numReportInPage = 5;
-    final String reportListPage = "";
+    final String reportListPage = "reportList.jsp";
     String currentType="all";
     String currentStatus="all";//approved, declined, pending
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.err.println("ReportListServlet");
         int pageNum = 1;
         if (request.getParameter("pageNum") != null) {
             pageNum = Integer.parseInt(request.getParameter("pageNum"));
@@ -60,7 +60,8 @@ public class ReportListServlet extends HttpServlet {
         
         int startIndex = (pageNum - 1) * numReportInPage;
         int endIndex = pageNum * numReportInPage - 1;
-        ArrayList<Report> subArray = (ArrayList<Report>) reportList.subList(startIndex, endIndex);
+        endIndex=(endIndex>reportList.size()?reportList.size():endIndex);
+        ArrayList<Report> subArray = new ArrayList<Report>(reportList.subList(startIndex, endIndex));
         request.setAttribute("reportList", subArray);
        
         request.getRequestDispatcher(reportListPage).forward(request, response);

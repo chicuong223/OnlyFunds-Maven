@@ -101,6 +101,8 @@ public class StaffDAO {
             Connection con = DBConnect.makeConnection();
             if(con != null){
                 PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=? And password=?");
+                ps.setString(1, username);
+                ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     String lastName = rs.getString("lastname");

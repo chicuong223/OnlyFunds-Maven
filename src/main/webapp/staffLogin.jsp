@@ -69,9 +69,7 @@
                     </div>
 
                     <div class="w-100">
-                        <button type="submit" name="login" class="btn btn-success w-100" id="loginBtn" <c:if
-                                test="${x != null}">disabled</c:if>
-                            >Login</button>
+                        <button type="submit" name="login" class="btn btn-success w-100" id="loginBtn" <c:if test="${x != null}">disabled</c:if>>Login</button>
                 </div>
             </form>
         </div>

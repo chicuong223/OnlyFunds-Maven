@@ -36,6 +36,7 @@ public class StaffLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.err.println("here staff");
         StaffDAO sDAO = new StaffDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
