@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "StaffLoginServlet", urlPatterns = {"/staff/login"})
+@WebServlet(name = "StaffLoginServlet", urlPatterns = {"/staff"})
 public class StaffLoginServlet extends HttpServlet {
 
-    final String staffLoginPage = "";
+    final String staffLoginPage = "staffLogin.jsp";
     final String reportListPage = "ReportListServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -40,10 +40,12 @@ public class StaffLoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (username == null || password == null) {
+            request.setAttribute("LOGINERROR", "Enter username and password");
             request.getRequestDispatcher(staffLoginPage).forward(request, response);
         } else {
             Staff currentStaff = sDAO.CheckLogin(username, password);
             if (currentStaff == null) {
+                request.setAttribute("LOGINERROR", "Username or password is incorrect");
                 request.getRequestDispatcher(staffLoginPage).forward(request, response);
             } else {
                 HttpSession session = request.getSession();
