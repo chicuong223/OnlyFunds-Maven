@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import map.UserCategoryMap;
 import map.UserCategoryMapDAO;
+import subscription_management.tier.Tier;
+import subscription_management.tier.TierDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
 
@@ -104,14 +106,14 @@ public class ManageCreatorPageServlet extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher(manageCreatorInfoPage);
         LinkedHashMap<Category, Boolean> ucList = new LinkedHashMap<>();
         
-        System.out.println(catList);
+//        System.out.println(catList);
 //        catList.removeAll(userCatList);
 //        System.out.println(catList);
        
         catList.forEach(cat -> {
             ucList.put(cat, false);
         });
-        System.out.println(ucList);
+//        System.out.println(ucList);
         userCatList.forEach(ucat -> {
             catList.forEach(cat -> {
                 if (ucat.getCategoryId() == cat.getCategoryId()) {
@@ -119,7 +121,9 @@ public class ManageCreatorPageServlet extends HttpServlet {
                 }
             });
         });
-        
+        TierDAO tierDAO = new TierDAO();
+        ArrayList<Tier> tiers = tierDAO.getTiersByUser(user);
+        session.setAttribute("tierList", tiers);
         session.setAttribute("ucList", ucList);
         rd.forward(request, response);
     }

@@ -207,7 +207,7 @@ public class TierDAO {
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
-                try (PreparedStatement ps = con.prepareStatement("SELECT id FROM Tier WHERE username = ? AND title = ?")) {
+                try (PreparedStatement ps = con.prepareStatement("SELECT id FROM Tier WHERE username = ? AND title = ? AND is_active = 1")) {
                     ps.setString(1, user.getUsername());
                     ps.setString((2), title);
                     try (ResultSet rs = ps.executeQuery()) {
