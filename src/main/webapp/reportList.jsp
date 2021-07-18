@@ -14,6 +14,15 @@
     </head>
     <body>
         <h1>Report List</h1>
+        <h3>Type</h3>
+        <a href="ReportListServlet?type=all">All</a>
+        <a href="ReportListServlet?type=post">Post</a>
+        <a href="ReportListServlet?type=commnet">Comment</a>
+        <a href="ReportListServlet?type=user">User</a>
+        <h3>Status</h3>
+        <a href="ReportListServlet?status=pending">Pending</a>
+        <a href="ReportListServlet?status=approved">Pending</a>
+        <a href="ReportListServlet?status=declined">Pending</a>
         <c:forEach var="report" items="${reportList}">
             <div class="report type-${report.type} solved-${status}">
                 <div>ID: ${report.id}</div>
