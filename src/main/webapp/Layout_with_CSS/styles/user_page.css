@@ -2,12 +2,15 @@
     max-height: 25rem;
     width: 70%;
 }
+
 .bio {
-    max-height: 10rem;;
+    max-height: 10rem;
+    ;
     font-size: 16px;
     line-height: 20px;
     overflow: hidden;
 }
+
 .cat {
     font-size: 14px;
     line-height: 16px;
@@ -17,6 +20,7 @@
     border-radius: 10px;
     margin-bottom: .4rem;
 }
+
 #row-subheader span h4 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
@@ -27,5 +31,88 @@
 }
 
 .tier {
-    max-width: 15rem;
+    width: 17rem;
+    height: 19rem;
+    box-shadow: 0 .125rem .25rem rgb(133, 133, 133);
+    border-radius: 15px;
+    transition: .5s all ease;
+}
+
+.tier:hover, #post:hover {
+    transform: scale(1.05);
+    box-shadow: 0 .5rem 1rem rgb(133, 133, 133);
+}
+
+.t-name {
+    font-weight: 500;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.tier .price {
+    font-weight: 900;
+    color: #707070;
+}
+
+.tier .card-body {
+    overflow: hidden;
+}
+
+.tier .description {
+    position: relative;
+    font-style: italic;
+    margin-bottom: 0.2rem;
+    max-height: 50%;
+    overflow: hidden;
+}
+
+.tier .description, .benefit-des {
+    font-size: 14px;
+    line-height: 18px;
+    color: #6d6d6d;
+}
+
+.tier:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+    width: 100%;
+    height: 5em;
+}
+
+#post {
+    position: relative;
+    width: 17rem;
+    height: 19rem;
+    border-radius: 15px;
+    border: 1px solid #bdbdbd;
+    transition: all .5s;
+}
+
+.card.post .card-body {
+    position: relative;
+    overflow: hidden;
+}
+
+.card.post .card-text:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 90%);
+    width: 100%;
+    height: 5em;
+}
+
+.card.post .card-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card.post.premium .card-text {
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1.5);
 }
