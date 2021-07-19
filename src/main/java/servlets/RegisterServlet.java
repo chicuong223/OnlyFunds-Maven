@@ -62,6 +62,8 @@ public class RegisterServlet extends HttpServlet {
         String avatarURL;
         avatarURL = new UploadFile().getFileName(request.getPart("avatar"));
         String url = invalidPage;
+        String defaultAvatar = "defaultAvatar.png";
+        
         boolean error = false;
         UserDAO dao = new UserDAO();
         boolean foundUser = dao.usernameCheck(username);
@@ -113,7 +115,7 @@ public class RegisterServlet extends HttpServlet {
         if (error == false) {
             //if avatar is null, replace with a default one
             if (avatarURL.equals("")) {
-                avatarURL = "defaultAvatar.png";
+                newUser.setAvatarURL(defaultAvatar);
             }
             url = verifyEmailPage;
             HttpSession session = request.getSession();
