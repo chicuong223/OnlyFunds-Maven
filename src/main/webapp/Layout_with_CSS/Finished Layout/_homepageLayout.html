@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- Logo -->
+    <link rel="icon" href="images/logo_head.png" type="image/icon type">
+    <!-- Navbar and shared css -->
+    <link type="text/css" rel="stylesheet" href="../styles/Navbar.css">
+    <link type="text/css" rel="stylesheet" href="../styles/vertical_nav.css">
+    <link rel="stylesheet" href="../styles/shared.css">
+    <!-- Main css -->
+    <link type="text/css" rel="stylesheet" href="../styles/main_page.css">
+    <!-- Icon -->
+    <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Horizontal Navigation bar -->
+    <nav class="navbar navbar-expand-xl navbar-light bg-light shadow p-0" id="horizontal-nav"
+        style="position: sticky; top: 0; background-color: white; z-index: 100;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#Home" class="nav-link d-flex align-items-center"><img src="../images/Logo.png"
+                        style="width:90px;" height="30px"></a>
+                <!--button when navbar is collapse-->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!--collapse when screen is smaller than 1200px-->
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <!--Left nav-->
+                <nav class="nav navbar-nav" id="left-nav">
+                    <span class="nav-item dropdown me-3">
+                        <a href="#Category" class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown">Category
+                        </a>
+                        <div class="container dropdown-menu">
+                            <div class="row">
+                                <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
+                                    <a href="" class="tag">Tag 1</a>
+                                </div>
+                                <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
+                                    <a href="" class="tag">Tag 1</a>
+                                </div>
+                                <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
+                                    <a href="" class="tag">Tag 1</a>
+                                </div>
+                                <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
+                                    <a href="" class="tag">Tag 1</a>
+                                </div>
+                                <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
+                                    <a href="" class="tag">Tag 1</a>
+                                </div>
+                                <div class="col-sm-4 nav-link m-0 p-0 text-center text-dark">
+                                    <a href="" class="tag">Tag 1</a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </span>
+                </nav>
+                <nav class="nav navbar-nav w-50 d-flex justify-content-end" id="middle-nav">
+                    <span class="nav-item">
+                        <form method="post" action="#search-function">
+                            <div class="input-group input-group-sm" id="search-input">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <button class="input-group-text" id="basic-addon2" type="submit"><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    </span>
+                </nav>
+                <!--Right nav-->
+                <nav class="nav navbar-nav ms-auto" id="right-nav">
+                    <!-- For visitors -->
+                    <div class="nav-item me-auto" id="btn-group">
+                        <a class="btn btn-sm rounded-pill" id="login-btn"><i
+                                class="fas fa-sign-in-alt me-1 align-middle"></i><span
+                                class="align-middle">Login</span></a>
+                        <a class="btn btn-sm rounded-pill ms-3" id="signup-btn"><i
+                                class="fas fa-user me-1 align-middle"></i>
+                            <span class="align-middle">Register</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    <main class="main-container">
+        <!-- Vertical navbar -->
+        <div class="vertical-navbar" id="vertical-navbar" onmouseover="expand()" onmouseout="contract()">
+            <div class="create-post">
+                <a href="#Create post">
+                    <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                    <span class="title">Create post</span>
+                </a>
+            </div>
+            <ul class="first-list" style="border-bottom: 2px solid black;">
+                <li class="list active">
+                    <a href="#Home">
+                        <span class="icon" style="color: #ce68a8"><i class="fas fa-home"></i></span>
+                        <span class="title"> Home</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Explore">
+                        <span class="icon"><i class="far fa-compass"></i></span>
+                        <span class="title">Explore</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><i class="far fa-address-book"></i></span>
+                        <span class="title"> My Posts</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
+                        <span class="title">Liked Posts</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="save-outline"></ion-icon></span>
+                        <span class="title"> Saved Posts</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
+                        <span class="title"> My Subscription</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                        <span class="title"> Follow</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
+                        <span class="title"> My reports</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="seccond-list">
+                <li class="list">
+                    <h3 class="ps-3 pt-3">Category</h3>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="color-palette-outline"></ion-icon></span>
+                        <span class="title"> Art</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Explore">
+                        <span class="icon"><ion-icon name="game-controller-outline"></ion-icon></span>
+                        <span class="title">Software & Game</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="newspaper-outline"></ion-icon></span>
+                        <span class="title"> Journalism</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="camera-outline"></ion-icon></span>
+                        <span class="title">Photography</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="musical-notes-outline"></ion-icon></span>
+                        <span class="title"> Music</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><ion-icon name="ellipsis-horizontal-outline"></ion-icon></span>
+                        <span class="title"> Others</span>
+                    </a>
+                </li>
+
+                <li class="list">
+                    <a href="#Home">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="title"> Art</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Main content of the page -->
+        <div class="main-content" id="main-content">
+            <div class="category-bar">
+                <a href="#All" class="chip-link active">Recent posts</a>
+                <a href="#All" class="chip-link">Most viewed</a>
+                <a href="#All" class="chip-link">Most liked</a>
+                <a href="#All" class="chip-link">Most active</a>
+            </div>
+            <div class="content container-fluid">
+                <!-- Mỗi 1 field lớn tạo 1 row tương ứng -->
+                <div id="row" class="row gx-4 p-3">
+                    <div class="title mb-4">
+                        <a href="#View all">
+                            <span>Most viewed posts</span>
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                    <!-- Mỗi post tạo 1 column tương ứng -->
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <!-- Nếu là hot post thì thêm cái này -->
+                            <div class="ribbon-wrapper">
+                                <div class="ribbon hot">
+                                    Hot
+                                </div>
+                            </div>
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px; position: relative; z-index: 100;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <div class="ribbon-wrapper">
+                                <div class="ribbon hot">
+                                    Hot
+                                </div>
+                            </div>
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <div class="ribbon-wrapper">
+                                <div class="ribbon hot">
+                                    Hot
+                                </div>
+                            </div>
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <div class="ribbon-wrapper">
+                                <div class="ribbon hot">
+                                    Hot
+                                </div>
+                            </div>
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mỗi 1 field lớn tạo 1 row tương ứng -->
+                <div id="row" class="row gx-4 p-3">
+                    <div class="title mb-4">
+                        <a href="#View all">
+                            <span>Recent posts</span>
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                    <!-- Mỗi post tạo 1 column tương ứng -->
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <div class="card" id="post">
+                            <a href="#post-detail" class="stretched-link"></a>
+                            <div class="card-header p-2 pt-1">
+                                <h4 class="card-title fw-bold">Post's title</h4>
+                                <h6 class="card-subtitle text-muted" style="font-size: 16px;">Author's name</h6>
+                            </div>
+                            <div class="card-body p-2 pt-1">
+                                <a href="#post-detail" class="stretched-link"></a>
+                                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur
+                                </p>
+                            </div>
+                            <div class="card-footer p-2 pt-1 pb-1">
+                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                <small><i class="fas fa-comment"></i> 1234</small>
+                                <small><i class="far fa-eye"></i> 1234</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+        <!-- <script defer src="../js/vertical-nav.js"></script> -->
+</body>
+
+</html>
