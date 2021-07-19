@@ -69,7 +69,7 @@ public class AddTierServlet extends HttpServlet {
         int price = Integer.parseInt(priceStr);
         Tier tier = new Tier(0, title, desc, creator, price, true);
         dao.addTier(tier);
-        response.sendRedirect("TierManagementServlet");
+        response.sendRedirect("ManageCreatorPage");
     }
 
 }

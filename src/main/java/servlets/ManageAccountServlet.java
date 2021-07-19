@@ -68,7 +68,7 @@ public class ManageAccountServlet extends HttpServlet {
             else if (action.equals("avatar")) {
                 UploadFile upload = new UploadFile();
                 String newAvatar = upload.getFileName(request.getPart("avatar"));
-                if (newAvatar == null) {
+                if (newAvatar == null || newAvatar.isEmpty()) {
                     rd.forward(request, response);
                     return;
                 }

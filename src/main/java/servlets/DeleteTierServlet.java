@@ -39,7 +39,7 @@ public class DeleteTierServlet extends HttpServlet {
             return;
         }
         tierDAO.deactivateTier(tier);
-        response.sendRedirect("TierManagementServlet");
+        response.sendRedirect("ManageCreatorPage");
     }
 
 }
