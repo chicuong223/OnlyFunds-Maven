@@ -15,23 +15,42 @@
     <body>
         <h1>Report List</h1>
         <h3>Type</h3>
-        <a href="ReportListServlet?type=all">All</a>
-        <a href="ReportListServlet?type=post">Post</a>
-        <a href="ReportListServlet?type=commnet">Comment</a>
-        <a href="ReportListServlet?type=user">User</a>
+        <a href="ReportListServlet?type=all" style="${type=="all"?"color: red":""}">All</a>
+        <a href="ReportListServlet?type=post" style="${type=="post"?"color: red":""}">Post</a>
+        <a href="ReportListServlet?type=comment" style="${type=="comment"?"color: red":""}">Comment</a>
+        <a href="ReportListServlet?type=user" style="${type=="user"?"color: red":""}">User</a>
         <h3>Status</h3>
-        <a href="ReportListServlet?status=pending">Pending</a>
-        <a href="ReportListServlet?status=approved">Pending</a>
-        <a href="ReportListServlet?status=declined">Pending</a>
+        <a href="ReportListServlet?status=all" style="${status=="all"?"color: red":""}">All</a>
+        <a href="ReportListServlet?status=pending" style="${status=="pending"?"color: red":""}">Pending</a>
+        <a href="ReportListServlet?status=approved" style="${status=="approved"?"color: red":""}">Approved</a>
+        <a href="ReportListServlet?status=declined" style="${status=="declined"?"color: red":""}">Declined</a>
+        <table>
+            <thead>
+            <th>
+                Id
+            </th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Detail</th>
+        </thead>
         <c:forEach var="report" items="${reportList}">
-            <div class="report type-${report.type} solved-${status}">
-                <div>ID: ${report.id}</div>
-                <div>Type: ${report.type}</div>
-            </div>
+            <tr class="report type-${report.type} solved-${status}">
+                <td>
+                    <div>${report.id}</div>
+                </td>
+                <td>
+                    <div>${report.type}</div>
+                </td>
+                <td>
+                    <div>${report.status}</div>
+                </td>
+                <td><a href="ReportDetailServlet?id=${report.id}">Report-${report.reportedObjectId}</a></td>
+            </tr>
         </c:forEach>
-        <%-- Navbar phan trang --%>
-        <c:forEach begin="1" end="${numPage}" var="pageNum">
-            <a href="ReportListServlet/?pageNum=${pageNum}">Page ${pageNum}</a>
-        </c:forEach>
-    </body>
+    </table>
+    <%-- Navbar phan trang --%>
+    <c:forEach begin="1" end="${numPage}" var="pageNum">
+        <a href="ReportListServlet?page=${pageNum}" style="${pageNum==page?"color: red":""}">Page ${pageNum}</a>
+    </c:forEach>
+</body>
 </html>

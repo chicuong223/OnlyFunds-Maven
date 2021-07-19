@@ -32,17 +32,18 @@ public class ReportListServlet extends HttpServlet {
             throws ServletException, IOException {
         System.err.println("ReportListServlet");
         int pageNum = 1;
-        if (request.getParameter("pageNum") != null) {
-            pageNum = Integer.parseInt(request.getParameter("pageNum"));
+        if (request.getParameter("page") != null) {
+            pageNum = Integer.parseInt(request.getParameter("page"));
         }
-        if (request.getParameter("currentStatus") != null) {
-            currentStatus = request.getParameter("currentStatus");
+        if (request.getParameter("status") != null) {
+            currentStatus = request.getParameter("status");
         }
-        if (request.getParameter("currentType") != null) {
-            currentType = request.getParameter("currentType");
+        if (request.getParameter("type") != null) {
+            currentType = request.getParameter("type");
         }
-        request.setAttribute("currentStatus", currentStatus);
-        request.setAttribute("currentType", currentType);
+        request.setAttribute("status", currentStatus);
+        request.setAttribute("type", currentType);
+        request.setAttribute("page", pageNum);
         
         ArrayList<Report> reportList=new ArrayList<Report>();
         ReportDAO rDAO=new ReportDAO();
@@ -59,7 +60,7 @@ public class ReportListServlet extends HttpServlet {
         request.setAttribute("numPage", numPage);
         
         int startIndex = (pageNum - 1) * numReportInPage;
-        int endIndex = pageNum * numReportInPage - 1;
+        int endIndex = pageNum * numReportInPage ;
         endIndex=(endIndex>reportList.size()?reportList.size():endIndex);
         ArrayList<Report> subArray = new ArrayList<Report>(reportList.subList(startIndex, endIndex));
         request.setAttribute("reportList", subArray);
