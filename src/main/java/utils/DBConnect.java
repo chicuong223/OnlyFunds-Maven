@@ -34,15 +34,19 @@ public class DBConnect {
         try {
             //1
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP391_OnlyFunds";
+            String url = "jdbc:sqlserver://only-funds-asia.database.windows.net;databaseName=SWP391_OnlyFunds_Copy";
 
             //2
-            Connection con = DriverManager.getConnection(url, "sa", "123");
+            Connection con = DriverManager.getConnection(url, "admin123", "OnlyFunds123");
             return con;
         }
         catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(makeConnection());
     }
 }
