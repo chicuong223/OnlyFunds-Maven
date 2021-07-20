@@ -7,7 +7,7 @@
   
   body {
     min-height: 100vh;
-    overflow: hidden;
+    overflow: scroll;
     font-size: 16px;
   }
   
@@ -184,6 +184,6 @@
     height: 100%;
     width: calc(100% - 14rem);
     left: 14rem;
-    overflow-y: scroll;
+    overflow-y: visible;
   }
   

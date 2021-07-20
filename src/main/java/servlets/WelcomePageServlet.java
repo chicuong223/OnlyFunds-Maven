@@ -7,7 +7,6 @@ package servlets;
 
 import category.Category;
 import category.CategoryDAO;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import map.UserCategoryMapDAO;
+import post_management.comment.CommentDAO;
+import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
 import user_management.user.User;
@@ -32,7 +33,6 @@ import user_management.user.UserDAO;
 public class WelcomePageServlet extends HttpServlet {
 
     private static final String WELCOME_PAGE = "welcome_page.jsp";
-    private final Gson gson = new Gson();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,6 +42,8 @@ public class WelcomePageServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher(WELCOME_PAGE);
             CategoryDAO cDao = new CategoryDAO();
             UserCategoryMapDAO uDao = new UserCategoryMapDAO();
+            PostLikeDAO likeDAO = new PostLikeDAO();
+            CommentDAO cmtDAO = new CommentDAO();
             UserDAO userDAO = new UserDAO();
             //load page on startup
             if (a == null) {
@@ -63,35 +65,63 @@ public class WelcomePageServlet extends HttpServlet {
                 int end = Integer.parseInt(request.getParameter("end"));
                 PostDAO postDAO = new PostDAO();
                 ArrayList<Post> postList = postDAO.getFreePosts(start, end);
-                String json = gson.toJson(postList);
-                System.out.println(json);
-                response.getWriter().write(json);
+                HashMap<Post, int[]> postMap = new HashMap<>();
+                postList.forEach(post -> {
+                    int likeCount = likeDAO.countPostLikeByPost(post);
+                    int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+                    int[] arr = {likeCount, cmtCount};
+                    postMap.put(post, arr);
+                });
+//                String json = gson.toJson(postMap);
+//                System.out.println(json);
+//                response.getWriter().write(json);
 //            request.setAttribute("postList", postList);
 //            request.getRequestDispatcher(WELCOME_PAGE).forward(request, response);
+                postMap.forEach((p, arr) -> {
+                    out.write(""
+                            + "<div class=\"col-lg-3 mb-2\">\n"
+                            + "<div class=\"card\" id=\"post\">\n"
+                            + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
+                            + "<div class=\"card-header p-2 pt-1\">\n"
+                            + "<h4 class=\"card-title fw-bold\">" + p.getTitle() + "</h4>\n"
+                            + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">" + p.getUploader().getUsername() + "</h6>\n"
+                            + "</div>\n"
+                            + "<div class=\"card-body p-2 pt-1\">\n"
+                            + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
+                            + "<p class=\"card-text\">\n"
+                            + p.getDescription() + "\n"
+                            + "</p>\n"
+                            + "</div>\n"
+                            + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
+                            + "<small><i class=\"fas fa-thumbs-up\"></i>" + arr[0] + "</small>\n"
+                            + "<small><i class=\"fas fa-comment\"></i>" + arr[1] + "</small>\n"
+                            + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
+                            + "</div>\n"
+                            + "</div>"
+                            + "</div>");
+                });
 //                postList.forEach(post -> {
-//                    out.write("<div class=\"col-lg-3 mb-2\">\n"
-//                            + "                        <div class=\"card\" id=\"post\">\n"
-//                            + "                            <a href=\"#post-detail\" class=\"stretched-link\"></a>\n"
-//                            + "                            <div class=\"card-header p-2 pt-1\">\n"
-//                            + "                                <h4 class=\"card-title fw-bold\">Post's title</h4>\n"
-//                            + "                                <h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">Author's name</h6>\n"
-//                            + "                            </div>\n"
-//                            + "                            <div class=\"card-body p-2 pt-1\">\n"
-//                            + "                                <a href=\"#post-detail\" class=\"stretched-link\"></a>\n"
-//                            + "                                <p class=\"card-text\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\n"
-//                            + "                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-//                            + "                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n"
-//                            + "                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu\n"
-//                            + "                                    fugiat nulla pariatur\n"
-//                            + "                                </p>\n"
-//                            + "                            </div>\n"
-//                            + "                            <div class=\"card-footer p-2 pt-1 pb-1\">\n"
-//                            + "                                <small><i class=\"fas fa-thumbs-up\"></i> 1234</small>\n"
-//                            + "                                <small><i class=\"fas fa-comment\"></i> 1234</small>\n"
-//                            + "                                <small><i class=\"far fa-eye\"></i> 1234</small>\n"
-//                            + "                            </div>\n"
-//                            + "                        </div>\n"
-//                            + "                    </div>");
+//                    out.write(""
+//                            + "<div class=\"col-lg-3 mb-2\">\n"
+//                            + "<div class=\"card\" id=\"post\">\n"
+//                            + "<a href=\"PostDetailServlet?id=${post['postId']}\" class=\"stretched-link\"></a>\n"
+//                            + "<div class=\"card-header p-2 pt-1\">\n"
+//                            + "<h4 class=\"card-title fw-bold\">${post['title']}</h4>\n"
+//                            + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">${post['uploader']['username']}</h6>\n"
+//                            + "</div>\n"
+//                            + "<div class=\"card-body p-2 pt-1\">\n"
+//                            + "<a href=\"PostDetailServlet?id=${post['postId']}\" class=\"stretched-link\"></a>\n"
+//                            + "<p class=\"card-text\">\n"
+//                            + "${post['description']}\n"
+//                            + "</p>\n"
+//                            + "</div>\n"
+//                            + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
+//                            + "<small><i class=\"fas fa-thumbs-up\"></i> 1234</small>\n"
+//                            + "<small><i class=\"fas fa-comment\"></i> 1234</small>\n"
+//                            + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
+//                            + "</div>\n"
+//                            + "</div>"
+//                            + "</div>");
 //                });
             }
         }
