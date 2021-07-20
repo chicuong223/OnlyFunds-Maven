@@ -388,6 +388,7 @@ public class PostDAO {
 
     public ArrayList<Post> getFreePosts(int start, int end) {
         ArrayList<Post> lst = new ArrayList<>();
+        UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 String sql = "SELECT * FROM (\n"
@@ -404,6 +405,8 @@ public class PostDAO {
                             post.setPostId(rs.getInt("id"));
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
+                            User user = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(user);
                             lst.add(post);
                         }
                     }
