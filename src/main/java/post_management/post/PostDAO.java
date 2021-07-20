@@ -403,6 +403,37 @@ public class PostDAO {
                 }
                 if (con != null) {
                     con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+
+    public ArrayList<Post> getFreePosts(int start, int end) {
+        ArrayList<Post> lst = new ArrayList<>();
+        UserDAO userDAO = new UserDAO();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SELECT * FROM (\n"
+                        + "SELECT ROW_NUMBER() OVER (Order BY id DESC) as r, * FROM Post \n"
+                        + "WHERE id NOT IN(SELECT post_id FROM Tier_Map)\n"
+                        + "AND is_active = 1) as x\n"
+                        + "WHERE x.r BETWEEN ? AND ? ";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            User user = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(user);
+                            lst.add(post);
+                        }
+                    }
                 }
             }
             catch (SQLException e) {
