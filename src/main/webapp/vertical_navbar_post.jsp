@@ -40,6 +40,11 @@
                 <span class="title">Explore</span>
             </a>
         </li>
+        <li class='list'>
+            <a href='FreePostsServlet'>
+                <span class='title'>Free Posts</span>
+            </a>
+        </li>
         <c:if test="${sessionScope.user == null}">
             <li class="list">
                 <p>Please sign in to like posts, comment subscribe and more</p>
