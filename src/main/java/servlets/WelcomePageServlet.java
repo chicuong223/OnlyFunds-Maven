@@ -32,14 +32,15 @@ import user_management.user.UserDAO;
 @WebServlet(name = "WelcomePageServlet", urlPatterns = {"/WelcomePageServlet"})
 public class WelcomePageServlet extends HttpServlet {
 
-    private static final String WELCOME_PAGE = "welcome_page.jsp";
+    String welcomePage = "welcome_page.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+
             String a = request.getParameter("action");
-            RequestDispatcher rd = request.getRequestDispatcher(WELCOME_PAGE);
+            RequestDispatcher rd = request.getRequestDispatcher(welcomePage);
             CategoryDAO cDao = new CategoryDAO();
             UserCategoryMapDAO uDao = new UserCategoryMapDAO();
             PostLikeDAO likeDAO = new PostLikeDAO();
@@ -87,7 +88,6 @@ public class WelcomePageServlet extends HttpServlet {
 //                });
 //            }
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
