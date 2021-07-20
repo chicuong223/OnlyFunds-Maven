@@ -57,7 +57,7 @@
                                   style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
                         </div>
                         <c:forEach var="post" items="${postList}">
-                            <div class=col-lg-3 mb-2>
+                            <div class='col-lg-3 mb-3'>
                                 <div class=card id=post>
                                     <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
                                     <div class='card-header p-2 pt-1'>
@@ -81,13 +81,16 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <ul class='pagination'>
+                    <c:forEach var="index" begin="1" end="${end}">
+                        <li class="page-item"><a href='WelcomePageServlet?page=${index}'>${index}</a></li>
+                        </c:forEach>
+                </ul>
+            </div>
         </main>
-        <footer style="position: relative">
-            <ul class='pagination'>
-                <c:forEach var="index" begin="1" end="${end}">
-                    <li class="page-item"><a href='WelcomePageServlet?page=${index}'>${index}</a></li>
-                    </c:forEach>
-            </ul>
-        </footer>
+        <!--        <footer style="position: relative; top:">
+        
+                </footer>-->
     </body>
 </html>

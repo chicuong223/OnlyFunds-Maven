@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,10 +55,10 @@ public class WelcomePageServlet extends HttpServlet {
                 ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
                 HashMap<User, ArrayList<Category>> userCatMap = new HashMap<>();
                 getServletContext().setAttribute("catList", catList);
-                for (User popularCreator : popularCreators) {
+                popularCreators.forEach(popularCreator -> {
                     ArrayList<Category> lst = uDao.getCategoriesByUser(popularCreator);
                     userCatMap.put(popularCreator, lst);
-                }
+                });
                 //get Posts
                 int pageIndex = 0;
                 String strPage = request.getParameter("page");
@@ -72,17 +73,17 @@ public class WelcomePageServlet extends HttpServlet {
                 if (count % 8 != 0)
                     endPage++;
                 ArrayList<Post> freePosts = postDAO.getFreePosts(start, end);
-                HashMap<Post, int[]> postMap = new HashMap<>();
-                for (Post freePost : freePosts) {
+                LinkedHashMap<Post, int[]> postMap = new LinkedHashMap<>();
+                freePosts.forEach(freePost -> {
                     int likeCount = likeDAO.countPostLikeByPost(freePost);
                     int cmtCount = cmtDAO.countCommentsByPost(freePost.getPostId());
                     int[] arr = {likeCount, cmtCount};
                     postMap.put(freePost, arr);
-                }
+                });
                 request.setAttribute("postList", postMap);
                 request.setAttribute("userList", userCatMap);
                 request.setAttribute("end", endPage);
-                System.out.println(postMap.size());
+//                System.out.println(postMap.size());
                 rd.forward(request, response);
             }
         }
