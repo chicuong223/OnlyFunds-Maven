@@ -5,8 +5,13 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<head>
+    <link type="text/css" rel="stylesheet" href="styles/vertical_nav.css">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
 <!-- Vertical navbar -->
-<div class="vertical-navbar" id="vertical-navbar" onmouseover="expand()" onmouseout="contract()">
+<div class="vertical-navbar" id="vertical-navbar">
     <div class="create-post">
         <a href="#Create post">
             <span class="icon"><i class="fas fa-plus-circle"></i></span>

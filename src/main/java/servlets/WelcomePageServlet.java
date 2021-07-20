@@ -7,9 +7,11 @@ package servlets;
 
 import category.Category;
 import category.CategoryDAO;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,6 +32,7 @@ import user_management.user.UserDAO;
 public class WelcomePageServlet extends HttpServlet {
 
     private static final String WELCOME_PAGE = "welcome_page.jsp";
+    private final Gson gson = new Gson();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,9 +48,14 @@ public class WelcomePageServlet extends HttpServlet {
                 //pass data for creator list
                 //category list
                 ArrayList<Category> catList = cDao.getAllCategories();
-//                ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
+                ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
+                HashMap<User, ArrayList<Category>> userCatMap = new HashMap<>();
                 getServletContext().setAttribute("catList", catList);
-//                request.setAttribute("userList", popularCreators);
+                for (User popularCreator : popularCreators) {
+                    ArrayList<Category> lst = uDao.getCategoriesByUser(popularCreator);
+                    userCatMap.put(popularCreator, lst);
+                }
+                request.setAttribute("userList", userCatMap);
                 rd.forward(request, response);
             }
             else if (a.equals("load")) {
@@ -55,21 +63,36 @@ public class WelcomePageServlet extends HttpServlet {
                 int end = Integer.parseInt(request.getParameter("end"));
                 PostDAO postDAO = new PostDAO();
                 ArrayList<Post> postList = postDAO.getFreePosts(start, end);
+                String json = gson.toJson(postList);
+                System.out.println(json);
+                response.getWriter().write(json);
 //            request.setAttribute("postList", postList);
 //            request.getRequestDispatcher(WELCOME_PAGE).forward(request, response);
-                postList.forEach(post -> {
-                    out.write("<div class=\"col-3 border mx-4 my-3\">\n"
-                            + "<div class=\"card-header fw-bold\">\n"
-                            + post.getTitle() + "\n"
-                            + "</div>\n"
-                            + "<div class=\"card-body overflow-auto\" style=\"height: 150px\">\n"
-                            + post.getDescription() + "\n"
-                            + "</div>\n"
-                            + "<div class=\"card-footer\">\n"
-                            + "<a href=\"PostDetailServlet?id=" + post.getPostId() + "\">See more</a>"
-                            + "</div>\n"
-                            + "</div>");
-                });
+//                postList.forEach(post -> {
+//                    out.write("<div class=\"col-lg-3 mb-2\">\n"
+//                            + "                        <div class=\"card\" id=\"post\">\n"
+//                            + "                            <a href=\"#post-detail\" class=\"stretched-link\"></a>\n"
+//                            + "                            <div class=\"card-header p-2 pt-1\">\n"
+//                            + "                                <h4 class=\"card-title fw-bold\">Post's title</h4>\n"
+//                            + "                                <h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">Author's name</h6>\n"
+//                            + "                            </div>\n"
+//                            + "                            <div class=\"card-body p-2 pt-1\">\n"
+//                            + "                                <a href=\"#post-detail\" class=\"stretched-link\"></a>\n"
+//                            + "                                <p class=\"card-text\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\n"
+//                            + "                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
+//                            + "                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n"
+//                            + "                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu\n"
+//                            + "                                    fugiat nulla pariatur\n"
+//                            + "                                </p>\n"
+//                            + "                            </div>\n"
+//                            + "                            <div class=\"card-footer p-2 pt-1 pb-1\">\n"
+//                            + "                                <small><i class=\"fas fa-thumbs-up\"></i> 1234</small>\n"
+//                            + "                                <small><i class=\"fas fa-comment\"></i> 1234</small>\n"
+//                            + "                                <small><i class=\"far fa-eye\"></i> 1234</small>\n"
+//                            + "                            </div>\n"
+//                            + "                        </div>\n"
+//                            + "                    </div>");
+//                });
             }
         }
 

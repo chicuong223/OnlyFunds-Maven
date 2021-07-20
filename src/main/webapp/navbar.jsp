@@ -19,8 +19,9 @@
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
               crossorigin="anonymous">
         <!-- CSS by Quang Dung -->
-        <link rel="stylesheet" href="styles/Welcome Page.css">
-        <link rel="stylesheet" href="styles/Navbar.css">
+        <!--<link rel="stylesheet" href="styles/Welcome Page.css">-->
+        <link type="text/css" rel="stylesheet" href="styles/navbar.css">
+        <!--<link rel="stylesheet" href="/styles/shared.css">-->
         <link rel="icon" href="images/logo_head.png" type="image/icon type">
         <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
     </head>
