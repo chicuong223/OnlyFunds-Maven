@@ -394,11 +394,11 @@ public class PostDAO {
                 String sql = "SELECT * FROM (\n"
                         + "SELECT ROW_NUMBER() OVER (Order BY id DESC) as r, * FROM Post \n"
                         + "WHERE id NOT IN(SELECT post_id FROM Tier_Map)\n"
-                        + "AND is_active = 1) as x\n"
-                        + "WHERE x.r BETWEEN ? AND ? ";
+                        + "AND is_active = 1) as x\n";
+//                        + "WHERE x.r BETWEEN ? AND ? ";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setInt(1, start);
-                    ps.setInt(2, end);
+//                    ps.setInt(1, start);
+//                    ps.setInt(2, end);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             Post post = new Post();
@@ -463,6 +463,6 @@ public class PostDAO {
 //        System.out.println(dao.getLatestPostIdByUser(user));
         ArrayList<Post> lst = dao.getFreePosts(1, 3);
         lst.forEach(p -> System.out.println(p.getPostId()));
-//        System.out.println(lst.size());
+        System.out.println(lst.size());
     }
 }

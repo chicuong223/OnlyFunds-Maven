@@ -6,11 +6,10 @@
 $(document).ready(function () {
     var start = 1;
     var end = 4;
+    console.log($("#main-container"));
     getPostData();
-    $(document).scroll(function () {
-        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-            getPostData();
-        }
+    $('#main-container').scrollTop(function () {
+        getPostData();
     });
     function getPostData() {
         $.get('WelcomePageServlet', {start: start, end: end, action: 'load'}, function (response) {
@@ -44,7 +43,7 @@ $(document).ready(function () {
                                 `;
                 start += 4;
                 end += 4;
-                $("#postList").append(el);
+                $("#row").append(el);
             });
         }, 'text');
     }

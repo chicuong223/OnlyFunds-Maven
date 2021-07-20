@@ -7,7 +7,7 @@
   
   body {
     min-height: 100vh;
-    /*overflow: hidden;*/
+    overflow: hidden;
     font-size: 16px;
   }
   
@@ -24,10 +24,6 @@
     overflow-x: hidden;
     transition: all .5s;
     border-right: 1px solid #bdbdbd;
-  }
-  
-  .vertical-navbar:hover {
-    width: 14rem;
   }
   
   .vertical-navbar .create-post {
