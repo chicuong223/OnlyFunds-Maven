@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import utils.DBConnect;
 
 /**
@@ -394,11 +395,11 @@ public class PostDAO {
                 String sql = "SELECT * FROM (\n"
                         + "SELECT ROW_NUMBER() OVER (Order BY id DESC) as r, * FROM Post \n"
                         + "WHERE id NOT IN(SELECT post_id FROM Tier_Map)\n"
-                        + "AND is_active = 1) as x\n";
-//                        + "WHERE x.r BETWEEN ? AND ? ";
+                        + "AND is_active = 1) as x\n"
+                        + "WHERE x.r BETWEEN ? AND ? ";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
-//                    ps.setInt(1, start);
-//                    ps.setInt(2, end);
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             Post post = new Post();
@@ -419,30 +420,61 @@ public class PostDAO {
         return lst;
     }
 
-    public ArrayList<Post> getPostsThatUserCanView(User user, int start, int end) {
-        ArrayList<Post> lst = new ArrayList<>();
+//    public ArrayList<Post> getPostsThatUserCanView(User user, int start, int end) {
+//        ArrayList<Post> lst = new ArrayList<>();
+//        try (Connection con = DBConnect.makeConnection()) {
+//            if (con != null) {
+//                String sql = "SELECT * FROM (\n"
+//                        + "SELECT ROW_number() OVER (ORDER BY id DESC) as r, id, title, uploader_username, description FROM Post \n"
+//                        + "WHERE id not in(\n"
+//                        + "	SELECT post_id from Tier_Map\n"
+//                        + ")AND is_active = 1 OR id in (\n"
+//                        + "	SELECT post_id FROM Tier_Map WHERE tier_id in (\n"
+//                        + "		SELECT tier_id FROM Subscription WHERE subscriber_username = ? \n"
+//                        + "	)\n"
+//                        + ") AND is_active = 1) as x\n"
+//                        + "WHERE x.r between ? and ?";
+//                try (PreparedStatement ps = con.prepareStatement(sql)) {
+//                    ps.setString(1, user.getUsername());
+//                    ps.setInt(2, start);
+//                    ps.setInt(3, end);
+//                    try (ResultSet rs = ps.executeQuery()) {
+//                        while (rs.next()) {
+//                            Post post = new Post();
+//                            post.setPostId(rs.getInt("id"));
+//                            post.setTitle(rs.getString("title"));
+//                            post.setDescription(rs.getString("description"));
+//                            lst.add(post);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        catch (Exception e) {
+//            System.out.println(e);
+//        }
+//        return lst;
+//    }
+    
+    public List<Post> getPosts(int start, int end){
+        List<Post> lst = new ArrayList<>();
+        UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SELECT * FROM (\n"
-                        + "SELECT ROW_number() OVER (ORDER BY id DESC) as r, id, title, uploader_username, description FROM Post \n"
-                        + "WHERE id not in(\n"
-                        + "	SELECT post_id from Tier_Map\n"
-                        + ")AND is_active = 1 OR id in (\n"
-                        + "	SELECT post_id FROM Tier_Map WHERE tier_id in (\n"
-                        + "		SELECT tier_id FROM Subscription WHERE subscriber_username = ? \n"
-                        + "	)\n"
-                        + ") AND is_active = 1) as x\n"
-                        + "WHERE x.r between ? and ?";
+                String sql = "SELECT * FROM\n"
+                        + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS r, * FROM Post WHERE is_active = 1) as x\n"
+                        + "WHERE x.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, user.getUsername());
-                    ps.setInt(2, start);
-                    ps.setInt(3, end);
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             Post post = new Post();
                             post.setPostId(rs.getInt("id"));
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
+                            User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(uploader);
                             lst.add(post);
                         }
                     }

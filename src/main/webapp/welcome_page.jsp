@@ -23,7 +23,7 @@
             <!-- Main content -->
             <main class="main-container" id="main-container">
             <c:import url="vertical_navbar_post.jsp"></c:import>
-                <div class="main-content" id="main-content">
+                <div class="main-content" style="position:relative">
                     <!-- category bar -->
                 <c:import url="category-bar.html"></c:import>
                     <div class="container" style="margin: 1rem">
@@ -58,6 +58,7 @@
                             <span class="p-0 mb-5 mt-3"
                                   style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
                         </div>
+                        
                     </div>
                 </div>
             </div>
