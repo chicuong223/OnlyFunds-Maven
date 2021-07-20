@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.DBConnect;
 
 /**
@@ -389,14 +391,23 @@ public class PostDAO {
     
     public int countFreePosts(){
         int count = -1;
-        String sql = "SELECT Count(id) FROM Post WHERE id NOT IN\n"
+        String sql = "SELECT Count(id) as count FROM Post WHERE id NOT IN\n"
                 + "(SELECT post_id FROM Tier_Map)\n"
                 + "AND is_active = 1";
         try(Connection con = DBConnect.makeConnection()){
             if(con != null){
-                
+                try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+                   if(rs.next()){
+                       count = rs.getInt("count");
+                   }
+                }
             }
         }
+        catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        return count;
     }
 
     public ArrayList<Post> getFreePosts(int start, int end) {
