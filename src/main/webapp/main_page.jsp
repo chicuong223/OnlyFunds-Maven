@@ -12,38 +12,42 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    var start = 1;
-                    getPostData(start, start + 5);
-                    start += 6;
-                    $(window).scroll(function () {
-                        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-                            getPostData(start, start + 2);
-                            start += 3;
-                        }
-                    });
-                    function getPostData(startNo, endNo) {
-                        $.post('homepage', {start: startNo, end: endNo}, function (response) {
-                            $("#postList").append(response);
-                        }, 'text');
-                    }
-                });
-            </script>
             <!-- Main content -->
             <main class="main-container">
             <c:import url="vertical_navbar_post.jsp"></c:import>
                 <div class="main-content">
                 <c:import url="category-bar.html"></c:import>
-                <div class="content container-fluid">
-                    <div id="row" class="row gx-4 p-3">
-                        <div class="title mb-4">
-                            <a href="#View all">
-                                <span>Recent posts</span>
-                                <i class="fas fa-angle-double-right"></i>
-                            </a>
-                        </div>
-                         <!-- Mỗi post tạo 1 column tương ứng -->
+                    <div class="content container-fluid">
+                        <div id="row" class="row gx-4 p-3">
+                            <div class="title mb-4">
+                                <a href="#View all">
+                                    <span>Recent posts</span>
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                            <!-- Mỗi post tạo 1 column tương ứng -->
+                        <c:forEach var="post" items="${postList}">
+                            <div class='col-lg-3 mb-3'>
+                                <div class=card id=post>
+                                    <a href="PostDetailServlet?id=${post.postId}" class=stretched-link></a>
+                                    <div class='card-header p-2 pt-1'>
+                                        <h4 class='card-title fw-bold'>${post.title}</h4>
+                                        <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.uploader.username}</h6>
+                                    </div>
+                                    <div class='card-body p-2 pt-1'>
+                                        <a href='PostDetailServlet?id=${post.postId}' class='stretched-link'></a>
+                                        <p class='card-text'>
+                                            ${post.description}
+                                        </p>
+                                    </div>
+                                    <div class='card-footer p-2 pt-1 pb-1'>
+                                        <!--<small><i class='fas fa-thumbs-up'></i></small>-->
+<!--                                        <small><i class='fas fa-comment'></i></small>
+                                        <small><i class='far fa-eye'></i></small>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>

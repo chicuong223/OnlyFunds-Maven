@@ -60,6 +60,7 @@ public class PostListServlet extends HttpServlet {
         if (count % 8 != 0)
             endPage++;
         request.setAttribute("postList", postMap);
+        request.getRequestDispatcher("posts.jsp").forward(request, response);
     }
 
     @Override
