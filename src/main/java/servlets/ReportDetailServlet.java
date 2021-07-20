@@ -41,7 +41,6 @@ public class ReportDetailServlet extends HttpServlet {
             ReportDAO rDAO = new ReportDAO();
             Report report = rDAO.getReportById(id);
             if (report == null) {
-                System.err.println("report == null");
                 request.getRequestDispatcher(reportListPage).forward(request, response);
             } else {
                 System.err.println("report title" + report.getTitle());

@@ -168,7 +168,23 @@ public class CommentDAO {
         }
         return result;
     }
-    
+    public boolean activateComment(int commentID){
+        boolean result = false;
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps;
+                ps = con.prepareStatement("UPDATE Comment SET is_active = 1 WHERE id = ?");
+                ps.setInt(1, commentID);
+                result = ps.executeUpdate() > 0;
+                ps.close();
+                con.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
      public int countCommentsByPost(int postID) {
         int count = 0;
         try {

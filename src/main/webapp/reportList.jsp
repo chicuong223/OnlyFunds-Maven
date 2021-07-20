@@ -20,9 +20,8 @@
         <a href="ReportListServlet?status=declined" style="${status=="declined"?"color: red":""}">Declined</a>
         <table>
             <thead>
-            <th>
-                Id
-            </th>
+            <th>Id</th>
+            <th>Object Id</th>
             <th>Type</th>
             <th>Status</th>
             <th>Detail</th>
@@ -31,6 +30,9 @@
             <tr class="report type-${report.type} solved-${status}">
                 <td>
                     <div>${report.id}</div>
+                </td>
+                <td>
+                    <div>${report.reportedObjectId}</div>
                 </td>
                 <td>
                     <div>${report.type}</div>

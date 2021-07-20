@@ -416,10 +416,12 @@ public class ReportDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                ps = con.prepareStatement("UPDATE Report SET solved_by_staff=?, status=\"approved\", solve_date=?\n"
+                ps = con.prepareStatement("UPDATE Report SET solved_by_staff=?, status=\'approved\', solve_date=?\n"
                         + " WHERE reported_id=? and type=?\n");
                 ps.setString(1, staff.getUsername());
                 ps.setDate(2, Date.valueOf(LocalDate.now()));
+                ps.setString(3, objectId);
+                ps.setString(4, type);
                 ps.executeUpdate();
                 return true;
             }
@@ -445,11 +447,14 @@ public class ReportDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                ps = con.prepareStatement("UPDATE Report SET solved_by_staff=?, status=\"declined\", solve_date=?\n"
+                ps = con.prepareStatement("UPDATE Report SET solved_by_staff=?, status=\'declined\', solve_date=?\n"
                         + " WHERE reported_id=? and type=?\n");
                 ps.setString(1, staff.getUsername());
                 ps.setDate(2, Date.valueOf(LocalDate.now()));
+                ps.setString(3, objectId);
+                ps.setString(4, type);
                 ps.executeUpdate();
+                System.err.println("declineReports() success");
                 return true;
             }
         } catch (SQLException e) {
@@ -467,33 +472,33 @@ public class ReportDAO {
         }
         return false;
     }
-    //notcheck
-    public boolean pendReports(String objectId, String type, Staff staff) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        try {
-            con = DBConnect.makeConnection();
-            if (con != null) {
-                ps = con.prepareStatement("UPDATE Report SET solved_by_staff=?, status=\"pending\", solve_date=?\n"
-                        + " WHERE reported_id=? and type=?\n");
-                ps.setString(1, staff.getUsername());
-                ps.setDate(2, Date.valueOf(LocalDate.now()));
-                ps.executeUpdate();
-                return true;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-            }
-        }
-        return false;
-    }
+//    //notcheck
+//    public boolean pendReports(String objectId, String type, Staff staff) {
+//        Connection con = null;
+//        PreparedStatement ps = null;
+//        try {
+//            con = DBConnect.makeConnection();
+//            if (con != null) {
+//                ps = con.prepareStatement("UPDATE Report SET solved_by_staff=?, status=\"pending\", solve_date=?\n"
+//                        + " WHERE reported_id=? and type=?\n");
+//                ps.setString(1, staff.getUsername());
+//                ps.setDate(2, Date.valueOf(LocalDate.now()));
+//                ps.executeUpdate();
+//                return true;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        } finally {
+//            try {
+//                if (ps != null) {
+//                    ps.close();
+//                }
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//            }
+//        }
+//        return false;
+//    }
 }

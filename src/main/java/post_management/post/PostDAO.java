@@ -183,7 +183,91 @@ public class PostDAO {
         }
         return success;
     }
-
+    public boolean deactivatePost(int id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE Post SET is_active = 0 WHERE id = ?");
+                ps.setInt(1, id);
+                success = ps.executeUpdate() >= 1;
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            }
+            catch (SQLException e) {
+            }
+        }
+        return success;
+    }
+    public boolean activatePost(int id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE Post SET is_active = 1 WHERE id = ?");
+                ps.setInt(1, id);
+                success = ps.executeUpdate() >= 1;
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            }
+            catch (SQLException e) {
+            }
+        }
+        return success;
+    }
+    public boolean activatePost(Post post) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE Post SET is_active = 1 WHERE id = ?");
+                ps.setInt(1, post.getPostId());
+                success = ps.executeUpdate() >= 1;
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            }
+            catch (SQLException e) {
+            }
+        }
+        return success;
+    }
+    
     public boolean addPost(Post post) {
         Connection con = null;
         PreparedStatement ps = null;
