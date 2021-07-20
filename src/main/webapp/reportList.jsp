@@ -1,9 +1,3 @@
-<%-- 
-    Document   : reportList
-    Created on : Jul 16, 2021, 9:23:10 PM
-    Author     : DELL
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -44,7 +38,7 @@
                 <td>
                     <div>${report.status}</div>
                 </td>
-                <td><a href="ReportDetailServlet?id=${report.id}">Report-${report.reportedObjectId}</a></td>
+                <td><a href="ReportDetailServlet?id=${report.id}">Report-${report.id}</a></td>
             </tr>
         </c:forEach>
     </table>
