@@ -10,6 +10,7 @@ import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import map.UserCategoryMapDAO;
+import post_management.comment.CommentDAO;
+import post_management.like.PostLikeDAO;
+import post_management.post.Post;
+import post_management.post.PostDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
 
