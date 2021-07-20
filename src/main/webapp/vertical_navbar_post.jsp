@@ -41,7 +41,7 @@
             </a>
         </li>
         <li class='list'>
-            <a href='FreePostsServlet'>
+            <a href='PostListServlet?action=free'>
                 <span class='title'>Free Posts</span>
             </a>
         </li>

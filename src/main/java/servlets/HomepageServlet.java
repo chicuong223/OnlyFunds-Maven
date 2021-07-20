@@ -38,17 +38,22 @@ public class HomepageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        User user = (User) request.getSession().getAttribute("user");
-//        PostDAO postDAO = new PostDAO();
-//        List<Post> postList = postDAO.getPostsThatUserCanView(user).stream().limit(10).collect(Collectors.toList());
-//        request.setAttribute("postList", postList);
-//        UserDAO userDAO = new UserDAO();
-//        List<User> subList = userDAO.getCreatorThatUserSubscribedTo(user).stream().limit(3).collect(Collectors.toList());
-//        List<User> followList = userDAO.getCreatorThatUserFollows(user).stream().limit(3).collect(Collectors.toList());
-//        List<User> userCatList = userDAO.getCreatorsSameCategoryAsUser(user).stream().limit(3).collect(Collectors.toList());
-//        System.out.println(followList);
-//        System.out.println(followList);
-//        System.out.println(userCatList);
+        User user = (User) request.getSession().getAttribute("user");
+        PostDAO postDAO = new PostDAO();
+        String strPage = request.getParameter("page");
+        int pageIndex = 0;
+        if (strPage == null)
+            pageIndex = 1;
+        else
+            pageIndex = Integer.parseInt(strPage);
+        int start = pageIndex * 8 - (8 - 1);
+        int end = pageIndex * 8;
+        List<Post> postList = postDAO.getPosts(start, end); //        List<Post> postList = postDAO.getPostsThatUserCanView(user).stream().limit(10).collect(Collectors.toList());
+        request.setAttribute("postList", postList);
+        UserDAO userDAO = new UserDAO();
+        List<User> subList = userDAO.getCreatorThatUserSubscribedTo(user).stream().limit(3).collect(Collectors.toList());
+        List<User> followList = userDAO.getCreatorThatUserFollows(user).stream().limit(3).collect(Collectors.toList());
+        List<User> userCatList = userDAO.getCreatorsSameCategoryAsUser(user).stream().limit(3).collect(Collectors.toList());
 //        request.setAttribute("cateCreators", userCatList);
 //        request.setAttribute("subCreators", subList);
 //        request.setAttribute("followCreators", followList);
@@ -62,40 +67,40 @@ public class HomepageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        User user = (User) request.getSession().getAttribute("user");
-//        PostDAO dao = new PostDAO();
-        PostLikeDAO likeDAO = new PostLikeDAO();
-        CommentDAO cmtDAO = new CommentDAO();
-        int start = Integer.parseInt(request.getParameter("start"));
-        int end = Integer.parseInt(request.getParameter("end"));
-//        ArrayList<Post> lst = dao.getPosts(start, end);
-        TreeMap<Post, Boolean> postMap = getPosts(user, start, end);
-        postMap.forEach((p, view) -> {
-            int likeCount = likeDAO.countPostLikeByPost(p);
-            int cmtCount = cmtDAO.countCommentsByPost(p.getPostId());
-            out.write(""
-                    + "<div class=\"col-lg-3 mb-2\">\n"
-                    + "<div class=\"card\" id=\"post\">\n"
-                    + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
-                    + "<div class=\"card-header p-2 pt-1\">\n"
-                    + "<h4 class=\"card-title fw-bold\">" + p.getTitle() + "</h4>\n"
-                    + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">" + p.getUploader().getUsername() + "</h6>\n"
-                    + "</div>\n"
-                    + "<div class=\"card-body p-2 pt-1\">\n"
-                    + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
-                    + "<p class=\"card-text\">\n"
-                    + p.getDescription() + "\n"
-                    + "</p>\n"
-                    + "</div>\n"
-                    + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
-                    + "<small><i class=\"fas fa-thumbs-up\"></i>" + likeCount + "</small>\n"
-                    + "<small><i class=\"fas fa-comment\"></i>" + cmtCount + "</small>\n"
-                    + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
-                    + "</div>\n"
-                    + "</div>"
-                    + "</div>");
-        });
+//        PrintWriter out = response.getWriter();
+//        User user = (User) request.getSession().getAttribute("user");
+////        PostDAO dao = new PostDAO();
+//        PostLikeDAO likeDAO = new PostLikeDAO();
+//        CommentDAO cmtDAO = new CommentDAO();
+//        int start = Integer.parseInt(request.getParameter("start"));
+//        int end = Integer.parseInt(request.getParameter("end"));
+////        ArrayList<Post> lst = dao.getPosts(start, end);
+//        TreeMap<Post, Boolean> postMap = getPosts(user, start, end);
+//        postMap.forEach((p, view) -> {
+//            int likeCount = likeDAO.countPostLikeByPost(p);
+//            int cmtCount = cmtDAO.countCommentsByPost(p.getPostId());
+//            out.write(""
+//                    + "<div class=\"col-lg-3 mb-2\">\n"
+//                    + "<div class=\"card\" id=\"post\">\n"
+//                    + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
+//                    + "<div class=\"card-header p-2 pt-1\">\n"
+//                    + "<h4 class=\"card-title fw-bold\">" + p.getTitle() + "</h4>\n"
+//                    + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">" + p.getUploader().getUsername() + "</h6>\n"
+//                    + "</div>\n"
+//                    + "<div class=\"card-body p-2 pt-1\">\n"
+//                    + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
+//                    + "<p class=\"card-text\">\n"
+//                    + p.getDescription() + "\n"
+//                    + "</p>\n"
+//                    + "</div>\n"
+//                    + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
+//                    + "<small><i class=\"fas fa-thumbs-up\"></i>" + likeCount + "</small>\n"
+//                    + "<small><i class=\"fas fa-comment\"></i>" + cmtCount + "</small>\n"
+//                    + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
+//                    + "</div>\n"
+//                    + "</div>"
+//                    + "</div>");
+//        });
     }
 //        for (Post post : lst)
 //            response.getWriter().write("<div class=\"col-3 mx-2 my-2 card\">\n"

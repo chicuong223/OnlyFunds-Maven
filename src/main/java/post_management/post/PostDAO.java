@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -510,6 +511,138 @@ public class PostDAO {
         return lst;
     }
 
+    public int countPosts(){
+         int count = -1;
+        String sql = "SELECT Count(id) as count FROM Post";
+        try(Connection con = DBConnect.makeConnection()){
+            if(con != null){
+                try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+                   if(rs.next()){
+                       count = rs.getInt("count");
+                   }
+                }
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        return count;
+    }
+    
+    public LinkedHashMap<Post,Integer> getMostLikes(int start, int end) {
+        LinkedHashMap<Post,Integer> lst = new LinkedHashMap<>();
+        UserDAO userDAO = new UserDAO();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SELECT * FROM \n" +
+                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n" +
+                    "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
+                    "WHERE Post.is_active=1\n" +
+                    "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
+                    "AS list\n" +
+                    "WHERE list.r BETWEEN ? AND ?";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            post.setViewCount(rs.getInt("view_count"));
+                            User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(uploader);
+                            int likes = rs.getInt("likes");
+                            lst.put(post, likes);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return lst;
+    }
+    
+    public LinkedHashMap<Post,Integer> getLikedPost(User user, int start, int end) {
+        LinkedHashMap<Post,Integer> lst = new LinkedHashMap<>();
+        UserDAO userDAO = new UserDAO();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SSELECT * FROM \n" +
+                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r, COUNT (*) as likes\n" +
+                    "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
+                    "WHERE Post.is_active=1 and username=?\n" +
+                    "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
+                    "AS list\n" +
+                    "WHERE list.r BETWEEN ? AND ?";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    ps.setInt(2, start);
+                    ps.setInt(3, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            post.setViewCount(rs.getInt("view_count"));
+                            User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(uploader);
+                            int likes = rs.getInt("likes");
+                            lst.put(post, likes);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return lst;
+    }
+    
+    public LinkedHashMap<Post,Integer> getBookmarkedPost(User user, int start, int end) {
+        LinkedHashMap<Post,Integer> lst = new LinkedHashMap<>();
+        UserDAO userDAO = new UserDAO();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SELECT * FROM \n" +
+                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r, COUNT (*) as likes\n" +
+                    "FROM Bookmark INNER JOIN Post ON (Post.id = Bookmark.post_id)\n" +
+                    "WHERE Post.is_active=1 and username=?\n" +
+                    "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
+                    "AS list\n" +
+                    "WHERE list.r BETWEEN ? AND ?";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    ps.setInt(2, start);
+                    ps.setInt(3, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            post.setViewCount(rs.getInt("view_count"));
+                            User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(uploader);
+                            int likes = rs.getInt("likes");
+                            lst.put(post, likes);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return lst;
+    }
+    
     public static void main(String[] args) {
         User user = new User();
         user.setUsername("chicuong");
