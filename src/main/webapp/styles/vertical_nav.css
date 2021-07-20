@@ -26,10 +26,6 @@
     border-right: 1px solid #bdbdbd;
   }
   
-  .vertical-navbar:hover {
-    width: 14rem;
-  }
-  
   .vertical-navbar .create-post {
     height: 4rem;
     display: flex;
@@ -131,7 +127,7 @@
   }
 
   .vertical-navbar .seccond-list {
-    top: 15rem;
+    top: 31rem;
   }
   
   .vertical-navbar ul li {
