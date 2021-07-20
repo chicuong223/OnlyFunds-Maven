@@ -8,57 +8,84 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Navigation bar -->
 <c:import url="navbar.jsp"></c:import>  
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Only Funds</title>
-        <link rel="stylesheet" href="styles/welcome_page.css">
-        <link rel="stylesheet" href="styles/Navbar.css">
-        <link rel="stylesheet" href="styles/main_page.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </head>
-    <body>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                var start = 1;
-                var end = 4;
-                getPostData();
-                $(window).scroll(function () {
-                    getPostData();
-                });
-                function getPostData() {
-                    $.get('WelcomePageServlet', {start: start, end: end, action: 'load'}, function (response) {
-                        start += 4;
-                        end += 4;
-                        $('#posts').append(response);
-                    }, 'text');
-                }
-            });
-        </script>
-        <!-- Main content -->
-        <main class="mt-3">
-            <div class="container main-content" style="margin-top: 1rem;">
-                <!-- Top -->
-                <div class="row">
-                    <div class="col-lg-12 p-3 pb-1 my-auto text-center">
-                        <span style="font-size: 50px; color:#B82481; font-family: Righteous;">ONLY FUNDS</span>
-                        <p style="font-size: 40px; color:#69336D;">Create your own work and earn money!</p>
-                        <a href="RegisterServlet" class="register-link">
-                            <span>Get started!</span>
-                            <svg width="18px" height="15px" viewBox="0 0 13 10">
-                            <path d="M1,5 L11,5"></path>
-                            <polyline points="8 1 12 5 8 9"></polyline>
-                            </svg>
-                        </a>
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Only Funds</title>
+        </head>
+        <body>
+            <!-- Main content -->
+            <main class="mt-3">
+                <div class="container" style="margin-top: 10vh;">
+                    <!-- Top -->
+                    <div class="row">
+                        <div class="col-lg-6 p-3 my-auto text-center">
+                            <span style="font-size: 50px; color:#B82481; font-family: Righteous;">ONLY FUNDS</span>
+                            <p style="font-size: 40px; color:#69336D;">Create your own work and earn money!</p>
+                        </div>
+                        <div class="col-lg-6 p-0">
+                            <img src="images/Wallpaper-2.jfif" alt="Insert image here" class="img-fluid">
+                        </div>
                     </div>
-                </div>
-                <div id="posts" class="row gx-4 p-3 mb-4">
-                    <div class="header mb-4">
+                    <!-- Bottom -->
+                    <div class="row">
                         <span class="p-0 mb-5 mt-3"
-                              style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
+                              style="font-size: 40px; font-weight: bold; border-bottom: 1px solid #B82481;">Popular
+                            Creators</span>
+                        <div id="carouselExampleDark" class="carousel carousel-dark slide p-0 m-0" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                            <c:set var="i" value="0"></c:set>
+                            <c:forEach var="user" items="${userList}">
+                                <c:set var="i" value="${i + 1}"></c:set>
+                                <c:choose>
+                                    <c:when test="${i == 1}">
+                                        <c:set var="active" value="active"></c:set>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="active" value=""></c:set>
+                                    </c:otherwise>
+                                </c:choose>
+                                <div class="container carousel-item ${active}" data-bs-interval="10000">
+                                    <div class="mx-auto w-50">
+                                        <div class="card mx-auto">
+                                            <img src="images/avatars/${user.avatarURL}" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${user.firstName} ${user.lastName}</h5>
+                                                <p class="card-text">
+                                                <hr class="dropdown-divider">
+                                                <cite>
+                                                    ${user.bio}
+                                                </cite>
+                                                </p>
+                                            </div>
+                                            <a href="CreatorInfoServlet?username=${user.username}" class="stretched-link"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                        <br><br>
+                        <div class="carousel-indicators carousel-indicators-round">
+                            <c:set var="i" value="0"></c:set>
+                            <c:forEach var="index" begin="0" end="${userList.size() - 1}">
+                                <c:set var="i" value="${i + 1}"></c:set>
+                                <c:choose>
+                                    <c:when test="${i == 1}">
+                                        <c:set var="active" value="active"></c:set>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="active" value=""></c:set>
+                                    </c:otherwise>
+                                </c:choose>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="${index}" class="${active}"></button>
+                            </c:forEach>
+                            <!--                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
+                                                                class="active"></button>
+                                                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></button>
+                                                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"></button>-->
+                        </div>
                     </div>
-                    <!-- Mỗi post tạo 1 column tương ứng -->
                 </div>
             </div>
         </main>
