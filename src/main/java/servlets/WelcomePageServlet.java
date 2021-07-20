@@ -61,46 +61,8 @@ public class WelcomePageServlet extends HttpServlet {
                 request.setAttribute("userList", userCatMap);
                 rd.forward(request, response);
             }
-            else if (a.equals("load")) {
-                int start = Integer.parseInt(request.getParameter("start"));
-                int end = Integer.parseInt(request.getParameter("end"));
-                PostDAO postDAO = new PostDAO();
-                ArrayList<Post> postList = postDAO.getFreePosts(start, end);
-                HashMap<Post, int[]> postMap = new HashMap<>();
-                postList.forEach(post -> {
-                    int likeCount = likeDAO.countPostLikeByPost(post);
-                    int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
-                    int[] arr = {likeCount, cmtCount};
-                    postMap.put(post, arr);
-                });
-//                String json = gson.toJson(postMap);
-//                System.out.println(json);
-//                response.getWriter().write(json);
-//            request.setAttribute("postList", postList);
-//            request.getRequestDispatcher(WELCOME_PAGE).forward(request, response);
-                postMap.forEach((p, arr) -> {
-                    out.write(""
-                            + "<div class=\"col-lg-3 mb-2\">\n"
-                            + "<div class=\"card\" id=\"post\">\n"
-                            + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
-                            + "<div class=\"card-header p-2 pt-1\">\n"
-                            + "<h4 class=\"card-title fw-bold\">" + p.getTitle() + "</h4>\n"
-                            + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">" + p.getUploader().getUsername() + "</h6>\n"
-                            + "</div>\n"
-                            + "<div class=\"card-body p-2 pt-1\">\n"
-                            + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
-                            + "<p class=\"card-text\">\n"
-                            + p.getDescription() + "\n"
-                            + "</p>\n"
-                            + "</div>\n"
-                            + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
-                            + "<small><i class=\"fas fa-thumbs-up\"></i>" + arr[0] + "</small>\n"
-                            + "<small><i class=\"fas fa-comment\"></i>" + arr[1] + "</small>\n"
-                            + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
-                            + "</div>\n"
-                            + "</div>"
-                            + "</div>");
-                });
+//            else if (a.equals("load")) {
+               
 //                postList.forEach(post -> {
 //                    out.write(""
 //                            + "<div class=\"col-lg-3 mb-2\">\n"
@@ -124,7 +86,7 @@ public class WelcomePageServlet extends HttpServlet {
 //                            + "</div>"
 //                            + "</div>");
 //                });
-            }
+//            }
         }
     }
 

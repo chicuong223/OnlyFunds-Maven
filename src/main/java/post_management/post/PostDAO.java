@@ -386,6 +386,18 @@ public class PostDAO {
         }
         return lst;
     }
+    
+    public int countFreePosts(){
+        int count = -1;
+        String sql = "SELECT Count(id) FROM Post WHERE id NOT IN\n"
+                + "(SELECT post_id FROM Tier_Map)\n"
+                + "AND is_active = 1";
+        try(Connection con = DBConnect.makeConnection()){
+            if(con != null){
+                
+            }
+        }
+    }
 
     public ArrayList<Post> getFreePosts(int start, int end) {
         ArrayList<Post> lst = new ArrayList<>();
