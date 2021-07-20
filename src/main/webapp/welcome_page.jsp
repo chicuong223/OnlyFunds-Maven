@@ -38,7 +38,8 @@
         </script>
         <!-- Main content -->
         <main class="mt-3">
-            <div class="container" style="margin-top: 10vh;">
+        <c:import url="vertical_navbar.jsp"></c:import>
+            <div class="container main-content" style="margin-top: 10vh;">
                 <!-- Top -->
                 <div class="row">
                     <div class="col-lg-6 p-3 my-auto text-center">
