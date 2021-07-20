@@ -21,7 +21,7 @@
             <!-- Main content -->
             <main class="main-container" id="main-container">
             <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
-                <div class="main-content" style="position:relative">
+                <div class="main-content">
                     <!-- category bar -->
                 <c:import url="category-bar.html"></c:import>
                     <div class="container" style="margin: 1rem">
@@ -51,7 +51,7 @@
                         </c:forEach>
                     </div>
                     <!-- Bottom -->
-                    <div class="row gx-4 p-3 mb-4" id="row">
+                    <div class="row gx-4 p-3" id="row">
                         <div class="header mb-4">
                             <span class="p-0 mb-5 mt-3"
                                   style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
@@ -79,18 +79,29 @@
                             </div>
                         </c:forEach>
                     </div>
+                    <nav class="d-flex justify-content-center mb-4">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <c:forEach var="index" begin="1" end="${end}">
+                                <li class="page-item"><a class="page-link" href='WelcomePageServlet?page=${index}'>${index}</a></li>
+                                </c:forEach>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
-            <div>
-                <ul class='pagination'>
-                    <c:forEach var="index" begin="1" end="${end}">
-                        <li class="page-item"><a href='WelcomePageServlet?page=${index}'>${index}</a></li>
-                        </c:forEach>
-                </ul>
-            </div>
-        </main>
-        <!--        <footer style="position: relative; top:">
-        
-                </footer>-->
-    </body>
+        </div>
+    </main>
+    <!--        <footer style="position: relative; top:">
+    
+            </footer>-->
+</body>
 </html>
