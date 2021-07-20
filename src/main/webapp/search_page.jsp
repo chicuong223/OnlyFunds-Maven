@@ -18,13 +18,18 @@
         <h1>Hello world</h1>
         <main>
             <div class="creator-list">
-                <c:forEach items="${userList}" var="user">
+                <c:forEach items="${userList}" var="user" varStatus="userLoop">
                     <div>
                         <a href="CreatorInfoServlet?username=${user.username}">
                             <div>
                                 <h3>${user.username}</h3>
                                 <img src="images/avatars/${user.avatarURL}" alt="${user.avatarURL}" width="100">
                             </div>
+                            <div>Num sub: ${numSubscriberList[userLoop.index]}</div>
+                            <div>Cate list:</div>
+                            <c:forEach var="cate" items="${cateListList[userLoop.index]}">
+                                <div>${cate.categoryName}</div>
+                            </c:forEach>
                         </a>
                     </div>                    
                 </c:forEach>

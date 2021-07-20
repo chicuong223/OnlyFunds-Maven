@@ -365,7 +365,7 @@ public class UserDAO {
                 + "			left join Tier t on uwc.username=t.username) \n"
                 + "				left join Subscription s on t.id=s.tier_id and t.is_active='1'\n"
                 + "group by uwc.username , uwc.avatarURL, uwc.email, uwc.firstname,\n"
-                + "	uwc.is_banned, uwc.lastname, uwc.password, uwc.username\n"
+                + "	uwc.is_banned, uwc.lastname, uwc.password, uwc.username, uwc.bio\n"
                 + "order by NumOfSubcriber";
         try {
             con = DBConnect.makeConnection();

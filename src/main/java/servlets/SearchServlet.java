@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import category.Category;
+import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import post_management.comment.CommentDAO;
+import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
 import user_management.user.User;
@@ -31,7 +35,7 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = (String) request.getParameter("a");
-        System.err.println("action"+action);
+        System.err.println("action" + action);
         if (action == null) {
             //write code for action==null
         } else {
@@ -42,20 +46,34 @@ public class SearchServlet extends HttpServlet {
 
                     } else {
                         int categoryID = Integer.parseInt(request.getParameter("id"));
-                        System.err.println("id "+categoryID);
                         UserDAO uDAO = new UserDAO();
                         ArrayList<User> creatorInCategoryList = uDAO.getBestCreatorsInCategory(categoryID);
-                        System.err.println("Num of users: " + creatorInCategoryList.size());
+                        ArrayList<Integer> numSubscriberList = new ArrayList<Integer>();
+                        ArrayList<ArrayList<Category>> cateListList=new ArrayList<ArrayList<Category>>();
+                        CategoryDAO cateDAO=new CategoryDAO();
                         for (User user : creatorInCategoryList) {
-                            System.err.println(user.getUsername());
+                            int numsubscriber = uDAO.getSubscribers(user).size();
+                            numSubscriberList.add(numsubscriber);
+                            ArrayList<Category>cateList= cateDAO.getCategoriesByCreator(user);
+                            cateListList.add(cateList);
                         }
+                        request.setAttribute("numSubscriberList", numSubscriberList);
+                        request.setAttribute("cateListList", cateListList);
                         request.setAttribute("userList", creatorInCategoryList);
                         PostDAO pDAO = new PostDAO();
                         ArrayList<Post> postInCategory = pDAO.getTopPostsInCategory(categoryID);
-                        System.err.println("Num of posts: " + postInCategory.size());
+                        ArrayList<Integer> numLikeList=new ArrayList<Integer>();
+                        ArrayList<Integer> numCommentList=new ArrayList<Integer>();
+                        PostLikeDAO lDAO=new PostLikeDAO();
+                        CommentDAO cmtDAO=new CommentDAO();
                         for (Post post : postInCategory) {
-                            System.err.println(post.getPostId() + " " + post.getTitle());
+                            int numLike=lDAO.countPostLikeByPost(post);
+                            numLikeList.add(numLike);
+                            int numCmt=cmtDAO.countCommentsByPost(post.getPostId());
+                            numCommentList.add(numCmt);
                         }
+                        request.setAttribute("numLikeList", numLikeList);
+                        request.setAttribute("numCommentList", numCommentList);
                         request.setAttribute("postList", postInCategory);
                         request.getRequestDispatcher(SEARCHPAGE).forward(request, response);
                     }
@@ -65,20 +83,34 @@ public class SearchServlet extends HttpServlet {
                     if (searchedString == null) {
                         throw new ServletException("search string not found");
                     } else {
-                        System.err.println("search: "+searchedString);
                         UserDAO uDAO = new UserDAO();
                         ArrayList<User> searchedUsers = uDAO.getSearchUser(searchedString);
-                        System.err.println("Num of users: " + searchedUsers.size());
-                        for (User searchedUser : searchedUsers) {
-                            System.err.println(searchedUser.getUsername());
+                        ArrayList<Integer> numSubscriberList = new ArrayList<Integer>();
+                        ArrayList<ArrayList<Category>> cateListList=new ArrayList<ArrayList<Category>>();
+                        CategoryDAO cDAO=new CategoryDAO();
+                        for (User user : searchedUsers) {
+                            int numsubscriber = uDAO.getSubscribers(user).size();
+                            numSubscriberList.add(numsubscriber);
+                            ArrayList<Category>cateList= cDAO.getCategoriesByCreator(user);
+                            cateListList.add(cateList);
                         }
+                        request.setAttribute("numSubscriberList", numSubscriberList);
+                        request.setAttribute("cateListList", cateListList);
                         request.setAttribute("userList", searchedUsers);
                         PostDAO pDAO = new PostDAO();
                         ArrayList<Post> searchedPosts = pDAO.getSearchedPost(searchedString);
-                        System.err.println("Num of posts: " + searchedPosts.size());
-                        for (Post searchedPost : searchedPosts) {
-                            System.err.println(searchedPost.getPostId() + " " + searchedPost.getTitle());
+                        ArrayList<Integer> numLikeList=new ArrayList<Integer>();
+                        ArrayList<Integer> numCommentList=new ArrayList<Integer>();
+                        PostLikeDAO lDAO=new PostLikeDAO();
+                        CommentDAO cmtDAO=new CommentDAO();
+                        for (Post post : searchedPosts) {
+                            int numLike=lDAO.countPostLikeByPost(post);
+                            numLikeList.add(numLike);
+                            int numCmt=cmtDAO.countCommentsByPost(post.getPostId());
+                            numCommentList.add(numCmt);
                         }
+                        request.setAttribute("numLikeList", numLikeList);
+                        request.setAttribute("numCommentList", numCommentList);
                         request.setAttribute("postList", searchedPosts);
                         request.getRequestDispatcher(SEARCHPAGE).forward(request, response);
                     }
