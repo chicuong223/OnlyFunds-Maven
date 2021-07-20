@@ -18,8 +18,6 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
-            <script type="text/javascript" src="scripts/welcome_page_script.js">
-            </script>
             <!-- Main content -->
             <main class="main-container" id="main-container">
             <c:import url="vertical_navbar_post.jsp"></c:import>
@@ -58,11 +56,38 @@
                             <span class="p-0 mb-5 mt-3"
                                   style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
                         </div>
-                        
+                        <c:forEach var="post" items="${postList}">
+                            <div class=col-lg-3 mb-2>
+                                <div class=card id=post>
+                                    <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
+                                    <div class='card-header p-2 pt-1'>
+                                        <h4 class='card-title fw-bold'>${post.key.title}</h4>
+                                        <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                    </div>
+                                    <div class='card-body p-2 pt-1'>
+                                        <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
+                                        <p class='card-text'>
+                                            ${post.key.description}
+                                        </p>
+                                    </div>
+                                    <div class='card-footer p-2 pt-1 pb-1'>
+                                        <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                        <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                        <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
         </main>
-    </div>
-</body>
+        <footer style="position: relative">
+            <ul class='pagination'>
+                <c:forEach var="index" begin="1" end="${end}">
+                    <li class="page-item"><a href='WelcomePageServlet?page=${index}'>${index}</a></li>
+                    </c:forEach>
+            </ul>
+        </footer>
+    </body>
 </html>

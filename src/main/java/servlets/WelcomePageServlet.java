@@ -45,6 +45,7 @@ public class WelcomePageServlet extends HttpServlet {
             PostLikeDAO likeDAO = new PostLikeDAO();
             CommentDAO cmtDAO = new CommentDAO();
             UserDAO userDAO = new UserDAO();
+            PostDAO postDAO = new PostDAO();
             //load page on startup
             if (a == null) {
                 //pass data for creator list
@@ -57,35 +58,33 @@ public class WelcomePageServlet extends HttpServlet {
                     ArrayList<Category> lst = uDao.getCategoriesByUser(popularCreator);
                     userCatMap.put(popularCreator, lst);
                 }
+                //get Posts
+                int pageIndex = 0;
+                String strPage = request.getParameter("page");
+                if (strPage == null)
+                    pageIndex = 1;
+                else
+                    pageIndex = Integer.parseInt(strPage);
+                int start = pageIndex * 8 - (8 - 1);
+                int end = pageIndex * 8;
+                int count = postDAO.countFreePosts();
+                int endPage = count / 8;
+                if (count % 8 != 0)
+                    endPage++;
+                ArrayList<Post> freePosts = postDAO.getFreePosts(start, end);
+                HashMap<Post, int[]> postMap = new HashMap<>();
+                for (Post freePost : freePosts) {
+                    int likeCount = likeDAO.countPostLikeByPost(freePost);
+                    int cmtCount = cmtDAO.countCommentsByPost(freePost.getPostId());
+                    int[] arr = {likeCount, cmtCount};
+                    postMap.put(freePost, arr);
+                }
+                request.setAttribute("postList", postMap);
                 request.setAttribute("userList", userCatMap);
+                request.setAttribute("end", endPage);
+                System.out.println(postMap.size());
                 rd.forward(request, response);
             }
-//            else if (a.equals("load")) {
-               
-//                postList.forEach(post -> {
-//                    out.write(""
-//                            + "<div class=\"col-lg-3 mb-2\">\n"
-//                            + "<div class=\"card\" id=\"post\">\n"
-//                            + "<a href=\"PostDetailServlet?id=${post['postId']}\" class=\"stretched-link\"></a>\n"
-//                            + "<div class=\"card-header p-2 pt-1\">\n"
-//                            + "<h4 class=\"card-title fw-bold\">${post['title']}</h4>\n"
-//                            + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">${post['uploader']['username']}</h6>\n"
-//                            + "</div>\n"
-//                            + "<div class=\"card-body p-2 pt-1\">\n"
-//                            + "<a href=\"PostDetailServlet?id=${post['postId']}\" class=\"stretched-link\"></a>\n"
-//                            + "<p class=\"card-text\">\n"
-//                            + "${post['description']}\n"
-//                            + "</p>\n"
-//                            + "</div>\n"
-//                            + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
-//                            + "<small><i class=\"fas fa-thumbs-up\"></i> 1234</small>\n"
-//                            + "<small><i class=\"fas fa-comment\"></i> 1234</small>\n"
-//                            + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
-//                            + "</div>\n"
-//                            + "</div>"
-//                            + "</div>");
-//                });
-//            }
         }
 
     }
