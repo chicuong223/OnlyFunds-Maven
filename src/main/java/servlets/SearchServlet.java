@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import map.UserCategoryMapDAO;
 import post_management.comment.CommentDAO;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
@@ -50,11 +51,12 @@ public class SearchServlet extends HttpServlet {
                         ArrayList<User> creatorInCategoryList = uDAO.getBestCreatorsInCategory(categoryID);
                         ArrayList<Integer> numSubscriberList = new ArrayList<Integer>();
                         ArrayList<ArrayList<Category>> cateListList=new ArrayList<ArrayList<Category>>();
-                        CategoryDAO cateDAO=new CategoryDAO();
+                        UserCategoryMapDAO cateDAO=new UserCategoryMapDAO();
                         for (User user : creatorInCategoryList) {
                             int numsubscriber = uDAO.getSubscribers(user).size();
                             numSubscriberList.add(numsubscriber);
-                            ArrayList<Category>cateList= cateDAO.getCategoriesByCreator(user);
+                            ArrayList<Category>cateList= cateDAO.getCategoriesByUser(user);
+                            System.err.println("cateList size"+ cateList.size());
                             cateListList.add(cateList);
                         }
                         request.setAttribute("numSubscriberList", numSubscriberList);
@@ -87,11 +89,11 @@ public class SearchServlet extends HttpServlet {
                         ArrayList<User> searchedUsers = uDAO.getSearchUser(searchedString);
                         ArrayList<Integer> numSubscriberList = new ArrayList<Integer>();
                         ArrayList<ArrayList<Category>> cateListList=new ArrayList<ArrayList<Category>>();
-                        CategoryDAO cDAO=new CategoryDAO();
+                        UserCategoryMapDAO cDAO=new UserCategoryMapDAO();
                         for (User user : searchedUsers) {
                             int numsubscriber = uDAO.getSubscribers(user).size();
                             numSubscriberList.add(numsubscriber);
-                            ArrayList<Category>cateList= cDAO.getCategoriesByCreator(user);
+                            ArrayList<Category>cateList= cDAO.getCategoriesByUser(user);
                             cateListList.add(cateList);
                         }
                         request.setAttribute("numSubscriberList", numSubscriberList);

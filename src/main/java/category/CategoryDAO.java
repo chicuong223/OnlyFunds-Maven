@@ -55,47 +55,6 @@ public class CategoryDAO {
         return lst;
     }
 
-    public ArrayList<Category> getCategoriesByCreator(User user) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        ArrayList<Category> lst = new ArrayList<>();
-        try {
-            con = DBConnect.makeConnection();
-            if (con != null) {
-                String sql = 
-                          "select ucm.*, c.Name\n"
-                        + "from User_Category_Map ucm, Category c\n"
-                        + "where ucm.username=? \n"
-                        + "	and c.id=ucm.category_id";
-                ps = con.prepareStatement("sql");
-                ps.setString(1, user.getUsername());
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    int categoryId = rs.getInt("id");
-                    String categoryName = rs.getString("name");
-                    Category category = new Category(categoryId, categoryName);
-                    lst.add(category);
-                }
-            }
-        } catch (SQLException e) {
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-            }
-        }
-        return lst;
-    }
-
     //get category by id
     public Category getCategoryByID(int id) {
         Connection con = null;

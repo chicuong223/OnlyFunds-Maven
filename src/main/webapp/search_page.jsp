@@ -35,7 +35,7 @@
                 </c:forEach>
             </div>
             <div class="Posts">
-                <c:forEach items="${postList}" var="post">
+                <c:forEach items="${postList}" var="post" varStatus="postLoop">
                     <div>
                         <a href="PostDetailServlet?id=${post.postId}" class="post">
                             <div class="container border my-5 overflow-hidden ">
@@ -61,8 +61,12 @@
                                             </div>
                                         </div>
                                     </div--%>
+                                    <>
                                 </div>
                             </div>
+                            <div>num view: ${post.viewCount}</div>
+                            <div>num like: ${numLikeList[postLoop.index]}</div>
+                            <div>num comment: ${numCommentList[postLoop.index]}</div>
                         </a>
                     </div>
                 </c:forEach>
