@@ -20,7 +20,7 @@
         <body>
             <!-- Main content -->
             <main class="main-container" id="main-container">
-            <c:import url="vertical_navbar_post.jsp"></c:import>
+            <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
                 <div class="main-content" style="position:relative">
                     <!-- category bar -->
                 <c:import url="category-bar.html"></c:import>
