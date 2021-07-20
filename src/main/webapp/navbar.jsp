@@ -19,8 +19,9 @@
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
               crossorigin="anonymous">
         <!-- CSS by Quang Dung -->
-        <link rel="stylesheet" href="styles/Welcome Page.css">
-        <link rel="stylesheet" href="styles/Navbar.css">
+        <!--<link rel="stylesheet" href="styles/Welcome Page.css">-->
+        <link type="text/css" rel="stylesheet" href="styles/navbar.css">
+        <!--<link rel="stylesheet" href="/styles/shared.css">-->
         <link rel="icon" href="images/logo_head.png" type="image/icon type">
         <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
     </head>
@@ -139,7 +140,7 @@
                                         <div class="dropdown-menu m-0 p-0" style="width: 200px; position: absolute; left: 85vw;">
                                             <a href="ManageAccount" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage account</a>
                                             <a href="ManageCreatorPage" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage creator page</a>
-                                            <a href="ManageSubscription" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage subscription</a>
+                                            <a href="ManageSubscriptions" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage subscription</a>
                                             <form class="col-12 nav-link m-0 p-0 text-center border-bottom" action="ViewTransactionHistory" method="post">
                                                 <input type="submit" style="outline: none; background: none; border: none" value="Transactions History"/>
                                             </form>

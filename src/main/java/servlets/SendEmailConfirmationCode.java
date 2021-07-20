@@ -38,7 +38,7 @@ public class SendEmailConfirmationCode extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    int sessionTimeOut = 180;//180s
+//    int sessionTimeOut = 180;//180s
     String emailConfirmPage = "register_otp.jsp";//page addr to enter confirm code
     String emailErrorpage = "register.jsp";//page in case cannot send email 
 
@@ -47,7 +47,7 @@ public class SendEmailConfirmationCode extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         HttpSession session=request.getSession();
-        session.setMaxInactiveInterval(sessionTimeOut);
+//        session.setMaxInactiveInterval(sessionTimeOut);
         if ((User) session.getAttribute("user") != null) {
             newUser = (User) session.getAttribute("user");
             try {

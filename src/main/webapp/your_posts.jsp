@@ -4,6 +4,7 @@
     Author     : chiuy
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:if test="${CreatorInfoServletFlag == null}">
@@ -51,7 +52,7 @@
                                         <p class="mh-100">${post.key.description}</p>
                                     </div>
                                     <div class="col text-center">
-                                        <p>Posted on: <span>${post.key.uploadDate}</span></p>
+                                        <p>Posted on: <span><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MMM-yyyy"/></span></p>
                                         <div class="row">
                                             <div class="col">
                                                 <p class="fs-2">${post.key.viewCount}</p>
@@ -74,12 +75,18 @@
                 </c:forEach>
             </div>
         </main>
-        <footer>
-            <div class="paging card-footer text-center fs-5">
-                <c:forEach begin="1" end="${end}" var="i">
-                    <a href="YourPostsServlet?page=${i}" class="pageIndex">${i}</a>
-                </c:forEach>
-            </div>
+        <footer class="card-footer">
+            <ul class="pagination">
+                <c:forEach begin="1" end="${end}" var="index">
+                    <c:if test="${param.page == index}">
+                        <c:set var="active" value="active"/>
+                    </c:if>
+                    <c:if test="${param.page != index}">
+                        <c:set var="active" value=""/>
+                    </c:if>
+                    <li class="page-item ${active}"><a href="YourPostsServlet?page=${index}" class="page-link">${index}</a></li>
+                    </c:forEach>
+            </ul>
         </footer>
     </body>
 </html>

@@ -251,7 +251,7 @@ public class UserDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<User> lst = new ArrayList<>();
-        String sql = "SELECT DISTINCT TOP 10 [User].*, tierNo.sumNo\n"
+        String sql = "SELECT DISTINCT TOP 4 [User].*, tierNo.sumNo\n"
                 + "FROM\n"
                 + "(\n"
                 + "	SELECT Tier.username as username, SUM(countNo) as sumNo \n"

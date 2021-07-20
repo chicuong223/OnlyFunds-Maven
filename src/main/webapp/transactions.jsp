@@ -11,17 +11,69 @@
     <html>
         <head>
             <title>Transactions History</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
+            <script>
+                $(document).ready(function () {
+                    var start = 1;
+                    var filter = "All";
+                    //if user changes filter
+                    //empty out the table
+                    //reset start = 1
+                    //get transactions according to filter
+                    function changeFilter(content) {
+                        filter = content;
+                        $('#billList').empty();
+                        start = 1;
+                        getTransactions(start, start + 7);
+                        start += 8;
+                    }
+                    //add events to all filter buttons
+                    $('.filter').each(function () {
+                        $(this).click(() => {
+                            changeFilter($(this).text());
+                        });
+                    });
+                    if ($(document).height() === $(window).height()) {
+                        getTransactions(start, start + 7, "");
+                        start += 8;
+                    }
+                    $(window).scroll(() => {
+                        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
+                            getTransactions(start, start, "");
+                            start += 1;
+                        }
+                    });
+                    function getTransactions(startNo, endNo, creator) {
+                        $.post('ViewTransactionHistory', {filter: filter, start: startNo, end: endNo, creator: creator}, function (response) {
+                            $('#billList').append(response);
+                        }, 'text');
+                    }
+
+                    $('#btnSearchTrans').click(() => {
+                        var creatorName = document.getElementById("creatorName").value;
+                        filter = "search";
+                        $('#billList').empty();
+                        start = 1;
+                        getTransactions(start, start+7, creatorName);
+                        start += 8;
+                    });
+                });
+            </script>
             <header>
                 <h1>Transactions History</h1>
             </header>
             <main>
+                <div class="input-group">
+                    <input type="input" name="searchText" id="creatorName"/>
+                    <button class="btn btn-secondary fas fa-search" id="btnSearchTrans"></button>
+                </div>
             <c:set var="user" value="${sessionScope.user}"></c:set>
-            <button class="btn btn-primary" onclick="location.href = 'ViewTransactionHistory?username=${username}'">All</button>
-            <button class="btn btn-danger" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=send'">Sending Transactions</button>
-            <button class="btn btn-success" onclick="location.href = 'ViewTransactionHistory?username=${username}&filter=receive'">Receiving Transactions</button>
-            <table class="table table-bordered">
+            <button class="btn btn-primary filter">All</button>
+            <button class="btn btn-danger filter">Sent</button>
+            <button class="btn btn-success filter">Received</button>
+            <table class="table table-bordered table-hover w-75 mx-auto">
                 <thead class="table-primary">
                     <tr>
                         <th>Content</th>
@@ -31,30 +83,17 @@
                         <th>Transaction Date</th>
                     </tr>
                 </thead>
-                <tbody class="table-success">
-                    <c:forEach items="${transactions}" var="bill">
-                        <tr <c:if test="${bill.sender.username eq user.username}">class="table-danger"</c:if>>
-                            <td>${bill.content}</td>
-                            <td>${bill.sender.username}</td>
-                            <td>${bill.recipient.username}</td>
-                            <td>${bill.price}</td>
-                            <td>${bill.transactionDate}</td>
-                        </tr>
-                    </c:forEach>
+                <tbody class="table-success" id="billList">
+                    <!-- the list of transactions is here -->
                 </tbody>
             </table>
         </main>
         <footer>
-            <c:forEach begin="1" end="${end}" var="index">
-                <c:choose>
-                    <c:when test='${filter == null}'>
-                        <a href="ViewTransactionHistory?username=${user.username}&page=${index}">${index}</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="ViewTransactionHistory?username=${user.username}&page=${index}&filter=${filter}">${index}</a>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
+            <nav>
+                <ul class="pagination" id="pages">
+
+                </ul>
+            </nav>
         </footer>
     </body>
 </html>
