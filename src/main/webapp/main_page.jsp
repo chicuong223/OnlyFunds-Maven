@@ -42,14 +42,21 @@
                                     </div>
                                     <div class='card-footer p-2 pt-1 pb-1'>
                                         <!--<small><i class='fas fa-thumbs-up'></i></small>-->
-<!--                                        <small><i class='fas fa-comment'></i></small>
-                                        <small><i class='far fa-eye'></i></small>-->
+                                        <!--                                        <small><i class='fas fa-comment'></i></small>
+                                                                                <small><i class='far fa-eye'></i></small>-->
                                     </div>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
                 </div>
+            </div>
+            <div>
+                <ul class='pagination'>
+                    <c:forEach var="index" begin="1" end="${end}">
+                        <li class="page-item"><a href='homepage?page=${index}'>${index}</a></li>
+                        </c:forEach>
+                </ul>
             </div>
         </main>
     </body>

@@ -48,15 +48,12 @@ public class HomepageServlet extends HttpServlet {
             pageIndex = Integer.parseInt(strPage);
         int start = pageIndex * 8 - (8 - 1);
         int end = pageIndex * 8;
-        List<Post> postList = postDAO.getPosts(start, end); //        List<Post> postList = postDAO.getPostsThatUserCanView(user).stream().limit(10).collect(Collectors.toList());
-        request.setAttribute("postList", postList);
-//        UserDAO userDAO = new UserDAO();
-//        List<User> subList = userDAO.getCreatorThatUserSubscribedTo(user).stream().limit(3).collect(Collectors.toList());
-//        List<User> followList = userDAO.getCreatorThatUserFollows(user).stream().limit(3).collect(Collectors.toList());
-//        List<User> userCatList = userDAO.getCreatorsSameCategoryAsUser(user).stream().limit(3).collect(Collectors.toList());
-//        request.setAttribute("cateCreators", userCatList);
-//        request.setAttribute("subCreators", subList);
-//        request.setAttribute("followCreators", followList);
+        List<Post> postList = postDAO.getPosts(start, end);
+        int count = postDAO.countPosts();
+        int endPage = count / 8;
+        if (count % 8 != 0)
+            endPage++;
+        request.setAttribute("end", endPage);
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("login");
             return;
