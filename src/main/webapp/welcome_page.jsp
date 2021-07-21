@@ -24,7 +24,7 @@
                 <div class="main-content">
                     <!-- category bar -->
                 <c:import url="category-bar.html"></c:import>
-                    <div class="container" style="margin: 1rem">
+                    <div class="container">
                         <div class="row gx-4 p-3 mb-2">
                             <div class="header mb-4">
                                 <span class="p-0 mb-5 mt-3"
@@ -37,7 +37,7 @@
                                     <a href="CreatorInfoServlet?username=${creator.key.username}" class="stretched-link"></a>
                                     <img src="images/avatars/${creator.key.avatarURL}" class="avatar" alt="avatar">
                                     <div class="card-body p-0">
-                                        <h5 class="card-title">${creator.key.username}</h5>
+                                        <h5 class="card-title text-truncate">${creator.key.username}</h5>
                                         <h6 class="card-subtitle text-muted">1234 subscribers</h6>
                                         <hr style="margin: .2rem 0;">
                                         <div class="cat-tags">
@@ -61,7 +61,7 @@
                                 <div class=card id=post>
                                     <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
                                     <div class='card-header p-2 pt-1'>
-                                        <h4 class='card-title fw-bold'>${post.key.title}</h4>
+                                        <h4 class='card-title fw-bold text-truncate'>${post.key.title}</h4>
                                         <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
                                     </div>
                                     <div class='card-body p-2 pt-1'>

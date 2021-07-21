@@ -31,7 +31,7 @@
                                 <div class=card id=post>
                                     <a href="PostDetailServlet?id=${post.postId}" class=stretched-link></a>
                                     <div class='card-header p-2 pt-1'>
-                                        <h4 class='card-title fw-bold'>${post.title}</h4>
+                                        <h4 class='card-title fw-bold text-truncate'>${post.title}</h4>
                                         <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.uploader.username}</h6>
                                     </div>
                                     <div class='card-body p-2 pt-1'>

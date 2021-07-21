@@ -11,7 +11,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
-<div class="vertical-navbar" id="vertical-navbar" onmouseover="expand()" onmouseout="contract()">
+<div class="vertical-navbar" id="vertical-navbar">
     <ul class="first-list" style="border-bottom: 2px solid black;">
         <li class="list">
             <a href="WelcomePageServlet">
@@ -29,19 +29,26 @@
         </li>
         <li class="list">
             <a href="PostListServlet?action=free">
-                <span class="icon"><i class="far fa-compass"></i></span>
+                <span class="icon"><ion-icon name="globe-outline"></ion-icon></span>
                 <span class="title">Free post</span>
             </a>
         </li>
     </ul>
-    <div class="seccond-list" style="border-bottom: 2px solid black;">
-        Please login or register to have more access<br>
-        <button class="btn btn-primary" onclick="location.href = 'login'">Login</button>
-        <button class="btn btn-primary" onclick="location.href = 'RegisterServlet'">Sign up</button>
+    <div class="second-list" style="border-bottom: 2px solid black;">
+        <span>Please login or sign up to have access to more features</span><br>
+        <button class="btn btn-sm btn-primary" onclick="location.href = 'login'">Login</button>
+        <button class="btn btn-sm btn-primary" onclick="location.href = 'RegisterServlet'">Sign up</button>
     </div>
     <ul class="third-list">
         <li class="list">
-            <h3 class="ps-3 pt-3">Category</h3>
+            <a href="#toggle" class="marker" onclick="toggle('.third-list')">
+                <span class="marker">
+                    Category
+                </span>
+                <span>
+                    <ion-icon name="caret-forward-outline"></ion-icon>
+                </span>
+            </a>
         </li>
         <li class="list">
             <a href="SearchServlet?a=searchtag&id=1">
@@ -81,5 +88,16 @@
         </li>
     </ul>
 </div>
+<script type="text/javascript">
+        function toggle(parameter) {
+            let list = document.querySelector(parameter);
+            if(list.classList.contains('active')) {
+                list.classList.remove('active');
+            }
+            else {
+                list.classList.add('active');
+            }
+        }
+    </script>
 
 

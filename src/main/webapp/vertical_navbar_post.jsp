@@ -54,24 +54,6 @@
         </c:if>
         <c:if test="${sessionScope.user != null}">
             <li class="list">
-                <a href="YourPostsServlet">
-                    <span class="icon"><i class="far fa-address-book"></i></span>
-                    <span class="title"> My Posts</span>
-                </a>
-            </li>
-            <li class="list">
-                <a href="LikedPostsServlet">
-                    <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
-                    <span class="title">Liked Posts</span>
-                </a>
-            </li>
-            <li class="list">
-                <a href="BookmarkedPostsServlet">
-                    <span class="icon"><ion-icon name="save-outline"></ion-icon></span>
-                    <span class="title"> Saved Posts</span>
-                </a>
-            </li>
-            <li class="list">
                 <a href="ManageSubscriptions">
                     <span class="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
                     <span class="title"> My Subscription</span>
@@ -91,9 +73,48 @@
             </li>
         </c:if>
     </ul>
-    <ul class="seccond-list">
+    <c:if test="${sessionScope.user != null}">
+        <ul class="second-list">
+            <li class="list">
+                <a href="#toggle" class="marker" onclick="toggle('.second-list')">
+                    <span class="marker">
+                        Posts
+                    </span>
+                    <span>
+                        <ion-icon name="caret-forward-outline"></ion-icon>
+                    </span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="YourPostsServlet">
+                    <span class="icon"><i class="far fa-address-book"></i></span>
+                    <span class="title"> My Posts</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="LikedPostsServlet">
+                    <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
+                    <span class="title">Liked Posts</span>
+                </a>
+            </li>
+            <li class="list">
+                <a href="BookmarkedPostsServlet">
+                    <span class="icon"><ion-icon name="save-outline"></ion-icon></span>
+                    <span class="title"> Saved Posts</span>
+                </a>
+            </li>
+        </ul>
+    </c:if>
+    <ul class="third-list">
         <li class="list">
-            <h3 class="ps-3 pt-3">Category</h3>
+            <a href="#toggle" class="marker" onclick="toggle('.third-list')">
+                <span class="marker">
+                    Category
+                </span>
+                <span>
+                    <ion-icon name="caret-forward-outline"></ion-icon>
+                </span>
+            </a>
         </li>
         <li class="list">
             <a href="SearchServlet?a=searchtag&id=1">
@@ -131,6 +152,15 @@
                 <span class="title"> Others</span>
             </a>
         </li>
-
     </ul>
 </div>
+<script type="text/javascript">
+    function toggle(parameter) {
+        let list = document.querySelector(parameter);
+        if (list.classList.contains('active')) {
+            list.classList.remove('active');
+        } else {
+            list.classList.add('active');
+        }
+    }
+</script>
