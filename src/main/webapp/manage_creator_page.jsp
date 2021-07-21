@@ -37,7 +37,7 @@
                             <a href="EditTierServlet?tierid=${tier.tierId}" class="btn btn-warning">Edit</a>
                             <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}">Delete</a>
                             <div class="modal" id="modal-${tier.tierId}">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Delete Tier</h5>

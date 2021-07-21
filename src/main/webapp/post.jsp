@@ -268,7 +268,7 @@
                                         <a href="EditPostServlet?id=${requestScope.post.postId}" class="float-end link-primary mx-2"><i class="fa fa-pencil text-dark" aria-hidden="true"></i>Edit</a>
                                         <a href="#" class="float-end link-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa fa-trash text-dark" aria-hidden="true"></i>Delete</a>
                                         <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modelTitlel">Delete Post</h5>
@@ -319,7 +319,7 @@
                                             <c:if test="${cmt.user.username eq sessionScope.user.username}">
                                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-modal-${cmt.commentID}">Edit</button>
                                                 <div class="editform modal" id="edit-modal-${cmt.commentID}">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Edit comment</h5>
@@ -341,7 +341,7 @@
                                                 </div>
                                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal-${cmt.commentID}">Delete</button>
                                                 <div class="modal" id="delete-modal-${cmt.commentID}">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Delete comment</h5>

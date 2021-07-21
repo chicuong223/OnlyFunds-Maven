@@ -74,7 +74,12 @@
                                 <!-- Mỗi tier tạo 1 column -->
                                 <div class="col-lg-4 ps-0 pe-0 mx-auto">
                                     <div class="card tier mx-auto">
-                                        <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
+                                        <c:if test="${sessionScope.user != null}">
+                                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user == null}">
+                                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#pleaseLogin"></a>
+                                        </c:if>
                                         <h4 class="card-header text-center text-truncate t-name">${tier.tierTitle}</h4>
                                         <div class="card-body p-2">
                                             <h4 class="card-title text-center price">${tier.price} USD</h4>
@@ -167,7 +172,7 @@
         </main>
         <c:forEach items="${tiers}" var="tier">
             <div class="modal fade" id="modal-${tier.tierId}">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Subscribe</h5>
@@ -189,5 +194,22 @@
                 </div>
             </div>
         </c:forEach>
+        <div class="modal fade" id="pleaseLogin">
+            <div class="modal-dialog modal-dialog-centered modal-dialog modal-dialog-centered-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Subscribe</h5>
+                        <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Please sign in to continue</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-login" data-bs-dismiss="modal">Sign in</button>
+                        <button class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
