@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println(request.getHeader("referer"));
+//        System.out.println(request.getHeader("referer"));
 //        response.sendRedirect("login.jsp");
     }
 
@@ -49,14 +49,15 @@ public class LoginServlet extends HttpServlet {
         NotificationDAO ntDAO = new NotificationDAO();
         UserCategoryMapDAO ucDao = new UserCategoryMapDAO();
         User user = dao.checkLogin(username, password);
+        HttpSession session = request.getSession();
         String src = request.getHeader("referer");
-        String dest = src.substring(src.lastIndexOf("/") + 1);
+        if(src.substring(src.lastIndexOf('/') + 1).contains("WelcomePage"))
+            src ="homepage";
         if (request.getSession().getAttribute("dest") == null)
-            request.getSession().setAttribute("dest", dest);
+            request.getSession().setAttribute("dest", src);
         if (user == null) {
             attempt++;
             if (attempt >= 5) {
-                HttpSession session = request.getSession();
                 session.setAttribute("LOGINERROR", "Too many login attempts. Please try again after 30 minutes");
                 session.setMaxInactiveInterval(1800);
                 attempt = 0;
@@ -71,13 +72,12 @@ public class LoginServlet extends HttpServlet {
             cookie.setMaxAge(30 * 24 * 3600);
             response.addCookie(cookie);
         }
-        HttpSession session = request.getSession();
         ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
         List<Notification> unreadNotiList = ntDAO.getNotificationsByRecipient(user).stream().limit(10).collect(Collectors.toList());
         session.setAttribute("user", user);
         session.setAttribute("userCatList", userCatList);
         session.setAttribute("notiList", unreadNotiList);
-        response.sendRedirect((String) request.getSession().getAttribute("dest"));
+        response.sendRedirect((String) session.getAttribute("dest"));
         session.removeAttribute("dest");
     }
 
