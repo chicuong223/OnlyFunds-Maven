@@ -12,6 +12,7 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <link rel="stylesheet" href="styles/main_page.css">
+            <title>${actionTitle}</title>
         </head>
         <body>
             <main class="main-container">

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +37,7 @@ public class PostListServlet extends HttpServlet {
         String strPage = request.getParameter("page");
         String actionTitle = "";
         PostDAO postDAO = new PostDAO();
+        User user = (User) request.getSession().getAttribute("user");
         int count = 0;
         int pageIndex = 0;
         if (strPage == null)
@@ -60,9 +62,18 @@ public class PostListServlet extends HttpServlet {
             }
             actionTitle = "Free Posts";
         }
+        else if(action.equals("recent")){
+            actionTitle = "Recent Posts";
+            count = postDAO.countPosts();
+            List<Post> postList = postDAO.getPosts(start, end);
+            for (Post post : postList) {
+                int countLike = new PostLikeDAO().countPostLikeByPost(post);
+                postMap.put(post, countLike);
+            }
+        }
         int endPage = count / 8;
-        System.out.println(count);
-        System.out.println(endPage);
+//        System.out.println(count);
+//        System.out.println(endPage);
         if (count % 8 != 0)
             endPage++;
         System.out.println(endPage);
