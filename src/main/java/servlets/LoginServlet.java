@@ -32,10 +32,12 @@ import utils.HashPassword;
 public class LoginServlet extends HttpServlet {
 
     private int attempt = 0;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
+        System.out.println(request.getHeader("referer"));
+//        response.sendRedirect("login.jsp");
     }
 
     @Override
@@ -47,6 +49,10 @@ public class LoginServlet extends HttpServlet {
         NotificationDAO ntDAO = new NotificationDAO();
         UserCategoryMapDAO ucDao = new UserCategoryMapDAO();
         User user = dao.checkLogin(username, password);
+        String src = request.getHeader("referer");
+        String dest = src.substring(src.lastIndexOf("/") + 1);
+        if (request.getSession().getAttribute("dest") == null)
+            request.getSession().setAttribute("dest", dest);
         if (user == null) {
             attempt++;
             if (attempt >= 5) {
@@ -60,7 +66,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        if(request.getParameterValues("remember") != null){
+        if (request.getParameterValues("remember") != null) {
             Cookie cookie = new Cookie("user", user.getUsername());
             cookie.setMaxAge(30 * 24 * 3600);
             response.addCookie(cookie);
@@ -71,7 +77,8 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("user", user);
         session.setAttribute("userCatList", userCatList);
         session.setAttribute("notiList", unreadNotiList);
-        response.sendRedirect("homepage");
+        response.sendRedirect((String) request.getSession().getAttribute("dest"));
+        session.removeAttribute("dest");
     }
 
 }
