@@ -14,7 +14,7 @@
     <div class="vertical-navbar" id="vertical-navbar" onmouseover="expand()" onmouseout="contract()">
             <ul class="first-list" style="border-bottom: 2px solid black;">
                 <li class="list">
-                    <a href="#Home">
+                    <a href="WelcomePageServlet">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#Explore">
+                    <a href="PostListServlet?action=free">
                         <span class="icon"><i class="far fa-compass"></i></span>
                         <span class="title">Free post</span>
                     </a>
@@ -36,8 +36,8 @@
             </ul>
             <div class="seccond-list" style="border-bottom: 2px solid black;">
                 Please login or register to have more access<br>
-                <button class="btn btn-primary">Login</button>
-                <button class="btn btn-primary">Sign up</button>
+                <button class="btn btn-primary" onclick="location.href='login'">Login</button>
+                <button class="btn btn-primary" onclick="location.href='RegisterServlet'">Sign up</button>
             </div>
             <ul class="third-list">
                 <li class="list">
