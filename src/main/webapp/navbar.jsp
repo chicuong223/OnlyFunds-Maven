@@ -13,6 +13,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
         <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -20,6 +21,7 @@
               crossorigin="anonymous">
         <!-- CSS by Quang Dung -->
         <!--<link rel="stylesheet" href="styles/Welcome Page.css">-->
+        <link rel="stylesheet" href="styles/login.css">
         <link type="text/css" rel="stylesheet" href="styles/navbar.css">
         <!--<link rel="stylesheet" href="/styles/shared.css">-->
         <link rel="icon" href="images/logo_head.png" type="image/icon type">
@@ -73,14 +75,15 @@
                         <c:choose>
                             <c:when test='${sessionScope.user == null || cookie.user.value == ""}'>
                                 <!-- For visitors -->
-                                <form action="login" method="GET">
-                                    <button class="btn btn-sm rounded-pill" id="login-btn" type="submit"><i
-                                            class="fas fa-sign-in-alt me-1 align-middle"></i><span
-                                            class="align-middle">Login</span></button>
-                                </form>
+                                <!--<form action="login" method="GET">-->
+                                <button class="btn btn-sm rounded-pill" id="login-btn" type="submit" data-bs-toggle="modal" data-bs-target="#modal-login"><i
+                                        class="fas fa-sign-in-alt me-1 align-middle"></i><span
+                                        class="align-middle">Login</span></button>
+                                <!-- login form modal -->
+                                <!--</form>-->
                                 <form action="RegisterServlet" method="GET">
                                     <button class="btn btn-sm rounded-pill ms-3" id="signup-btn"><i
-                                            class="fas fa-user align-middle"></i>
+                                            class="fa fa-user-circle align-middle"></i>
                                         <span class="align-middle">Register</span>
                                     </button>
                                 </form>
@@ -121,9 +124,62 @@
             </div>
         </nav>
 
+        <!-- modal login -->
+        <c:if test="${sessionScope.user == null}" >
+            <div class="modal fade" id="modal-login" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Login</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="login" method="POST" id="loginForm">
+                                <h2 class="text-center">Welcome</h2>
+                                <p class="text-center text-danger" id="error">${LOGINERROR}</p>
+                                <div class="form-floating">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" class="form-control" name="username" id="username"
+                                           value="" placeholder="Username" style="padding-left: 2.6rem;"
+                                           onkeypress="return RestrictSpace()" <c:if test="${x != null}">disabled</c:if>>
+                                           <p class="text-danger" id="usernameError"></p>
+                                           <label for="username" style="padding-left: 2.9rem;">Username</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" class="form-control" name="password" id="password"
+                                               placeholder="Password" style="padding-left: 2.6rem;" 
+                                               onkeypress="return RestrictSpace()" <c:if test="${x != null}">disabled</c:if>>
+                                        <p class="text-danger" id="passwordError"></p>
+                                        <label for="password" style="padding-left: 2.9rem;">Password</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-4">
+                                        <input class="form-check-input" type="checkbox" name="remember" value="rem"/>
+                                        <label class="form-check-label" for="checkbox">Remember me</label>
+                                        <span class="float-end">
+                                            <a href="passwordEmail" style="text-decoration: none; color: red; font-weight: bold;">Forgot password?</a>
+                                        </span>
+                                    </div>
+                                    <div class="w-100">
+                                        <button type="submit" name="login" class="btn btn-success w-100" id="loginBtn" <c:if
+                                                test="${x != null}">disabled</c:if>
+                                                >Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <div>
+                                    <p>Don't have an account? <a href="RegisterServlet" style="text-decoration: none; color: red; font-weight: bold;">Sign up</a></p>                      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </c:if>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
         crossorigin="anonymous"></script>
+        <script src="scripts/login_script.js" defer></script>
     </body>
 
 </html>

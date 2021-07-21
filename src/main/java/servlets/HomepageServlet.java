@@ -39,6 +39,10 @@ public class HomepageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         PostDAO postDAO = new PostDAO();
         String strPage = request.getParameter("page");
         int pageIndex = 0;
@@ -48,16 +52,13 @@ public class HomepageServlet extends HttpServlet {
             pageIndex = Integer.parseInt(strPage);
         int start = pageIndex * 8 - (8 - 1);
         int end = pageIndex * 8;
-        List<Post> postList = postDAO.getPosts(start, end);
+//        List<Post> postList = postDAO.getPosts(start, end);
+        TreeMap<Post, Boolean> postList = getPosts(user, start, end);
         int count = postDAO.countPosts();
         int endPage = count / 8;
         if (count % 8 != 0)
             endPage++;
         request.setAttribute("end", endPage);
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("login");
-            return;
-        }
         request.setAttribute("postList", postList);
         request.getRequestDispatcher("main_page.jsp").forward(request, response);
     }

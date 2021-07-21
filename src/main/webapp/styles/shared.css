@@ -27,3 +27,15 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.premium .card-text {
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1.5);
+}
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    font-size: 16px;
+  }
