@@ -151,5 +151,29 @@
                 </div>
             </div>
         </main>
+        <c:forEach items="${tiers}" var="tier">
+            <div class="modal fade" id="modal-${tier.tierId}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Subscribe</h5>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="SubscribeServlet" method="POST" id="form-${tier.tierId}">
+                                <input type="hidden" name="tierid" value="${tier.tierId}"/>
+                                <p><span class="fw-bold">Tier: </span> ${tier.tierTitle}</p>
+                                <p><span class="fw-bold">Description: </span> ${tier.description}</p>
+                                <p><span class="fw-bold">Price: </span> ${tier.price} USD</p>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit"class="btn btn-info" value="Subscribe" form="form-${tier.tierId}">
+                            <button class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
     </body>
 </html>

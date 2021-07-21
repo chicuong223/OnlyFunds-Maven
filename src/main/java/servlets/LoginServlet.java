@@ -51,7 +51,9 @@ public class LoginServlet extends HttpServlet {
         User user = dao.checkLogin(username, password);
         HttpSession session = request.getSession();
         String src = request.getHeader("referer");
-        if(src.substring(src.lastIndexOf('/') + 1).contains("WelcomePage"))
+        //nếu ở welcomepage
+        //sau khi login thì vô homepage
+        if(src.substring(src.lastIndexOf('/') + 1).contains("WelcomePage") || src.substring(src.lastIndexOf('/') + 1).trim().isEmpty())
             src ="homepage";
         if (request.getSession().getAttribute("dest") == null)
             request.getSession().setAttribute("dest", src);
