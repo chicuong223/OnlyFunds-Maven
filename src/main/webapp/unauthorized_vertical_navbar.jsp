@@ -39,7 +39,7 @@
         <button class="btn btn-primary" onclick="location.href = 'login'">Login</button>
         <button class="btn btn-primary" onclick="location.href = 'RegisterServlet'">Sign up</button>
     </div>
-    <ul class="seccond-list">
+    <ul class="third-list">
         <li class="list">
             <h3 class="ps-3 pt-3">Category</h3>
         </li>

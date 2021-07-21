@@ -11,6 +11,8 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <link rel="stylesheet" href="styles/user_page.css">
+            <link rel="stylesheet" href="styles/shared.css">
             <title>Creator's Info</title>
         </head>
         <body>
@@ -67,89 +69,85 @@
                         <div class="col-12 mb-3 text-center">
                             <h2 class="fw-bold" style="text-transform: uppercase;">Subscribe to this Creator</h2>
                         </div>
-                        <!-- Mỗi tier tạo 1 column -->
-                        <c:forEach var="tier" items="${tiers}">
-                            <div class="col-lg-4 ps-0 pe-0 mx-auto">
-                                <div class="card tier mx-auto">
-                                    <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
-                                    <h4 class="card-header text-center text-truncate t-name">Tier name 1</h4>
-                                    <div class="card-body p-2">
-                                        <h4 class="card-title text-center price">${tier.price} USD</h4>
-                                        <p class="description">
-                                            ${tier.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal" id="modal-${tier.tierId}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Subscribe Confirmation</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <c:if test="${subscribed != null}">
+                            <h3 class="fw-bold text-danger">You have already subscribed to this creator</h3>
+                        </c:if>
+                        <c:if test="${subscribed == null}">
+                            <c:forEach items="${tiers}" var="tier">
+                                <!-- Mỗi tier tạo 1 column -->
+                                <div class="col-lg-4 ps-0 pe-0 mx-auto">
+                                    <div class="card tier mx-auto">
+                                        <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
+                                        <h4 class="card-header text-center text-truncate t-name">${tier.tierTitle}</h4>
+                                        <div class="card-body p-2">
+                                            <h4 class="card-title text-center price">${tier.price} USD</h4>
+                                            <p class="description">
+                                                ${tier.description}
+                                            </p>
                                         </div>
-                                        <c:choose>
-                                            <c:when test="${sessionScope.user == null}">
-                                                <div class="modal-body">
-                                                    <p class="text-danger">Please login to continue</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <a class="btn btn-success" href="login">Login</a>
-                                                </div>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <form action="SubscribeServlet" method="post">
-                                                    <input type="hidden" name="tierid" value="${tier.tierId}"/>
-                                                    <div class="modal-body">
-                                                        <p>Title: ${tier.tierTitle}</p>
-                                                        <p>Description: ${tier.description}</p>
-                                                        <p>Price: ${tier.price} USD</p>
-                                                        <p class="text-primary">Do you want to subscribe to this tier?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Confirm</button>
-                                                    </div>
-                                                </form>
-                                            </c:otherwise>
-                                        </c:choose>
                                     </div>
                                 </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                        </c:if>
                         <hr class="mt-4 mb-2">
                     </div>
                     <!-- Post -->
-                <div class="row mt-2 mb-2 mx-auto" style="width: 100%;">
-                    <!-- Header -->
-                    <div class="col-12 text-center">
-                        <h2 class="fw-bold" style="text-transform: uppercase;;">Recent posts</h2>
-                    </div>
-                    <c:forEach items="${postList}" var="post">
-                    <div class="col-lg-4 mb-2">
-                        <!-- Nếu là premium thì thêm class premium để blur text -->
-                        <div class="card post premium mx-auto" id="post">
-                            <a href="PostDetailServlet?id=${post.key.postId}" class="stretched-link"></a>
-                            <div class="card-header p-2 pt-1">
-                                <h4 class="card-title fw-bold text-truncate">${post.key.title}</h4>
-                                <h6 class="card-subtitle text-muted"
-                                    style="font-size: 16px; position: relative; z-index: 100;">${post.key.uploader.username}</h6>
-                            </div>
-                            <div class="card-body p-2 pt-1">
-                                <p class="card-text">
-                                    ${post.key.description}
-                                </p>
-                            </div>
-                            <div class="card-footer p-2 pt-1 pb-1">
-                                <small><i class="fas fa-thumbs-up"></i> 1234</small>
-                                <small><i class="fas fa-comment"></i> 1234</small>
-                                <small><i class="far fa-eye"></i> 1234</small>
-                            </div>
+                    <div class="row mt-2 mb-2 mx-auto" style="width: 100%;">
+                        <!-- Header -->
+                        <div class="col-12 text-center">
+                            <h2 class="fw-bold" style="text-transform: uppercase;;">Recent posts</h2>
                         </div>
+                        <c:forEach items="${postList}" var="post">
+                            <div class="col-lg-4 mb-2">
+                                <!-- Nếu là premium thì thêm class premium để blur text -->
+                                <c:if test="${post.value == false}">
+                                    <div class="card post premium mx-auto" id="post">
+                                        <div class="ribbon-wrapper">
+                                            <div class="ribbon">
+                                                Premium
+                                            </div>
+                                        </div>
+                                        <a href="PostDetailServlet?id=${post.key.postId}" class="stretched-link"></a>
+                                        <div class="card-header p-2 pt-1">
+                                            <h4 class="card-title fw-bold text-truncate">${post.key.title}</h4>
+                                            <h6 class="card-subtitle text-muted"
+                                                style="font-size: 16px; position: relative; z-index: 100;">${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class="card-body p-2 pt-1">
+                                            <p class="card-text">
+                                                Please login or signup to see this post
+                                            </p>
+                                        </div>
+                                        <div class="card-footer p-2 pt-1 pb-1">
+                                            <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                            <small><i class="fas fa-comment"></i> 1234</small>
+                                            <small><i class="far fa-eye"></i> 1234</small>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${post.value == true}">
+                                    <div class="card post mx-auto" id="post">
+                                        <a href="PostDetailServlet?id=${post.key.postId}" class="stretched-link"></a>
+                                        <div class="card-header p-2 pt-1">
+                                            <h4 class="card-title fw-bold text-truncate">${post.key.title}</h4>
+                                            <h6 class="card-subtitle text-muted"
+                                                style="font-size: 16px; position: relative; z-index: 100;">${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class="card-body p-2 pt-1">
+                                            <p class="card-text">
+                                                ${post.key.description}
+                                            </p>
+                                        </div>
+                                        <div class="card-footer p-2 pt-1 pb-1">
+                                            <small><i class="fas fa-thumbs-up"></i> 1234</small>
+                                            <small><i class="fas fa-comment"></i> 1234</small>
+                                            <small><i class="far fa-eye"></i> 1234</small>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </div>
+                        </c:forEach>
                     </div>
-                    </c:forEach>
-                </div>
                 </div>
             </div>
         </main>

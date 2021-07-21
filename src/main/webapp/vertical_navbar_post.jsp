@@ -42,6 +42,7 @@
         </li>
         <li class='list'>
             <a href='PostListServlet?action=free'>
+                <span class="icon"><ion-icon name="globe-outline"></ion-icon></span>
                 <span class='title'>Free Posts</span>
             </a>
         </li>
