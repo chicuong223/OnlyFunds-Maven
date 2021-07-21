@@ -8,6 +8,7 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <link rel="stylesheet" href="styles/main_page.css">
+            <link rel="stylesheet" href="styles/shared.css">
             <title>Only Funds</title>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
@@ -28,24 +29,40 @@
                             <!-- Mỗi post tạo 1 column tương ứng -->
                         <c:forEach var="post" items="${postList}">
                             <div class='col-lg-3 mb-3'>
-                                <div class=card id=post>
-                                    <a href="PostDetailServlet?id=${post.postId}" class=stretched-link></a>
-                                    <div class='card-header p-2 pt-1'>
-                                        <h4 class='card-title fw-bold'>${post.title}</h4>
-                                        <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.uploader.username}</h6>
+                                <c:if test="${post.value == false}">
+                                    <div class='card post premium mx-auto' id=post>
+                                        <div class="ribbon-wrapper">
+                                            <div class="ribbon">
+                                                Premium
+                                            </div>
+                                        </div>
+                                        <a href="CreatorInfoServlet?username=${post.key.uploader.username}" class=stretched-link></a>
+                                        <div class='card-header p-2 pt-1'>
+                                            <h4 class='card-title fw-bold'>${post.key.title}</h4>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class='card-body p-2 pt-1'>
+                                            <p class='card-text'>
+                                                You must subscribe to the author of this post to view
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class='card-body p-2 pt-1'>
-                                        <a href='PostDetailServlet?id=${post.postId}' class='stretched-link'></a>
-                                        <p class='card-text'>
-                                            ${post.description}
-                                        </p>
+                                </c:if>
+                                <c:if test="${post.value == true}">
+                                    <div class='card post' id=post>
+                                        <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
+                                        <div class='card-header p-2 pt-1'>
+                                            <h4 class='card-title fw-bold'>${post.key.title}</h4>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class='card-body p-2 pt-1'>
+                                            <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
+                                            <p class='card-text'>
+                                                ${post.key.description}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class='card-footer p-2 pt-1 pb-1'>
-                                        <!--<small><i class='fas fa-thumbs-up'></i></small>-->
-                                        <!--                                        <small><i class='fas fa-comment'></i></small>
-                                                                                <small><i class='far fa-eye'></i></small>-->
-                                    </div>
-                                </div>
+                                </c:if>
                             </div>
                         </c:forEach>
                     </div>
