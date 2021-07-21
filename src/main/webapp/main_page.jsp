@@ -49,14 +49,24 @@
                             </div>
                         </c:forEach>
                     </div>
+                    <nav class="d-flex justify-content-center mb-4">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <c:forEach var="index" begin="1" end="${end}">
+                                <li class="page-item"><a class="page-link" href='homepage?page=${index}'>${index}</a></li>
+                                </c:forEach>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-            </div>
-            <div>
-                <ul class='pagination'>
-                    <c:forEach var="index" begin="1" end="${end}">
-                        <li class="page-item"><a href='homepage?page=${index}'>${index}</a></li>
-                        </c:forEach>
-                </ul>
             </div>
         </main>
     </body>

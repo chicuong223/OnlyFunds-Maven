@@ -98,10 +98,9 @@
                     </nav>
                 </div>
             </div>
-        </div>
-    </main>
-    <!--        <footer style="position: relative; top:">
-    
-            </footer>-->
-</body>
+        </main>
+        <!--        <footer style="position: relative; top:">
+        
+                </footer>-->
+    </body>
 </html>

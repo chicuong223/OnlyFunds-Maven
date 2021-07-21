@@ -511,9 +511,29 @@ public class PostDAO {
         return lst;
     }
 
-    public int countPosts(){
+    public int countPostsThatHasLikes(){
          int count = -1;
-        String sql = "SELECT Count(id) as count FROM Post";
+        String sql = "SELECT Count(*) as count FROM Post WHERE is_active = 1 AND id IN \n("
+                + "SELECT post_id FROM Post_Like)";
+        try(Connection con = DBConnect.makeConnection()){
+            if(con != null){
+                try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+                   if(rs.next()){
+                       count = rs.getInt("count");
+                   }
+                }
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        return count;
+    }
+    
+     public int countPosts(){
+         int count = -1;
+        String sql = "SELECT Count(*) as count FROM Post WHERE is_active = 1";
         try(Connection con = DBConnect.makeConnection()){
             if(con != null){
                 try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
@@ -536,7 +556,7 @@ public class PostDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 String sql = "SELECT * FROM \n" +
-                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n" +
+                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r, count(*) AS likes\n" +
                     "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
                     "WHERE Post.is_active=1\n" +
                     "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
@@ -548,7 +568,7 @@ public class PostDAO {
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             Post post = new Post();
-                            post.setPostId(rs.getInt("id"));
+                            post.setPostId(rs.getInt("post_id"));
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
                             post.setViewCount(rs.getInt("view_count"));
@@ -562,7 +582,7 @@ public class PostDAO {
             }
         }
         catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
         return lst;
     }

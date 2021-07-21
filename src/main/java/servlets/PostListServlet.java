@@ -34,6 +34,7 @@ public class PostListServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String strPage = request.getParameter("page");
+        String actionTitle = "";
         PostDAO postDAO = new PostDAO();
         int count = 0;
         int pageIndex = 0;
@@ -45,8 +46,10 @@ public class PostListServlet extends HttpServlet {
         int end = pageIndex * 8;
         LinkedHashMap<Post, Integer> postMap = new LinkedHashMap<>();
         if (action.equals("like")) {
-            count = postDAO.countPosts();
+            count = postDAO.countPostsThatHasLikes();
             postMap = postDAO.getMostLikes(start, end);
+//            postMap.forEach((p, c) -> System.out.println(p.getPostId()));
+            actionTitle = "Most Liked Posts";
         }
         else if (action.equals("free")) {
             count = postDAO.countFreePosts();
@@ -55,11 +58,18 @@ public class PostListServlet extends HttpServlet {
                 int countLike = new PostLikeDAO().countPostLikeByPost(post);
                 postMap.put(post, countLike);
             }
+            actionTitle = "Free Posts";
         }
         int endPage = count / 8;
+        System.out.println(count);
+        System.out.println(endPage);
         if (count % 8 != 0)
             endPage++;
+        System.out.println(endPage);
         request.setAttribute("postList", postMap);
+        request.setAttribute("actionTitle", actionTitle);
+        request.setAttribute("end", endPage);
+        request.setAttribute("action", action);
         request.getRequestDispatcher("posts.jsp").forward(request, response);
     }
 
