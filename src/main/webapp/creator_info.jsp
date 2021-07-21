@@ -37,12 +37,9 @@
                                         class="btn btn-sm btn-primary ms-2" id="follow">Follow</button>
                             </h3>
                             <div class="cat-list text-muted mb-2">
-                                <span class="btn btn-sm cat">Art</span>
-                                <span class="btn btn-sm cat">Software & Game</span>
-                                <span class="btn btn-sm cat">Journalism</span>
-                                <span class="btn btn-sm cat">Photography</span>
-                                <span class="btn btn-sm cat">Music</span>
-                                <span class="btn btn-sm cat">Others</span>
+                                <c:forEach items="${cateList}" var="cate">
+                                    <span class="btn btn-sm cat">${cate.categoryName}</span>
+                                </c:forEach>
                             </div>
                             <p class="bio">
                                 ${creator.bio}
@@ -51,7 +48,7 @@
                         <div class="col-12 mt-2 d-flex justify-content-evenly" id="row-subheader">
                             <span class="text-center">
                                 <h4>Posts</h4>
-                                <h4>1234</h4>
+                                <h4>${count}</h4>
                             </span>
                             <span class="text-center">
                                 <h4>Following</h4>
@@ -100,7 +97,7 @@
                         <c:forEach items="${postList}" var="post">
                             <div class="col-lg-4 mb-2">
                                 <!-- Nếu là premium thì thêm class premium để blur text -->
-                                <c:if test="${post.value == false}">
+                                <c:if test="${post.value[2] == 0}">
                                     <div class="card post premium mx-auto" id="post">
                                         <div class="ribbon-wrapper">
                                             <div class="ribbon">
@@ -119,13 +116,13 @@
                                             </p>
                                         </div>
                                         <div class="card-footer p-2 pt-1 pb-1">
-                                            <small><i class="fas fa-thumbs-up"></i> 1234</small>
-                                            <small><i class="fas fa-comment"></i> 1234</small>
-                                            <small><i class="far fa-eye"></i> 1234</small>
+                                            <small><i class="fas fa-thumbs-up"></i>${post.value[0]}</small>
+                                            <small><i class="fas fa-comment"></i>${post.value[1]}</small>
+                                            <small><i class="far fa-eye"></i>${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>
-                                <c:if test="${post.value == true}">
+                                <c:if test="${post.value[2] == 1}">
                                     <div class="card post mx-auto" id="post">
                                         <a href="PostDetailServlet?id=${post.key.postId}" class="stretched-link"></a>
                                         <div class="card-header p-2 pt-1">
@@ -139,9 +136,9 @@
                                             </p>
                                         </div>
                                         <div class="card-footer p-2 pt-1 pb-1">
-                                            <small><i class="fas fa-thumbs-up"></i> 1234</small>
-                                            <small><i class="fas fa-comment"></i> 1234</small>
-                                            <small><i class="far fa-eye"></i> 1234</small>
+                                            <small><i class="fas fa-thumbs-up"></i>${post.value[0]}</small>
+                                            <small><i class="fas fa-comment"></i>${post.value[1]}</small>
+                                            <small><i class="far fa-eye"></i>${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>
@@ -149,6 +146,23 @@
                         </c:forEach>
                     </div>
                 </div>
+                <nav class="d-flex justify-content-center mb-4">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <c:forEach var="index" begin="1" end="${end}">
+                            <li class="page-item"><a class="page-link" href='CreatorInfoServlet?username=${creator.username}&page=${index}'>${index}</a></li>
+                            </c:forEach>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </main>
         <c:forEach items="${tiers}" var="tier">

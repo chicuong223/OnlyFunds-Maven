@@ -6,16 +6,16 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import post_management.comment.CommentDAO;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
@@ -37,6 +37,9 @@ public class PostListServlet extends HttpServlet {
         String strPage = request.getParameter("page");
         String actionTitle = "";
         PostDAO postDAO = new PostDAO();
+        CommentDAO cmtDAO = new CommentDAO();
+        PostLikeDAO likeDAO = new PostLikeDAO();
+        TierDAO tierDAO = new TierDAO();
         User user = (User) request.getSession().getAttribute("user");
         int count = 0;
         int pageIndex = 0;
@@ -46,37 +49,45 @@ public class PostListServlet extends HttpServlet {
             pageIndex = Integer.parseInt(strPage);
         int start = pageIndex * 8 - (8 - 1);
         int end = pageIndex * 8;
-        LinkedHashMap<Post, Integer> postMap = new LinkedHashMap<>();
-        if (action.equals("like")) {
+        List<Post> postList = new ArrayList<>();
+//        LinkedHashMap<Post, Integer> postMap = new LinkedHashMap<>();
+        if (action.equals("mostlikes")) {
             count = postDAO.countPostsThatHasLikes();
-            postMap = postDAO.getMostLikes(start, end);
+//            postMap = postDAO.getMostLikes(start, end);
 //            postMap.forEach((p, c) -> System.out.println(p.getPostId()));
+            postList = postDAO.getMostLikes(start, end);
             actionTitle = "Most Liked Posts";
         }
         else if (action.equals("free")) {
             count = postDAO.countFreePosts();
-            ArrayList<Post> postList = postDAO.getFreePosts(start, end);
-            for (Post post : postList) {
-                int countLike = new PostLikeDAO().countPostLikeByPost(post);
-                postMap.put(post, countLike);
-            }
+            postList = postDAO.getFreePosts(start, end);
             actionTitle = "Free Posts";
         }
-        else if(action.equals("recent")){
+        else if (action.equals("recent")) {
             actionTitle = "Recent Posts";
             count = postDAO.countPosts();
-            List<Post> postList = postDAO.getPosts(start, end);
-            for (Post post : postList) {
-                int countLike = new PostLikeDAO().countPostLikeByPost(post);
-                postMap.put(post, countLike);
-            }
+            postList = postDAO.getPosts(start, end);
         }
         int endPage = count / 8;
-//        System.out.println(count);
-//        System.out.println(endPage);
         if (count % 8 != 0)
             endPage++;
-        System.out.println(endPage);
+
+        //add like count, comment count into the map
+        //check if the user is allowed to view the post
+        int allowed = 0;
+        LinkedHashMap<Post, int[]> postMap = new LinkedHashMap<>();
+        for (Post post : postList) {
+            List<Tier> postTiers = tierDAO.getTiersByPost(post);
+            int likeCount = likeDAO.countPostLikeByPost(post);
+            int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+            // if the post is free
+            if (postTiers.size() <= 0)
+                allowed = 1;
+            else
+                allowed = checkTier(postTiers, user);
+            int[] value = {likeCount, cmtCount, allowed};
+            postMap.put(post, value);
+        }
         request.setAttribute("postList", postMap);
         request.setAttribute("actionTitle", actionTitle);
         request.setAttribute("end", endPage);
@@ -99,4 +110,15 @@ public class PostListServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private int checkTier(List<Tier> postTiers, User user) {
+        if (user == null)
+            return 0;
+        TierDAO tierDAO = new TierDAO();
+        List<Tier> userTiers = tierDAO.getTiersBySubscription(user);
+        for (Tier userTier : userTiers)
+            for (Tier postTier : postTiers)
+                if (userTier.getTierId() == postTier.getTierId())
+                    return 1;
+        return 0;
+    }
 }
