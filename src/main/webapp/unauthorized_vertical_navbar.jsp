@@ -36,7 +36,7 @@
     </ul>
     <div class="second-list" style="border-bottom: 2px solid black;">
         <span>Please login or sign up to have access to more features</span><br>
-        <button class="btn btn-sm btn-primary" onclick="location.href = 'login'">Login</button>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-login">Login</button>
         <button class="btn btn-sm btn-primary" onclick="location.href = 'RegisterServlet'">Sign up</button>
     </div>
     <ul class="third-list">
