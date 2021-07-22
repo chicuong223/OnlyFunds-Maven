@@ -1,5 +1,6 @@
 <%-- Document : main_page Created on : Jun 20, 2021, 7:02:19 PM Author : ASUS GAMING --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="navbar.jsp"></c:import>
@@ -58,7 +59,7 @@
                                         <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username} <span> <fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></span></h6>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>

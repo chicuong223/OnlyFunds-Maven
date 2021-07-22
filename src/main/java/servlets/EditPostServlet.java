@@ -46,12 +46,19 @@ public class EditPostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         int postID = Integer.parseInt(request.getParameter("id"));
         System.out.println(postID);
         PostDAO dao = new PostDAO();
         Post post = dao.getPostByID(postID);
         CategoryDAO catDAO = new CategoryDAO();
         PostCategoryMapDAO postCatMap = new PostCategoryMapDAO();
+        TierDAO tierDAO = new TierDAO();
+        TierMapDAO tierMapDAO = new TierMapDAO();
         List<Category> postCatList = catDAO.getCategoriesByPost(post);
         ArrayList<Category> catList = catDAO.getAllCategories();
 
@@ -60,10 +67,21 @@ public class EditPostServlet extends HttpServlet {
         catList.forEach(cat -> catMap.put(cat, false));
         postCatList.forEach(postCat -> {
             catList.forEach(cat -> {
-                if(cat.getCategoryId() == postCat.getCategoryId())
+                if (cat.getCategoryId() == postCat.getCategoryId())
                     catMap.put(cat, Boolean.TRUE);
             });
         });
+
+        List<Tier> postTiers = tierDAO.getTiersByPost(post);
+        List<Tier> userTiers = tierDAO.getTiersByUser(user);
+        LinkedHashMap<Tier, Boolean> tierMap = new LinkedHashMap<>();
+        userTiers.forEach(tier -> tierMap.put(tier, Boolean.FALSE));
+        postTiers.forEach(postTier -> {
+            userTiers.stream().filter(userTier -> (postTier.getTierId() == userTier.getTierId())).forEachOrdered(userTier -> {
+                tierMap.put(userTier, Boolean.TRUE);
+            });
+        });
+        request.setAttribute("tierList", tierMap);
         request.setAttribute("post", post);
         request.setAttribute("catList", catMap);
         request.getRequestDispatcher("edit_post_form.jsp").forward(request, response);
@@ -99,23 +117,22 @@ public class EditPostServlet extends HttpServlet {
             filename = upload.postAttachmentUpload(request, post.getPostId());
             post.setAttachmentURL(filename);
         }
-        
+
         //update category map
         //Delete all current category map of post
         //Then add the new ones
         postCatMapDAO.deleteCategoryMapsByPost(post);
         String[] categories = request.getParameterValues("cat");
         CategoryDAO catDAO = new CategoryDAO();
-        if(categories == null){
+        if (categories == null) {
             Category cat = catDAO.getCategoryByID(6);
             postCatMapDAO.addPostCatMapEdit(post, cat);
         }
-        else{
-            for(String id : categories){
+        else
+            for (String id : categories) {
                 Category cat = catDAO.getCategoryByID(Integer.parseInt(id));
                 postCatMapDAO.addPostCatMapEdit(post, cat);
             }
-        }
         postDAO.updatePost(post);
         response.sendRedirect("PostDetailServlet?id=" + post.getPostId());
     }
