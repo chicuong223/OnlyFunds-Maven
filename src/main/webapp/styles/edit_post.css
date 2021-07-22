@@ -1,0 +1,173 @@
+*:focus {
+    outline: none;
+    border: none;
+}
+
+textare {
+    resize: none;
+}
+
+.create, .accessibility {
+    border: 1px solid #bdbdbd;
+    border-radius: 10px;
+}
+
+.form-floating label {
+    padding-bottom: 5px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.form-floating .title {
+    font-weight: bold;
+    padding: 11px .75rem 11px .75rem; 
+    font-size: 24px;
+    border: 0;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.title:focus {
+    background-color: #eeeeee;
+}
+
+.content {
+    height: 14.7rem;
+    overflow-y: scroll;
+    width: 100%;
+    border: none;
+    padding: .75rem;
+}
+
+.attachment-grp {
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    padding: .5rem;
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.old-attachment {
+    border-top: 1px solid #bdbdbd;
+}
+
+.attachment-grp label {
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.attachment-grp a {
+    text-decoration: none;
+    color: black;
+}
+
+#attachment {
+    padding-left: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #888;
+    cursor: pointer;
+}
+
+#attachment::-webkit-file-upload-button {
+    display: none;
+  }
+
+.attachment-grp label {
+    font-weight: bold;
+    display: flex;
+}
+
+.category {
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: column;
+    padding: .75rem .75rem .5rem .75rem;
+    max-height: 6.1rem;
+}
+
+.category .header {
+    display: flex;
+    font-weight: bold;
+}
+
+ion-icon {
+    margin-right: 1rem;
+}
+
+.cat-list {
+    margin-top: 5px;
+    padding-bottom: rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.cat {
+    margin-right: 1rem;
+    border-radius: 10px;
+    padding: 0;
+    border: 1px solid rgb(206, 104, 168);
+    cursor: pointer;
+}
+
+.cat label {
+    cursor: pointer;
+    padding: 5px 10px 5px 10px;
+}
+
+.cat.selected {
+    background-color: rgb(206, 104, 168);
+    color: white;
+}
+
+.cat input {
+    display: none;
+}
+
+.accessibility {
+    overflow: scroll;
+    padding: 11px .75rem 11px .75rem;
+    max-height: 32.5rem;
+}
+
+.accessibility .header {
+    display: flex;
+    font-weight: bold;
+}
+
+.create-btn {
+    background-color: rgb(206, 104, 168);
+    color: white;
+    margin-bottom: 1rem;
+    transition: .2s all;
+}
+
+.create-btn:hover {
+    box-shadow: 0 .125rem .25rem rgb(206, 104, 168);
+    color: white;
+    transform: scale(1.02);
+}
+
+.tier {
+    padding-left: 5px;
+    display: flex;
+}
+
+.tier:not(:last-child) {
+    padding-bottom: .5rem;
+    margin-bottom: .5rem;
+    border-bottom: 1px solid #bdbdbd;
+}
+
+.tier label {
+    width: 90%;
+}
+
+.reminder, .reminder span{
+    font-size: 16px;
+    font-weight: bold;
+}
+
