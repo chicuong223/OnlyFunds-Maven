@@ -63,7 +63,7 @@
                         <span class="nav-item">
                             <form method="post" action="SearchServlet?a=searchstring">
                                 <div class="input-group input-group-sm" id="search-input">
-                                    <input type="text" class="form-control" placeholder="Search...">
+                                    <input type="text" class="form-control" name="search" placeholder="Search...">
                                     <button class="input-group-text" id="basic-addon2" type="submit"><i
                                             class="fas fa-search"></i></button>
                                 </div>
