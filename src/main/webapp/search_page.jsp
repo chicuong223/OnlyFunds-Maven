@@ -26,7 +26,12 @@
                                 <img src="images/avatars/${user.avatarURL}" alt="${user.avatarURL}" width="100">
                             </div>
                         </a>
-                    </div>                    
+                    </div>  
+                            <%--
+                            Đếm số subscriber của 1 user
+Đếm category trong User_CategoryMap (nên trả về dưới dạng list để dùng forEach)
+link để dẫn tới user page 
+                            --%>
                 </c:forEach>
             </div>
             <div class="Posts">

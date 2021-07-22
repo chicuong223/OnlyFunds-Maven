@@ -31,18 +31,5 @@ public class DBConnect {
             System.out.println(e.getMessage());
         }
         return con;
-//        try {
-//            //1
-//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-//            String url = "jdbc:sqlserver://localhost:1433;databaseName=SWP391_OnlyFunds";
-//
-//            //2
-//            Connection con = DriverManager.getConnection(url, "sa", "123");
-//            return con;
-//        }
-//        catch (ClassNotFoundException | SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
 }

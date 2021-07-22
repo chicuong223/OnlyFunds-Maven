@@ -14,6 +14,7 @@ import java.sql.Date;
  * @author chiuy
  */
 public class Report {
+    private int id;
     private User reportUser;
     private String reportedObjectId;
     private String type;
@@ -24,7 +25,10 @@ public class Report {
     private String status;
     private Date solveDate;
 
-    public Report(User reportUser, String reportedObjectId, String type, Staff solveStaff, String title, String description, Date reportDate, String status, Date solveDate) {
+    public Report(int id, User reportUser, String reportedObjectId, String type,
+            Staff solveStaff, String title, String description, Date reportDate,
+            String status, Date solveDate) {
+        this.id=id;
         this.reportUser = reportUser;
         this.reportedObjectId = reportedObjectId;
         this.type = type;
@@ -34,6 +38,14 @@ public class Report {
         this.reportDate = reportDate;
         this.status = status;
         this.solveDate = solveDate;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public User getReportUser() {

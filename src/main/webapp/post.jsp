@@ -117,27 +117,27 @@
                     }
                 });
             }
-            
-            function editCmt(cmt){
+
+            function editCmt(cmt) {
                 let cmtContentEl = document.getElementById(cmt + "-content");
                 let cmtContent = cmtContentEl.textContent;
                 let newContent = document.getElementById("newContent-" + cmt);
-                if(!newContent.value.trim()){
+                if (!newContent.value.trim()) {
                     return;
                 }
                 $.ajax({
-                   type: "POST",
-                   url: "DeleteOrEditComment",
-                   data:{
-                       commentId: cmt,
-                       newContent: newContent.value,
-                       action: "edit"
-                   },
-                   cache: false,
-                   success: function(){
-                       cmtContent = newContent.value;
-                       cmtContentEl.textContent = cmtContent;
-                   }
+                    type: "POST",
+                    url: "DeleteOrEditComment",
+                    data: {
+                        commentId: cmt,
+                        newContent: newContent.value,
+                        action: "edit"
+                    },
+                    cache: false,
+                    success: function () {
+                        cmtContent = newContent.value;
+                        cmtContentEl.textContent = cmtContent;
+                    }
                 });
             }
             function clickLikeComment(username, cmtId) {
@@ -183,6 +183,40 @@
                         }
                     });
                 }
+            }
+            function submitReport() {
+                alert("submitReport called")
+                event.preventDefault();
+                let objectId = document.querySelector('#reportForm-objectId').value;
+                let type = document.querySelector('#reportForm-type').value;
+                let title = document.querySelector('#reportForm-title').value;
+                let description = document.querySelector('#reportForm-description').value;
+                alert(`${objectId}-${type}-${title}-${description}`);
+                alert(objectId);
+                alert(type);
+                alert(title);
+                alert(description);
+                $.ajax({
+                    type: "POST",
+                    url: 'Report',
+                    data: {
+                        objectId: objectId,
+                        type: type,
+                        title: title,
+                        description: description
+                    },
+                    cache: false,
+                    success: function () {
+                        alert("ajax success");
+                        //add code to change css
+                    }
+                });
+            }
+            function openFormReport(objectId, type) {
+                alert("openFormReport called");
+                document.querySelector('#reportForm-objectId').value = objectId;
+                document.querySelector('#reportForm-type').value = type;
+                //add code to popup form
             }
         </script>
     </head>
@@ -253,7 +287,10 @@
                                 <i class="fa fa-comments" aria-hidden="true" id="cmtCount">${cmtList.size()}</i>
                                 <c:choose>
                                     <c:when test="${sessionScope.user != null && sessionScope.user.username != post.uploader.username}">
+                                        <!--
                                         <a href="ReportServlet" class="float-end link-primary"><i class="fa fa-exclamation-triangle text-dark" aria-hidden="true"></i>Report</a>
+                                        -->
+                                        <div><i class="fa fa-exclamation-triangle text-dark" aria-hidden="true" onclick="openFormReport(${post.postId}, 'post')"></i>Report</div>
                                     </c:when>
                                     <c:when test="${sessionScope.user != null && sessionScope.user.username == post.uploader.username}">
                                         <a href="EditPostServlet?id=${requestScope.post.postId}" class="float-end link-primary mx-2"><i class="fa fa-pencil text-dark" aria-hidden="true"></i>Edit</a>
@@ -384,5 +421,12 @@
                 </c:otherwise>
             </c:choose>
         </main>
+        <form action="Report" id="reportForm" onsubmit="submitReport()">
+            <input type="text" name="objectId" id="reportForm-objectId"/>
+            <input type="text" name="type" id="reportForm-type"/>
+            <input type="text" name="title" id="reportForm-title"/>
+            <textarea name="description" id="reportForm-description"></textarea>
+            <input type="submit" value="Submit">
+        </form>
     </body>
 </html>
