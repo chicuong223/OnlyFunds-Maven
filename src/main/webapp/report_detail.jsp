@@ -73,20 +73,29 @@
                     </div>
                 </div>
             </c:if>
-            <form action="SolveReportServlet" method="POST">
-                <input type="hidden" name="objId" value="${report.reportedObjectId}">
+            <%-- User--%>
+            <c:if test="${!empty user}">
+                <div>Username: ${user.username}</div>
+                <div>Avatar: ${user.avatarURL}</div>
+                <div>Bio: ${user.bio}</div>
+            </c:if>
+            <c:set var="pending"></c:set>
+                <form action="SolveReportServlet" method="POST">
+                    <input type="hidden" name="objId" value="${report.reportedObjectId}">
                 <input type="hidden" name="type" value="${report.type}">
                 <div class="row mt-3 pb-3">
                     <div class="col-4 fw-bold">Choose action:</div>
                     <div class="col-8">
-                        <select class="form-select form-select-sm" name="status" id="action">
-                            <option value="decline">Decline</option>
-                            <option value="approve">Approve</option>
+                        <select class="form-select form-select-sm" name="status" id="action" ${report.status=="pending"?"":"disabled"}>
+                            <option value="declined" ${report.status=="declined"?"selected":""}>Decline</option>
+                            <option value="approved" ${report.status=="approved"?"selected":""}>Approve</option>
                         </select>
                     </div>
                 </div>
                 <div class="row mt-2 d-flex justify-content-evenly">
-                    <button style="width: 100px;" type="submit" class="btn btn-success">Submit</button>
+                    <c:if test='${report.status=="pending"}'>
+                        <button style="width: 100px;" type="submit" class="btn btn-success">Submit</button>
+                    </c:if>
                     <a style="width: 100px;" class='btn btn-danger' href="ReportListServlet">Cancel</a>
                 </div>
             </form>    

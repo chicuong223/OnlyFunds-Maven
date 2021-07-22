@@ -19,6 +19,8 @@ import post_management.post.Post;
 import post_management.post.PostDAO;
 import report.Report;
 import report.ReportDAO;
+import user_management.user.User;
+import user_management.user.UserDAO;
 
 /**
  *
@@ -49,7 +51,9 @@ public class ReportDetailServlet extends HttpServlet {
                 similiar.removeIf(x -> x.getId() == Integer.parseInt(id));
                 request.setAttribute("otherReports", similiar);
                 if (report.getType().equals("user")) {
-
+                    UserDAO uDAO=new UserDAO();
+                    User reportedU=uDAO.getUserByUsername(report.getReportedObjectId());
+                    request.setAttribute("user", reportedU);
                 } else if (report.getType().equals("post")) {
                     PostDAO pDAO = new PostDAO();
                     Post reportedP = pDAO.getPostByID(Integer.parseInt(report.getReportedObjectId()));
@@ -59,8 +63,8 @@ public class ReportDetailServlet extends HttpServlet {
                     Comment reportedC = cDAO.getCommentByID(Integer.parseInt(report.getReportedObjectId()));
                     request.setAttribute("comment", reportedC);
                     PostDAO pDAO = new PostDAO();
-                    Post reportedP = pDAO.getPostByID(Integer.parseInt(report.getReportedObjectId()));
-                    request.setAttribute("post", reportedP);
+                    Post postOfComment = pDAO.getPostByID(Integer.parseInt(report.getReportedObjectId()));
+                    request.setAttribute("post", postOfComment);
                 }
                 request.getRequestDispatcher(reportDetailPage).forward(request, response);
             }

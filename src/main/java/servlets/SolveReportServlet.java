@@ -8,6 +8,10 @@ package servlets;
 import authority_management.staff.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,15 +23,14 @@ import post_management.comment.CommentDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
 import report.ReportDAO;
+import user_management.user.User;
+import user_management.user.UserDAO;
+import utils.EmailSender;
 
-/**
- *
- * @author DELL
- */
 @WebServlet(name = "SolveReportServlet", urlPatterns = {"/SolveReportServlet"})
 public class SolveReportServlet extends HttpServlet {
 
-    final String reportListPage = "reportList.jsp";
+    final String reportListPage = "ReportListServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,21 +42,9 @@ public class SolveReportServlet extends HttpServlet {
         String type = request.getParameter("type");
         String status = request.getParameter("status");
         ReportDAO rDAO = new ReportDAO();
-        if (status.equals("decline")) {
-            rDAO.declineReports(objId, type, staff);
-            if (type.equals("post")) {
-                PostDAO pDAO = new PostDAO();
-                Post reportedP = pDAO.getPostByID(Integer.parseInt(objId));
-                pDAO.deactivatePost(reportedP);
-            } else if (type.equals("comment")) {
-                CommentDAO cDAO = new CommentDAO();
-                Comment reportedC = cDAO.getCommentByID(Integer.parseInt(objId));
-                cDAO.deactivateComment(reportedC.getCommentID());
-            } else if (type.equals("user")) {
 
-            }
-        } else {
-            rDAO.approveReports(objId, type, staff);
+        if (status.equals("declined")) {
+            rDAO.declineReports(objId, type, staff);
             if (type.equals("post")) {
                 PostDAO pDAO = new PostDAO();
                 Post reportedP = pDAO.getPostByID(Integer.parseInt(objId));
@@ -64,6 +55,39 @@ public class SolveReportServlet extends HttpServlet {
                 cDAO.activateComment(reportedC.getCommentID());
             } else if (type.equals("user")) {
 
+            }
+        } else {
+            rDAO.approveReports(objId, type, staff);
+            User reportedUser=new User();
+            PostDAO pDAO = new PostDAO();
+            CommentDAO cDAO = new CommentDAO();
+            UserDAO uDAO = new UserDAO();
+            if (type.equals("post")) {
+                Post reportedP = pDAO.getPostByID(Integer.parseInt(objId));
+                pDAO.deactivatePost(reportedP);
+                reportedUser = reportedP.getUploader();
+            } else if (type.equals("comment")) {
+                Comment reportedC = cDAO.getCommentByID(Integer.parseInt(objId));
+                cDAO.deactivateComment(reportedC.getCommentID());
+                reportedUser = reportedC.getUser();
+            } else if (type.equals("user")) {
+                reportedUser = uDAO.getUserByUsername(objId);
+            }
+            int approvedReportedPostsNum = pDAO.CountReportedPostsByUser(reportedUser);
+            int approvedReportedCommentsNum = cDAO.CountReportedCommentsByUser(reportedUser);
+            int approvedReportedUsersNum= uDAO.CountReportedUserByUser(reportedUser);
+            int sumApproved=approvedReportedCommentsNum+approvedReportedPostsNum+approvedReportedUsersNum;
+            if(sumApproved>=3){
+                if(uDAO.banUser(reportedUser)){
+                    ArrayList<String> toEmails=new ArrayList<String>();
+                    toEmails.add(reportedUser.getEmail());
+                    try { 
+                        EmailSender.SendEmail(toEmails, "Ban account", 
+                                "Your account has been banned due to violations to our Terms of Service\nFor further information, please contact swpacckhoi@gmail.com.");
+                    } catch (MessagingException ex) {
+                        Logger.getLogger(SolveReportServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         }
         request.getRequestDispatcher(reportListPage).forward(request, response);

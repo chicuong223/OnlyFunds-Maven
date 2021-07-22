@@ -336,24 +336,23 @@ public class ReportDAO {
     }
 
     //no check
-    public boolean addPost(Report report) {
+    public boolean addReport(Report report) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                ps = con.prepareStatement("INSERT INTO Report(id, report_username, reported_id, type, solved_by_staff, title, description, report_date, status, solve_date)\n"
+                ps = con.prepareStatement("INSERT INTO Report(report_username, reported_id, type, solved_by_staff, title, description, report_date, status, solve_date)\n"
                         + "VALUES(?, ?, ?, ?, ?, ?, ?, ? ,?, ?)");
-                ps.setInt(1, report.getId());
-                ps.setString(2, report.getReportUser().getUsername());
-                ps.setString(3, report.getReportedObjectId());
-                ps.setString(4, report.getType());
-                ps.setString(5, report.getSolveStaff().getUsername());
-                ps.setString(6, report.getTitle());
-                ps.setString(7, report.getDescription());
-                ps.setDate(8, report.getReportDate());
-                ps.setString(9, report.getStatus());
-                ps.setDate(10, report.getSolveDate());
+                ps.setString(1, report.getReportUser().getUsername());
+                ps.setString(2, report.getReportedObjectId());
+                ps.setString(3, report.getType());
+                ps.setString(4, report.getSolveStaff().getUsername());
+                ps.setString(5, report.getTitle());
+                ps.setString(6, report.getDescription());
+                ps.setDate(7, report.getReportDate());
+                ps.setString(8, report.getStatus());
+                ps.setDate(9, report.getSolveDate());
                 ps.executeUpdate();
                 return true;
             }

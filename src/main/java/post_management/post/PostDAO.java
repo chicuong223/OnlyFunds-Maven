@@ -34,15 +34,14 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
         }
         return postId;
     }
 
     public int countPostsByUser(User user) {
         int count = 0;
-        try (Connection con = DBConnect.makeConnection()){
+        try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 1")) {
                     ps.setString(1, user.getUsername());
@@ -53,8 +52,7 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
         }
         return count;
     }
@@ -88,10 +86,8 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -102,8 +98,7 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return lst;
@@ -134,10 +129,8 @@ public class PostDAO {
                     post = new Post(postID, uploader, postTitle, postDescription, attachmentURL, uploadDate, viewCount, isActive);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -148,8 +141,7 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return post;
@@ -166,10 +158,8 @@ public class PostDAO {
                 ps.setInt(1, post.getPostId());
                 success = ps.executeUpdate() >= 1;
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -177,12 +167,12 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return success;
     }
+
     public boolean deactivatePost(int id) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -194,10 +184,8 @@ public class PostDAO {
                 ps.setInt(1, id);
                 success = ps.executeUpdate() >= 1;
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -205,12 +193,12 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return success;
     }
+
     public boolean activatePost(int id) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -222,10 +210,8 @@ public class PostDAO {
                 ps.setInt(1, id);
                 success = ps.executeUpdate() >= 1;
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -233,12 +219,12 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return success;
     }
+
     public boolean activatePost(Post post) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -250,10 +236,8 @@ public class PostDAO {
                 ps.setInt(1, post.getPostId());
                 success = ps.executeUpdate() >= 1;
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -261,13 +245,12 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return success;
     }
-    
+
     public boolean addPost(Post post) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -286,11 +269,9 @@ public class PostDAO {
                 ps.executeUpdate();
                 return true;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -298,8 +279,7 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return false;
@@ -319,11 +299,9 @@ public class PostDAO {
                 ps.executeUpdate();
                 return true;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
                 if (ps != null) {
                     ps.close();
@@ -331,8 +309,7 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return false;
@@ -362,10 +339,8 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -376,8 +351,7 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return lst;
@@ -418,10 +392,8 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -432,8 +404,7 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return lst;
@@ -474,10 +445,8 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
                 if (rs != null) {
                     rs.close();
@@ -488,11 +457,55 @@ public class PostDAO {
                 if (con != null) {
                     con.close();
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
             }
         }
         return lst;
+    }
+
+    public int CountReportedPostsByUser(User user) {
+        return CountReportedPostsByUsername(user.getUsername());
+    }
+
+    public int CountReportedPostsByUsername(String username) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                String sql = 
+                          "select count (p.id) as num\n"
+                        + "from Post p\n"
+                        + "where p.id in \n"
+                        + "	(select r.reported_id\n"
+                        + "	from Report r\n"
+                        + "	where r.type='post'\n"
+                        + "		and r.status='approved')\n"
+                        + "	and p.uploader_username=?";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, username);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("num");
+                }
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return 0;
     }
 
     public static void main(String[] args) {
