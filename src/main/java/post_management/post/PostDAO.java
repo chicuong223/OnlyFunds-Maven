@@ -550,13 +550,13 @@ public class PostDAO {
         return count;
     }
     
-    public LinkedHashMap<Post,Integer> getMostLikes(int start, int end) {
-        LinkedHashMap<Post,Integer> lst = new LinkedHashMap<>();
+    public List<Post> getMostLikes(int start, int end) {
+        List<Post> lst = new ArrayList<>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 String sql = "SELECT * FROM \n" +
-                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r, count(*) AS likes\n" +
+                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n" +
                     "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
                     "WHERE Post.is_active=1\n" +
                     "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
@@ -574,8 +574,7 @@ public class PostDAO {
                             post.setViewCount(rs.getInt("view_count"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
-                            int likes = rs.getInt("likes");
-                            lst.put(post, likes);
+                            lst.add(post);
                         }
                     }
                 }

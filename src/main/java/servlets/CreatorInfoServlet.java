@@ -5,8 +5,10 @@
  */
 package servlets;
 
+import category.Category;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import map.UserCategoryMap;
+import map.UserCategoryMapDAO;
 import post_management.comment.CommentDAO;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
@@ -39,16 +43,15 @@ public class CreatorInfoServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
         User creator = userDAO.getUserByUsername(username);
-        if (creator == null) {
+        if (creator == null)
             creator = currentUser;
-        }
         if (currentUser == null || !currentUser.getUsername().equalsIgnoreCase(creator.getUsername())) {
             getPosts(request, currentUser, creator);
             getTiersByCreator(creator, currentUser, request);
         }
-        else {
+        else
             getOwnPost(request, creator);
-        }
+        getCategories(request, creator);
         request.setAttribute("creator", creator);
         request.getRequestDispatcher("creator_info.jsp").forward(request, response);
     }
@@ -56,9 +59,8 @@ public class CreatorInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getAttribute("tiererror") != null) {
+        if (request.getAttribute("tiererror") != null)
             doGet(request, response);
-        }
     }
 
     private void getTiersByCreator(User creator, User current, HttpServletRequest request) {
@@ -76,81 +78,94 @@ public class CreatorInfoServlet extends HttpServlet {
         ArrayList<Tier> currentList = tierDAO.getTiersBySubscription(current);
         boolean result = true;
         outerLoop:
-        for (Tier creatorTier : creatorList) {
-            for (Tier tier : currentList) {
+        for (Tier creatorTier : creatorList)
+            for (Tier tier : currentList)
                 if (creatorTier.getTierId() == tier.getTierId()) {
                     result = false;
                     break outerLoop;
                 }
-            }
-        }
-        if (result == false) {
+        if (result == false)
             request.setAttribute("subscribed", "You have already subscribed to this user");
-        }
-        else {
+        else
             request.setAttribute("tiers", creatorList);
-        }
     }
 
     private void getPosts(HttpServletRequest request, User currentUser, User creator) {
         PostDAO dao = new PostDAO();
+        PostLikeDAO likeDAO = new PostLikeDAO();
+        CommentDAO cmtDAO = new CommentDAO();
         TierDAO tierDAO = new TierDAO();
         String pageStr = request.getParameter("page");
         int pageIndex = 0;
-        if (pageStr == null) {
+        if (pageStr == null)
             pageIndex = 1;
-        }
-        else {
+        else
             pageIndex = Integer.parseInt(pageStr);
-        }
         ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
-        TreeMap<Post, Boolean> postMap = new TreeMap<>();
-        if (currentUser == null) {
-            for (Post post : postList) {
-                ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-                if (postTiers.size() > 0) {
-                    postMap.put(post, false);
-                }
-                else {
-                    postMap.put(post, true);
-                }
-            }
+        TreeMap<Post, int[]> postMap = new TreeMap<>();
+        for (Post post : postList) {
+            int allowed = 0;
+            List<Tier> postTiers = tierDAO.getTiersByPost(post);
+            if (postTiers.size() <= 0)
+                allowed = 1;
+            else
+                if (currentUser != null && currentUser.getUsername().equals(post.getUploader().getUsername()))
+                    allowed = 1;
+                else
+                    allowed = checkTier(postTiers, currentUser);
+            int likeCount = likeDAO.countPostLikeByPost(post);
+            int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+            int[] value = {likeCount, cmtCount, allowed};
+            postMap.put(post, value);
         }
-        else if (currentUser.getUsername().equals(creator.getUsername())) {
-            for (Post post : postList) {
-                postMap.put(post, true);
-            }
-        }
-        else {
-            ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
-            for (Post post : postList) {
-                boolean cmp = false;
-                ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-                if (postTiers.size() > 0) {
-                    for (Tier userTier : userTiers) {
-                        for (Tier postTier : postTiers) {
-                            if (userTier.getTierId() == postTier.getTierId()) {
-                                cmp = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    cmp = true;
-                }
-                postMap.put(post, cmp);
-            }
-        }
+//        if (currentUser == null) {
+//            for (Post post : postList) {
+//                ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
+//                if (postTiers.size() > 0) {
+//                    postMap.put(post, false);
+//                }
+//                else {
+//                    postMap.put(post, true);
+//                }
+//            }
+//        }
+//        else if (currentUser.getUsername().equals(creator.getUsername())) {
+//            for (Post post : postList) {
+//                postMap.put(post, true);
+//            }
+//        }
+//        else {
+//            ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
+//            for (Post post : postList) {
+//                boolean cmp = false;
+//                ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
+//                if (postTiers.size() > 0) {
+//                    for (Tier userTier : userTiers) {
+//                        for (Tier postTier : postTiers) {
+//                            if (userTier.getTierId() == postTier.getTierId()) {
+//                                cmp = true;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//                else {
+//                    cmp = true;
+//                }
+//                postMap.put(post, cmp);
+//            }
+//        }
         int count = dao.countPostsByUser(creator);
         int pageSize = 3;
         int endPage = count / pageSize;
-        if (count % pageSize != 0) {
+        if (count % pageSize != 0)
             endPage++;
-        }
         request.setAttribute("end", endPage);
         request.setAttribute("count", count);
         request.setAttribute("postList", postMap);
+        postMap.forEach((p, v) -> {
+            System.out.println(p.getPostId() + "-" + v[2]);
+        });
     }
 
     private void getOwnPost(HttpServletRequest request, User creator) {
@@ -159,12 +174,10 @@ public class CreatorInfoServlet extends HttpServlet {
         String pageStr = request.getParameter("page");
         CommentDAO cDAO = new CommentDAO();
         int pageIndex = 0;
-        if (pageStr == null) {
+        if (pageStr == null)
             pageIndex = 1;
-        }
-        else {
+        else
             pageIndex = Integer.parseInt(pageStr);
-        }
         ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
         TreeMap<Post, int[]> map = new TreeMap<>();
         for (Post post : postList) {
@@ -178,12 +191,30 @@ public class CreatorInfoServlet extends HttpServlet {
         int pageSize = 3;
         int count = dao.countPostsByUser(creator);
         int endPage = count / pageSize;
-        if (count % pageSize != 0) {
+        if (count % pageSize != 0)
             endPage++;
-        }
         request.setAttribute("CreatorInfoServletFlag", "flag");
         request.setAttribute("postList", map);
         request.setAttribute("end", endPage);
         request.setAttribute("count", count);
+    }
+
+    private void getCategories(HttpServletRequest request, User creator) {
+        UserCategoryMapDAO dao = new UserCategoryMapDAO();
+        List<Category> lst = dao.getCategoriesByUser(creator);
+        request.setAttribute("cateList", lst);
+    }
+
+    private int checkTier(List<Tier> postTiers, User user) {
+        if (user == null)
+            return 0;
+        TierDAO tierDAO = new TierDAO();
+        List<Tier> userTiers = tierDAO.getTiersBySubscription(user);
+        OUTERLOOP:
+        for (Tier userTier : userTiers)
+            for (Tier postTier : postTiers)
+                if (userTier.getTierId() == postTier.getTierId())
+                    return 1;
+        return 0;
     }
 }

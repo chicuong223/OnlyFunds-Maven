@@ -66,7 +66,7 @@ public class ManageSubscriptionServlet extends HttpServlet {
                 out.write("<td>");
                 out.write("<a href=\"#\" class=\"link-danger\" data-bs-toggle=\"modal\" data-bs-target=\"#modal-" + subscription.getSubscriptionId() + "\">Cancel</a>\n"
                         + "<div class=\"modal\" id=\"modal-" + subscription.getSubscriptionId() + "\">\n"
-                        + "                    <div class=\"modal-dialog\">\n"
+                        + "                    <div class=\"modal-dialog modal-dialog-centered\">\n"
                         + "                        <div class=\"modal-content\">\n"
                         + "                            <div class=\"modal-header\">\n"
                         + "                                <h5 class=\"modal-title\">Cancel subscription</h5>\n"

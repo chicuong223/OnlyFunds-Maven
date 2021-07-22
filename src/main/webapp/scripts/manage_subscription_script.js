@@ -43,7 +43,7 @@ $(document).ready(function () {
 //                tdCancel.innerHTML = `
 //                <a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal-${id}">Cancel</a>
 //                <div class="modal" id="modal-${id}">
-//                    <div class="modal-dialog">
+//                    <div class="modal-dialog modal-dialog-centered">
 //                        <div class="modal-content">
 //                            <div class="modal-header">
 //                                <h5 class="modal-title">Cancel subscription</h5>
