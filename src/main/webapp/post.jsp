@@ -4,6 +4,7 @@
     Author     : chiuy
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:import url="navbar.jsp"/>
@@ -240,7 +241,7 @@
                 <main>
                     <div class="w-75 mx-auto">
                         <!-- Post Details -->
-                        <p>${requestScope.post.uploadDate}</p>
+                        <p class="fw-bold" style="font-size: 120%">Upload date: <fmt:formatDate value="${requestScope.post.uploadDate}" pattern="dd-MMM-yyyy"/></p>
                         <div class="border border-2 rounded" id="postDetails">
                             <div class="border-bottom border-2 text-break p-3">
                                 <p>${requestScope.post.description}</p>
@@ -304,7 +305,7 @@
                                         <a href="EditPostServlet?id=${requestScope.post.postId}" class="float-end link-primary mx-2"><i class="fa fa-pencil text-dark" aria-hidden="true"></i>Edit</a>
                                         <a href="#" class="float-end link-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa fa-trash text-dark" aria-hidden="true"></i>Delete</a>
                                         <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="modelTitlel">Delete Post</h5>
@@ -355,7 +356,7 @@
                                             <c:if test="${cmt.user.username eq sessionScope.user.username}">
                                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit-modal-${cmt.commentID}">Edit</button>
                                                 <div class="editform modal" id="edit-modal-${cmt.commentID}">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Edit comment</h5>
@@ -377,7 +378,7 @@
                                                 </div>
                                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal-${cmt.commentID}">Delete</button>
                                                 <div class="modal" id="delete-modal-${cmt.commentID}">
-                                                    <div class="modal-dialog">
+                                                    <div class="modal-dialog modal-dialog-centered">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Delete comment</h5>
@@ -401,8 +402,6 @@
                                         </div>
                                         <c:choose>
                                             <c:when test="${sessionScope.user != null}">
-                                                yo ${cmtLoop.index}
-                                                yo 2 ${empty countCommentLikeList}
                                                 <c:choose>
                                                     <c:when test="${isCommnetLikedList[cmtLoop.index]}">
                                                         <%-- when user already liked post --%>

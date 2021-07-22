@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import post_management.post.Post;
 import utils.DBConnect;
 
 /**
@@ -78,6 +80,31 @@ public class CategoryDAO {
             }
         }
         return category;
+    }
+    
+    public List<Category> getCategoriesByPost(Post post){
+        List<Category> lst = new ArrayList<>();
+        String sql = "SELECT * FROM Category WHERE id IN (\n"
+                + "SELECT category_id FROM Post_Category_Map WHERE post_id = ?)";
+        try (Connection con = DBConnect.makeConnection()){
+            if(con != null){
+                try(PreparedStatement ps = con.prepareStatement(sql)){
+                    ps.setInt(1, post.getPostId());
+                    try(ResultSet rs = ps.executeQuery()){
+                        while(rs.next()){
+                            int id = rs.getInt("id");
+                            String name = rs.getString("name");
+                            Category cat = new Category(id, name);
+                            lst.add(cat);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+        return lst;
     }
 
 }

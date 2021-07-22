@@ -3,115 +3,99 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="navbar.jsp"></c:import>
-
     <!DOCTYPE html>
     <html>
-
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <link rel="stylesheet" href="styles/main_page.css">
+            <link rel="stylesheet" href="styles/shared.css">
             <title>Only Funds</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
-
         <body>
             <!-- Main content -->
-            <main class="mt-3 mb-5">
-                <div class="container d-flex justify-content-end">
-                    <a href="WritePostServlet">
-                        <button class="btn rounded-pill button bg-secondary text-light me-2">
-                            <!-- Không sửa id!!!! -->
-                            <span id="Create post">
-                                <i class="fas fa-plus-circle"></i>
-                            </span>
-                        </button>
-                    </a>
-                    <a href="YourPostsServlet">
-                        <button class="btn rounded-pill button bg-secondary text-light">
-                            <!-- Không sửa id!!!! -->
-                            <span id="Your posts">
-                                <i class="fas fa-portrait"></i>
-                            </span>
-                        </button>
-                    </a>
-                </div>
-                <!-- Creators user has subscribed -->
-                <div class="container mt-3">
-                    <div class="row gx-5">
-                        <div class="col-12 mb-3 h3" style="text-decoration: underline;">
-                            Creators you have subscribed to
-                        </div>
-                        <div class="col-12 mb-3">
-                            <a href="CreatorListServlet?action=sub">View All</a>
-                        </div>
-                    <c:forEach var="creator" items="${subCreators}">
-                        <div class="justify-content-center col-4">
-                            <div class="card shadow" style="width: 15rem">
-                                <!-- Creator avatar -->
-                                <img src="images/avatars/${creator.avatarURL}" alt="${creator.username}"/>
-                                <div class="card-body">
-                                    <!-- Creator username -->
-                                    <div class="card-title fw-bold mb-4">${creator.username}</div>
-                                    <!-- Creator's bio -->
-                                    <div class="mb-4">${creator.bio}</div>
-                                    <a href="CreatorInfoServlet?username=${creator.username}" class="stretched-link"></a>
-                                </div>
+            <main class="main-container">
+            <c:import url="vertical_navbar_post.jsp"></c:import>
+                <div class="main-content">
+                <c:import url="category-bar.html"></c:import>
+                    <div class="content container-fluid">
+                        <div id="row" class="row gx-4 p-3">
+                            <div class="title mb-4">
+                                <a href="#View all">
+                                    <span>Recent posts</span>
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
                             </div>
-                        </div>
-                    </c:forEach>       
-                </div>
-            </div>
-
-            <!-- creator user is following -->
-            <div class="container mt-3">
-                <div class="row gx-5">
-                    <div class="col-12 mb-3 h3" style="text-decoration: underline;">
-                        Creators you're following
-                    </div>
-                    <div class="col-12 mb-3">
-                        <a href="CreatorListServlet?action=follow">View All</a>
-                    </div>
-                    <c:forEach var="creator" items="${followCreators}">
-                        <div class="justify-content-center col-4">
-                            <div class="card shadow" style="width: 15rem">
-                                <!-- Creator avatar -->
-                                <img src="images/avatars/${creator.avatarURL}" alt="${creator.username}"/>
-                                <div class="card-body">
-                                    <!-- Creator username -->
-                                    <div class="card-title fw-bold mb-4">${creator.username}</div>
-                                    <!-- Creator's bio -->
-                                    <div class="mb-4">${creator.bio}</div>
-                                    <a href="CreatorInfoServlet?username=${creator.username}" class="stretched-link"></a>
-                                </div>
+                            <!-- Mỗi post tạo 1 column tương ứng -->
+                        <c:forEach var="post" items="${postList}">
+                            <div class='col-lg-3 mb-3'>
+                                <c:if test="${post.value[2] == 0}">
+                                    <div class='card post premium mx-auto' id=post>
+                                        <div class="ribbon-wrapper">
+                                            <div class="ribbon">
+                                                Premium
+                                            </div>
+                                        </div>
+                                        <a href="CreatorInfoServlet?username=${post.key.uploader.username}" class=stretched-link></a>
+                                        <div class='card-header p-2 pt-1'>
+                                            <h4 class='card-title fw-bold'>${post.key.title}</h4>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class='card-body p-2 pt-1'>
+                                            <p class='card-text'>
+                                                You must subscribe to the author of this post to view
+                                            </p>
+                                        </div>
+                                        <div class='card-footer p-2 pt-1 pb-1'>
+                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                        </div>
+                                    </div>
+                                </c:if>
+                                <c:if test="${post.value[2] == 1}">
+                                    <div class='card post' id=post>
+                                        <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
+                                        <div class='card-header p-2 pt-1'>
+                                            <h4 class='card-title fw-bold'>${post.key.title}</h4>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class='card-body p-2 pt-1'>
+                                            <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
+                                            <p class='card-text'>
+                                                ${post.key.description}
+                                            </p>
+                                        </div>
+                                        <div class='card-footer p-2 pt-1 pb-1'>
+                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                        </div>
+                                    </div>
+                                </c:if>
                             </div>
-                        </div>
-                    </c:forEach>       
-                </div>
-            </div>
-
-            <!-- Creators you might like -->
-            <div class="container mt-3" id="interest-creators">
-                <div class="row gx-5">
-                    <div class="col-12 mb-3 h3" style="text-decoration: underline;">Creators you might be
-                        interested to
+                        </c:forEach>
                     </div>
-                    <c:forEach var="creator" items="${cateCreators}">
-                        <div class="col-4 d-flex justify-content-center">
-                            <div class="card shadow" style="width: 15rem;">
-                                <!-- Creator's logo -->
-                                <img src="images/avatars/${creator.avatarURL}" class="card-img-top" alt="logo" width="100px">
-                                <div class="card-body">
-                                    <!-- Creator's name -->
-                                    <div class="card-title fw-bold mb-4">${creator.username}</div>
-                                    <a href="CreatorInfoServlet?username=${creator.username}" class="stretched-link"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
+                    <nav class="d-flex justify-content-center mb-4">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <c:forEach var="index" begin="1" end="${end}">
+                                <li class="page-item"><a class="page-link" href='homepage?page=${index}'>${index}</a></li>
+                                </c:forEach>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </main>
-
-
     </body>
 
 </html>

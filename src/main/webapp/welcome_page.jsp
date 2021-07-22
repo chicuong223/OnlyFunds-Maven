@@ -13,82 +13,94 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <title>Only Funds</title>
+            <link type="text/css" rel="stylesheet" href="styles/main_page.css">
+            <link type="text/css" rel="stylesheet" href="styles/welcome_page.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
             <!-- Main content -->
-            <main class="mt-3">
-                <div class="container" style="margin-top: 10vh;">
-                    <!-- Top -->
-                    <div class="row">
-                        <div class="col-lg-6 p-3 my-auto text-center">
-                            <span style="font-size: 50px; color:#B82481; font-family: Righteous;">ONLY FUNDS</span>
-                            <p style="font-size: 40px; color:#69336D;">Create your own work and earn money!</p>
-                        </div>
-                        <div class="col-lg-6 p-0">
-                            <img src="images/Wallpaper-2.jfif" alt="Insert image here" class="img-fluid">
-                        </div>
-                    </div>
-                    <!-- Bottom -->
-                    <div class="row">
-                        <span class="p-0 mb-5 mt-3"
-                              style="font-size: 40px; font-weight: bold; border-bottom: 1px solid #B82481;">Popular
-                            Creators</span>
-                        <div id="carouselExampleDark" class="carousel carousel-dark slide p-0 m-0" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                            <c:set var="i" value="0"></c:set>
-                            <c:forEach var="user" items="${userList}">
-                                <c:set var="i" value="${i + 1}"></c:set>
-                                <c:choose>
-                                    <c:when test="${i == 1}">
-                                        <c:set var="active" value="active"></c:set>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:set var="active" value=""></c:set>
-                                    </c:otherwise>
-                                </c:choose>
-                                <div class="container carousel-item ${active}" data-bs-interval="10000">
-                                    <div class="mx-auto w-50">
-                                        <div class="card mx-auto">
-                                            <img src="images/avatars/${user.avatarURL}" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${user.firstName} ${user.lastName}</h5>
-                                                <p class="card-text">
-                                                <hr class="dropdown-divider">
-                                                <cite>
-                                                    ${user.bio}
-                                                </cite>
-                                                </p>
-                                            </div>
-                                            <a href="CreatorInfoServlet?username=${user.username}" class="stretched-link"></a>
+            <main class="main-container" id="main-container">
+            <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
+                <div class="main-content">
+                    <!-- category bar -->
+                <c:import url="category-bar.html"></c:import>
+                    <div class="container">
+                        <div class="row gx-4 p-3 mb-2">
+                            <div class="header mb-4">
+                                <span class="p-0 mb-5 mt-3"
+                                      style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Popular
+                                    Creators</span>
+                            </div>
+                        <c:forEach var="creator" items="${userList}">
+                            <div class="col-lg-3 m-0 p-0">
+                                <div class="card mx-auto text-center">
+                                    <a href="CreatorInfoServlet?username=${creator.key.username}" class="stretched-link"></a>
+                                    <img src="images/avatars/${creator.key.avatarURL}" class="avatar" alt="avatar">
+                                    <div class="card-body p-0">
+                                        <h5 class="card-title text-truncate">${creator.key.username}</h5>
+                                        <h6 class="card-subtitle text-muted">1234 subscribers</h6>
+                                        <hr style="margin: .2rem 0;">
+                                        <div class="cat-tags">
+                                            <c:forEach items="${creator.value}" var="cat">
+                                                <span class="btn btn-sm subscribe">${cat.categoryName}</span>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                 </div>
-                            </c:forEach>
-                        </div>
-                        <br><br>
-                        <div class="carousel-indicators carousel-indicators-round">
-                            <c:set var="i" value="0"></c:set>
-                            <c:forEach var="index" begin="0" end="${userList.size() - 1}">
-                                <c:set var="i" value="${i + 1}"></c:set>
-                                <c:choose>
-                                    <c:when test="${i == 1}">
-                                        <c:set var="active" value="active"></c:set>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:set var="active" value=""></c:set>
-                                    </c:otherwise>
-                                </c:choose>
-                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="${index}" class="${active}"></button>
-                            </c:forEach>
-                            <!--                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
-                                                                class="active"></button>
-                                                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></button>
-                                                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"></button>-->
-                        </div>
+                            </div>
+                        </c:forEach>
                     </div>
+                    <!-- Bottom -->
+                    <div class="row gx-4 p-3" id="row">
+                        <div class="header mb-4">
+                            <span class="p-0 mb-5 mt-3"
+                                  style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
+                        </div>
+                        <c:forEach var="post" items="${postList}">
+                            <div class='col-lg-3 mb-3'>
+                                <div class=card id=post>
+                                    <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
+                                    <div class='card-header p-2 pt-1'>
+                                        <h4 class='card-title fw-bold text-truncate'>${post.key.title}</h4>
+                                        <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                    </div>
+                                    <div class='card-body p-2 pt-1'>
+                                        <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
+                                        <p class='card-text'>
+                                            ${post.key.description}
+                                        </p>
+                                    </div>
+                                    <div class='card-footer p-2 pt-1 pb-1'>
+                                        <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                        <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                        <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <nav class="d-flex justify-content-center mb-4">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <c:forEach var="index" begin="1" end="${end}">
+                                <li class="page-item"><a class="page-link" href='WelcomePageServlet?page=${index}'>${index}</a></li>
+                                </c:forEach>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </main>
-    </div>
-</body>
+        <!--        <footer style="position: relative; top:">
+        
+                </footer>-->
+    </body>
 </html>

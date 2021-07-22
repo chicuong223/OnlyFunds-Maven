@@ -21,11 +21,12 @@ import utils.DBConnect;
  * @author chiuy
  */
 public class BillDAO {
-    public boolean addBill(User sender, Tier tier){
+
+    public boolean addBill(User sender, Tier tier) {
         boolean result = false;
         try {
             Connection con = DBConnect.makeConnection();
-            if(con != null){
+            if (con != null) {
                 PreparedStatement ps = con.prepareStatement("INSERT INTO [Transaction] (sender_username, recipient_username, content, price, transaction_date)\n"
                         + "VALUES(?, ?, ?, ?, ?)");
                 ps.setString(1, sender.getUsername());
@@ -43,18 +44,22 @@ public class BillDAO {
         }
         return result;
     }
-    
-    public ArrayList<Bill> getSendTransactions(User user){
+
+    public ArrayList<Bill> getSendTransactions(User user, int start, int end) {
         ArrayList<Bill> lst = new ArrayList<>();
         try {
             Connection con = DBConnect.makeConnection();
-            if(con != null){
+            if (con != null) {
                 UserDAO userDAO = new UserDAO();
-                PreparedStatement ps = con.prepareStatement("SELECT id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
-                        + "WHERE sender_username = ? ORDER BY id");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM\n"
+                        + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS r, id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
+                        + "WHERE sender_username = ?) as x\n"
+                        + "WHERE x.r BETWEEN ? and ?");
                 ps.setString(1, user.getUsername());
+                ps.setInt(2, start);
+                ps.setInt(3, end);
                 ResultSet rs = ps.executeQuery();
-                while(rs.next()){
+                while (rs.next()) {
                     int id = rs.getInt("id");
                     User sender = userDAO.getUserByUsername(rs.getString("sender_username"));
                     User recipient = userDAO.getUserByUsername(rs.getString("recipient_username"));
@@ -74,18 +79,22 @@ public class BillDAO {
         }
         return lst;
     }
-    
-    public ArrayList<Bill> getReceiveTransactions(User user){
+
+    public ArrayList<Bill> getReceiveTransactions(User user, int start, int end) {
         ArrayList<Bill> lst = new ArrayList<>();
         try {
             Connection con = DBConnect.makeConnection();
-            if(con != null){
+            if (con != null) {
                 UserDAO userDAO = new UserDAO();
-                PreparedStatement ps = con.prepareStatement("SELECT id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
-                        + "WHERE recipient_username = ? ORDER BY id");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM\n"
+                        + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS r, id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
+                        + "WHERE recipient_username = ?) as x\n"
+                        + "WHERE x.r BETWEEN ? and ?");
                 ps.setString(1, user.getUsername());
+                ps.setInt(2, start);
+                ps.setInt(3, end);
                 ResultSet rs = ps.executeQuery();
-                while(rs.next()){
+                while (rs.next()) {
                     int id = rs.getInt("id");
                     User sender = userDAO.getUserByUsername(rs.getString("sender_username"));
                     User recipient = userDAO.getUserByUsername(rs.getString("recipient_username"));
@@ -105,19 +114,23 @@ public class BillDAO {
         }
         return lst;
     }
-    
-    public ArrayList<Bill> getTransactionsByUser(User user){
+
+    public ArrayList<Bill> getTransactionsByUser(User user, int start, int end) {
         ArrayList<Bill> lst = new ArrayList<>();
         try {
             Connection con = DBConnect.makeConnection();
-            if(con != null){
+            if (con != null) {
                 UserDAO userDAO = new UserDAO();
-                PreparedStatement ps = con.prepareStatement("SELECT id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
-                        + "WHERE sender_username = ? OR recipient_username = ? ORDER BY id");
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM \n"
+                        + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS r, id, sender_username, recipient_username, content, price, transaction_date FROM [Transaction]\n"
+                        + "WHERE sender_username = ? OR recipient_username = ?) as x\n"
+                        + "WHERE x.r BETWEEN ? AND ?");
                 ps.setString(1, user.getUsername());
                 ps.setString(2, user.getUsername());
+                ps.setInt(3, start);
+                ps.setInt(4, end);
                 ResultSet rs = ps.executeQuery();
-                while(rs.next()){
+                while (rs.next()) {
                     int id = rs.getInt("id");
                     User sender = userDAO.getUserByUsername(rs.getString("sender_username"));
                     User recipient = userDAO.getUserByUsername(rs.getString("recipient_username"));
@@ -134,6 +147,38 @@ public class BillDAO {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+        return lst;
+    }
+
+    public ArrayList<Bill> searchBillByCreatorAndSubscriber(String creatorName, User subscriber, int start, int end) {
+        ArrayList<Bill> lst = new ArrayList<>();
+        String sql = "SELECT * FROM\n"
+                + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r, * FROM [Transaction] WHERE recipient_username LIKE ? AND sender_username = ?) as x\n"
+                + "WHERE x.r BETWEEN ? AND ?";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, "%" + creatorName + "%");
+                    ps.setString(2, subscriber.getUsername());
+                    ps.setInt(3, start);
+                    ps.setInt(4, end);
+                    UserDAO userDAO = new UserDAO();
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            int id = rs.getInt("id");
+                            String content = rs.getString("content");
+                            int price = rs.getInt("price");
+                            Date transactionDate = rs.getDate("transaction_date");
+                            User creator = userDAO.getUserByUsername(rs.getString("recipient_username"));
+                            Bill bill = new Bill(id, subscriber, creator, content, price, transactionDate);
+                            lst.add(bill);
+                        }
+                    }
+                }
+        }
+        catch (Exception e) {
+
         }
         return lst;
     }

@@ -47,26 +47,31 @@ public class EmailConfirmation extends HttpServlet {
             if (!(session != null && session.getAttribute("otp") != null)) {
                 request.setAttribute("msg", "Session run out. Try again");
                 request.getRequestDispatcher(registerPage).forward(request, response);
-            } else {
+            }
+            else {
                 String sessionOtp = (String) session.getAttribute("otp");
                 String enteredOtp = (String) request.getParameter("otp");
 //                System.err.println(enteredOtp.equals(sessionOtp));
                 if (!enteredOtp.equals(sessionOtp)) {
                     request.setAttribute("msg", "Wrong OTP. Please try again");
                     request.getRequestDispatcher(retypeOTP).forward(request, response);
-                } else if (enteredOtp.equals(sessionOtp)) {
+                }
+                else if (enteredOtp.equals(sessionOtp)) {
                     User newUser = (User) session.getAttribute("user");
 //                    System.out.println(newUser);
-                    Part filePart = (Part)session.getAttribute("filepart");
-                    System.out.println(filePart.getSubmittedFileName());
-                    String avatarURL = new UploadFile().uploadFile(request, filePart, newUser);
-                    newUser.setAvatarURL(avatarURL);
+                    if (!newUser.getAvatarURL().equals("defaultAvatar.png")) {
+                        Part filePart = (Part) session.getAttribute("filepart");
+//                    System.out.println(filePart.getSubmittedFileName());
+                        String avatarURL = new UploadFile().uploadFile(request, filePart, newUser);
+                        newUser.setAvatarURL(avatarURL);
+                    }
                     UserDAO udao = new UserDAO();
                     if (udao.addUser(newUser)) {
                         request.setAttribute("username", newUser.getUsername());
                         request.setAttribute("password", newUser.getPassword());
                         request.getRequestDispatcher(setUpCreatorPage).forward(request, response);
-                    } else {
+                    }
+                    else {
                         request.setAttribute("msg", "Session run out. Try again");
                         request.getRequestDispatcher(registerPage).forward(request, response);
                     }
@@ -74,6 +79,7 @@ public class EmailConfirmation extends HttpServlet {
             }
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

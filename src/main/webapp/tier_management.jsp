@@ -33,7 +33,7 @@
                             <a href="EditTierServlet?tierid=${tier.tierId}">Edit</a>
                             <a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a>
                             <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="modelTitlel">Delete Tier</h5>

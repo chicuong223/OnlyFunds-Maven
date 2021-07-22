@@ -1,0 +1,31 @@
+.header {
+    max-height: 25rem;
+    width: 70%;
+}
+.bio {
+    max-height: 10rem;;
+    font-size: 16px;
+    line-height: 20px;
+    overflow: hidden;
+}
+.cat {
+    font-size: 14px;
+    line-height: 16px;
+    border: 1px solid #bdbdbd;
+    color: #838383;
+    background-color: #d4d4d4;
+    border-radius: 10px;
+    margin-bottom: .4rem;
+}
+#row-subheader span h4 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+#row-subheader span h4:first-child {
+    font-weight: 900;
+    color: #ce68a8;
+}
+
+.tier {
+    max-width: 15rem;
+}

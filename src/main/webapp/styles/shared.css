@@ -1,0 +1,41 @@
+.ribbon-wrapper {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 75px;
+    height: 78px;
+    overflow: hidden;
+}
+
+.ribbon {
+    text-align: center;
+    background-color: #ebb134;
+    color: white;
+    position: relative;
+    top: 15px;
+    right: 10px;
+    width: 120px;
+    transform: rotate(45deg);
+}
+
+.ribbon.hot {
+    background-color: rgb(243, 45, 45);
+    font-weight: bold;
+}
+.card-title, .card-subtitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.premium .card-text {
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1.5);
+}
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    font-size: 16px;
+  }

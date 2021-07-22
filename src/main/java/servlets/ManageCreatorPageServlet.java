@@ -106,14 +106,10 @@ public class ManageCreatorPageServlet extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher(manageCreatorInfoPage);
         LinkedHashMap<Category, Boolean> ucList = new LinkedHashMap<>();
         
-//        System.out.println(catList);
-//        catList.removeAll(userCatList);
-//        System.out.println(catList);
-       
         catList.forEach(cat -> {
             ucList.put(cat, false);
         });
-//        System.out.println(ucList);
+        
         userCatList.forEach(ucat -> {
             catList.forEach(cat -> {
                 if (ucat.getCategoryId() == cat.getCategoryId()) {

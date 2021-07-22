@@ -51,6 +51,19 @@
                         <label for="file" class="label-form fw-bold">Attachment</label>
                         <input type="file" id="file" name="attachment" class="form-control"/>
                     </div>
+                    <div>
+                        <label for="catList" class="label-form fw-bold">Categories</label>
+                        <ul id="catList">
+                            <c:forEach var="cat" items="${catList}">
+                                <li>
+                                    <label for="${cat.key.categoryId}">${cat.key.categoryName}</label>
+                                    <input type="checkbox" class="form-check-input" value="${cat.key.categoryId}" 
+                                           id="${cat.key.categoryId}" name="cat" 
+                                           <c:if test="${cat.value == true}">checked</c:if>/>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
                 </form>
                 <form action="EditPostServlet" method="POST" class="form-inline" id="cancelForm">
                     <input type="hidden" name="cancel" value="${post.postId}"/>

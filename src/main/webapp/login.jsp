@@ -11,7 +11,6 @@
         <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
         <link rel="icon" href="images/logo_head.png" type="image/icon type">
         <link rel="stylesheet" href="styles/login.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
               crossorigin="anonymous">

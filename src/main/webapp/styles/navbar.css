@@ -1,0 +1,71 @@
+* {
+    font-family: 'Helvetica Neue', "Sans-Serif";
+    font-size: 18px;
+}
+
+@media (min-width: 1200px) {
+    .dropdown-menu {
+        width: 500px;
+    }
+    #search-input {
+        margin-right: 5rem;
+    }
+    #dropdown-noti {
+        width: 300px;
+        position: absolute;
+        left: 78.5vw;
+    }
+    /* Them margin giup dieu chinh do dai thanh search :D */
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #FFAB9D;
+    border-radius: 100px;
+}
+
+.col-sm-4.nav-link.m-0.p-0.text-center.text-dark a {
+    text-decoration: none;
+    color: black;
+}
+
+.form-control, .input-group-text {
+    background-color: #eeeeee;
+    border-right: none;
+}
+
+.form-control:focus, .input-group-text:hover {
+    background-color: #DCDCDC;
+    box-shadow: none;
+}
+
+#login-btn, #signup-btn {
+    border: 1px solid #DCDCDC;
+    width: 130px;
+}
+
+#login-btn:hover, #signup-btn:hover {
+    background-color: #DCDCDC;
+}
+
+.nav-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+#horizontal-nav {
+    border-bottom: 1px solid #bdbdbd;
+    width: 100%;
+    min-height: 7vh;
+    max-height: 75vh;
+}
+
+/* end of navigation bar css */

@@ -50,7 +50,7 @@ public class RegisterServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String fname = request.getParameter("firstname");
         String lname = request.getParameter("lastname");
         String username = request.getParameter("username");
@@ -62,6 +62,8 @@ public class RegisterServlet extends HttpServlet {
         String avatarURL;
         avatarURL = new UploadFile().getFileName(request.getPart("avatar"));
         String url = invalidPage;
+        String defaultAvatar = "defaultAvatar.png";
+
         boolean error = false;
         UserDAO dao = new UserDAO();
         boolean foundUser = dao.usernameCheck(username);
@@ -80,22 +82,20 @@ public class RegisterServlet extends HttpServlet {
         if (username == null || username.trim().isEmpty()) {
             error = true;
             errorList[2] = "Missing username";
-        } else {
-            if (foundUser == true) {
+        }
+        else if (foundUser == true) {
 //                request.setAttribute("ERROR_USERNAME_TAKEN", "Username has already been taken!");
-                error = true;
-                errorList[2] = "Username has already been taken!";
-            }
+            error = true;
+            errorList[2] = "Username has already been taken!";
         }
         if (email == null || email.trim().isEmpty()) {
             error = true;
             errorList[3] = "Missing email";
-        } else {
-            if (foundEmail == true) {
+        }
+        else if (foundEmail == true) {
 //                request.setAttribute("ERROR_EMAIL_TAKEN", "Email has already been registered!");
-                error = true;
-                errorList[3] = "Email has already been registered!";
-            }
+            error = true;
+            errorList[3] = "Email has already been registered!";
         }
         if (password == null || password.trim().isEmpty()) {
             error = true;
@@ -104,28 +104,28 @@ public class RegisterServlet extends HttpServlet {
         if (confPass == null || confPass.trim().isEmpty()) {
             error = true;
             errorList[5] = "Re-enter password";
-        } else if (!confPass.equals(password)) {
+        }
+        else if (!confPass.equals(password)) {
             error = true;
             errorList[5] = "Fail to confirm password";
         }
-        
+        HttpSession session = request.getSession();
         User newUser = new User(username, password, fname, lname, email, null, avatarURL, false);
         if (error == false) {
             //if avatar is null, replace with a default one
-            if (avatarURL.equals("")) {
-                avatarURL = "defaultAvatar.png";
-            }
+            if (avatarURL.equals(""))
+                newUser.setAvatarURL(defaultAvatar);
+            else
+                session.setAttribute("filepart", request.getPart("avatar"));
             url = verifyEmailPage;
-            HttpSession session = request.getSession();
             session.setAttribute("user", newUser);
-            session.setAttribute("filepart", request.getPart("avatar"));
-        } else {
-            request.setAttribute("ERROR_LIST", errorList);
         }
+        else
+            request.setAttribute("ERROR_LIST", errorList);
         System.err.println("error: " + error);
         System.err.println("url: " + url);
         RequestDispatcher rd = request.getRequestDispatcher(url);
-        HttpSession session = request.getSession();
+//        HttpSession session = request.getSession();
         session.setAttribute("user", newUser);
         //request.setAttribute("user", newUser);
         rd.forward(request, response);
@@ -134,7 +134,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-           response.sendRedirect(registerForm);
+        response.sendRedirect(registerForm);
     }
 
     @Override
@@ -142,9 +142,11 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
+        }
+        catch (ClassNotFoundException ex) {
             Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
