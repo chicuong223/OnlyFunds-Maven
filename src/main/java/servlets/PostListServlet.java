@@ -7,7 +7,6 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -89,7 +88,7 @@ public class PostListServlet extends HttpServlet {
             if (postTiers.size() <= 0)
                 allowed = 1;
             else
-                allowed = checkTier(postTiers, user);
+                allowed = checkTier(post, user);
             int[] value = {likeCount, cmtCount, allowed};
             postMap.put(post, value);
         }
@@ -115,11 +114,14 @@ public class PostListServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private int checkTier(List<Tier> postTiers, User user) {
+    private int checkTier(Post post, User user) {
         if (user == null)
             return 0;
+        if(user.getUsername().equalsIgnoreCase(post.getUploader().getUsername()))
+            return 1;
         TierDAO tierDAO = new TierDAO();
         List<Tier> userTiers = tierDAO.getTiersBySubscription(user);
+        List<Tier> postTiers = tierDAO.getTiersByPost(post);
         for (Tier userTier : userTiers)
             for (Tier postTier : postTiers)
                 if (userTier.getTierId() == postTier.getTierId())
