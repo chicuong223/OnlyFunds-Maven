@@ -23,7 +23,7 @@ import user_management.user.User;
  *
  * @author DELL
  */
-@WebServlet(name = "Report", urlPatterns = {"/Report"})
+@WebServlet(name = "ReportServlet", urlPatterns = {"/Report"})
 public class ReportServlet extends HttpServlet {
 
     /**
@@ -37,6 +37,7 @@ public class ReportServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.err.println("ReportServlet called");
         String objectId = request.getParameter("objectId");
         String type = request.getParameter("type");
         String title = request.getParameter("title");
@@ -48,8 +49,9 @@ public class ReportServlet extends HttpServlet {
         Report newReport = new  Report(0, reportUser, objectId, type,null, title, description, reportDate,"pending", null) ;    
         ReportDAO rDAO=new ReportDAO();
         rDAO.addReport(newReport);
+        System.err.println("ReportServlet complete");
     }
-}
+
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 /**

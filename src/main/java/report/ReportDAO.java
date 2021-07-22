@@ -343,11 +343,11 @@ public class ReportDAO {
             con = DBConnect.makeConnection();
             if (con != null) {
                 ps = con.prepareStatement("INSERT INTO Report(report_username, reported_id, type, solved_by_staff, title, description, report_date, status, solve_date)\n"
-                        + "VALUES(?, ?, ?, ?, ?, ?, ?, ? ,?, ?)");
+                        + "VALUES(?, ?, ?, ?, ?, ?, ?, ? ,?)");
                 ps.setString(1, report.getReportUser().getUsername());
                 ps.setString(2, report.getReportedObjectId());
                 ps.setString(3, report.getType());
-                ps.setString(4, report.getSolveStaff().getUsername());
+                ps.setString(4, null);
                 ps.setString(5, report.getTitle());
                 ps.setString(6, report.getDescription());
                 ps.setDate(7, report.getReportDate());
