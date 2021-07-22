@@ -13,15 +13,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Post Details</title>
-        <style>
-            .fa-paperclip{
-                color: #000000;
-                font-size: 120%;
-            }
-            a{
-                text-decoration: none;
-            }
-        </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script defer>
             function clickBookmarkPost(username, postId) {

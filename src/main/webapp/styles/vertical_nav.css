@@ -212,6 +212,7 @@
     height: 100%;
     width: calc(100% - 14rem);
     left: 14rem;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
   
