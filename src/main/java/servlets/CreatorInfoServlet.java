@@ -102,6 +102,7 @@ public class CreatorInfoServlet extends HttpServlet {
         else
             pageIndex = Integer.parseInt(pageStr);
         ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
+//        System.out.println(postList.size());
         TreeMap<Post, int[]> postMap = new TreeMap<>();
         for (Post post : postList) {
             int allowed = 0;
@@ -118,45 +119,8 @@ public class CreatorInfoServlet extends HttpServlet {
             int[] value = {likeCount, cmtCount, allowed};
             postMap.put(post, value);
         }
-//        if (currentUser == null) {
-//            for (Post post : postList) {
-//                ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-//                if (postTiers.size() > 0) {
-//                    postMap.put(post, false);
-//                }
-//                else {
-//                    postMap.put(post, true);
-//                }
-//            }
-//        }
-//        else if (currentUser.getUsername().equals(creator.getUsername())) {
-//            for (Post post : postList) {
-//                postMap.put(post, true);
-//            }
-//        }
-//        else {
-//            ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
-//            for (Post post : postList) {
-//                boolean cmp = false;
-//                ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-//                if (postTiers.size() > 0) {
-//                    for (Tier userTier : userTiers) {
-//                        for (Tier postTier : postTiers) {
-//                            if (userTier.getTierId() == postTier.getTierId()) {
-//                                cmp = true;
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//                else {
-//                    cmp = true;
-//                }
-//                postMap.put(post, cmp);
-//            }
-//        }
         int count = dao.countPostsByUser(creator);
-        int pageSize = 3;
+        int pageSize = 4;
         int endPage = count / pageSize;
         if (count % pageSize != 0)
             endPage++;

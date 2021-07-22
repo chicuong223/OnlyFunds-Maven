@@ -71,7 +71,7 @@ public class PostDAO {
                 ps = con.prepareStatement("SELECT * FROM\n"
                         + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
                         + "* FROM Post WHERE uploader_username = ? AND is_active = 1) as x\n"
-                        + "WHERE x.r between ?*3-(3-1) and ?*3");
+                        + "WHERE x.r between ?*4-(4-1) and ?*4");
                 ps.setString(1, user.getUsername());
                 ps.setInt(2, pageIndex);
                 ps.setInt(3, pageIndex);
@@ -430,6 +430,7 @@ public class PostDAO {
                             post.setPostId(rs.getInt("id"));
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
+                            post.setUploadDate(rs.getDate("upload_date"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
                             lst.add(post);
@@ -497,6 +498,7 @@ public class PostDAO {
                             post.setPostId(rs.getInt("id"));
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
+                            post.setUploadDate(rs.getDate("upload_date"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
                             lst.add(post);
@@ -556,10 +558,10 @@ public class PostDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 String sql = "SELECT * FROM \n" +
-                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n" +
+                    "(SELECT post_id, title, description, upload_date, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n" +
                     "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
                     "WHERE Post.is_active=1\n" +
-                    "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
+                    "GROUP BY post_id, title, description, upload_date, view_count, uploader_username)\n" +
                     "AS list\n" +
                     "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -572,6 +574,7 @@ public class PostDAO {
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
                             post.setViewCount(rs.getInt("view_count"));
+                            post.setUploadDate(rs.getDate("upload_date"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
                             lst.add(post);
@@ -586,16 +589,15 @@ public class PostDAO {
         return lst;
     }
     
-    public LinkedHashMap<Post,Integer> getLikedPost(User user, int start, int end) {
-        LinkedHashMap<Post,Integer> lst = new LinkedHashMap<>();
+    public List<Post> getLikedPost(User user, int start, int end) {
+        List<Post> lst = new ArrayList<Post>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SSELECT * FROM \n" +
-                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r, COUNT (*) as likes\n" +
+                String sql = "SELECT * FROM\n" +
+                    "(SELECT *, row_number() OVER (ORDER BY post_id DESC) AS r\n" +
                     "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
-                    "WHERE Post.is_active=1 and username=?\n" +
-                    "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
+                    "WHERE Post.is_active=1 and username=?)\n" +
                     "AS list\n" +
                     "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -609,10 +611,10 @@ public class PostDAO {
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
                             post.setViewCount(rs.getInt("view_count"));
+                            post.setUploadDate(rs.getDate("upload_date"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
-                            int likes = rs.getInt("likes");
-                            lst.put(post, likes);
+                            lst.add(post);
                         }
                     }
                 }
@@ -624,16 +626,15 @@ public class PostDAO {
         return lst;
     }
     
-    public LinkedHashMap<Post,Integer> getBookmarkedPost(User user, int start, int end) {
-        LinkedHashMap<Post,Integer> lst = new LinkedHashMap<>();
+    public List<Post> getBookmarkedPost(User user, int start, int end) {
+        List<Post> lst = new ArrayList<Post>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SELECT * FROM \n" +
-                    "(SELECT post_id, title, description, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r, COUNT (*) as likes\n" +
+                String sql = "SELECT * FROM\n" +
+                    "(SELECT *, row_number() OVER (ORDER BY post_id DESC) AS r\n" +
                     "FROM Bookmark INNER JOIN Post ON (Post.id = Bookmark.post_id)\n" +
-                    "WHERE Post.is_active=1 and username=?\n" +
-                    "GROUP BY post_id, title, description, view_count, uploader_username)\n" +
+                    "WHERE Post.is_active=1 and username='?')\n" +
                     "AS list\n" +
                     "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -647,10 +648,46 @@ public class PostDAO {
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
                             post.setViewCount(rs.getInt("view_count"));
+                            post.setUploadDate(rs.getDate("upload_date"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
-                            int likes = rs.getInt("likes");
-                            lst.put(post, likes);
+                            lst.add(post);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        return lst;
+    }
+    
+    public List<Post> getMostViews(int start, int end) {
+        List<Post> lst = new ArrayList();
+        UserDAO userDAO = new UserDAO();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "SELECT * FROM\n" +
+                    "(SELECT row_number() OVER (ORDER BY view_count DESC) AS r, *\n" +
+                    "FROM Post\n" +
+                    "WHERE Post.is_active=1)\n" +
+                    "as list\n" +
+                    "WHERE list.r BETWEEN ? AND ?";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            Post post = new Post();
+                            post.setPostId(rs.getInt("id"));
+                            post.setTitle(rs.getString("title"));
+                            post.setDescription(rs.getString("description"));
+                            post.setViewCount(rs.getInt("view_count"));
+                            post.setUploadDate(rs.getDate("upload_date"));
+                            User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                            post.setUploader(uploader);
+                            lst.add(post);
                         }
                     }
                 }

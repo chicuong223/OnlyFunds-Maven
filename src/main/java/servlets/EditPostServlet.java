@@ -10,6 +10,8 @@ import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -49,17 +51,21 @@ public class EditPostServlet extends HttpServlet {
         PostDAO dao = new PostDAO();
         Post post = dao.getPostByID(postID);
         CategoryDAO catDAO = new CategoryDAO();
-        TierDAO tDAO = new TierDAO();
+        PostCategoryMapDAO postCatMap = new PostCategoryMapDAO();
+        List<Category> postCatList = catDAO.getCategoriesByPost(post);
         ArrayList<Category> catList = catDAO.getAllCategories();
-//        User user = (User) request.getSession().getAttribute("user");
-//        HttpSession session = request.getSession();
-//        session.setAttribute("post", post);
-        ArrayList<Tier> tierList = tDAO.getTiersByUser(post.getUploader());
-        ArrayList<Tier> postTiers = tDAO.getTiersByPost(post);
+
+        //A map to check which categories the post is currently in
+        LinkedHashMap<Category, Boolean> catMap = new LinkedHashMap<>();
+        catList.forEach(cat -> catMap.put(cat, false));
+        postCatList.forEach(postCat -> {
+            catList.forEach(cat -> {
+                if(cat.getCategoryId() == postCat.getCategoryId())
+                    catMap.put(cat, Boolean.TRUE);
+            });
+        });
         request.setAttribute("post", post);
-        request.setAttribute("postTiers", postTiers);
-        request.setAttribute("tierList", tierList);
-        request.setAttribute("catList", catList);
+        request.setAttribute("catList", catMap);
         request.getRequestDispatcher("edit_post_form.jsp").forward(request, response);
     }
 
@@ -80,6 +86,7 @@ public class EditPostServlet extends HttpServlet {
         }
         PostDAO postDAO = new PostDAO();
         Post post = postDAO.getPostByID(Integer.parseInt(strPostId));
+        PostCategoryMapDAO postCatMapDAO = new PostCategoryMapDAO();
         String title = request.getParameter("title");
         String desc = request.getParameter("desc");
         UploadFile upload = new UploadFile();
@@ -87,10 +94,27 @@ public class EditPostServlet extends HttpServlet {
         post.setTitle(title);
         post.setDescription(desc);
         if (!filename.isEmpty()) {
-            System.out.println(post.getAttachmentURL());
+//            System.out.println(post.getAttachmentURL());
             upload.deleteFile(request, post.getAttachmentURL(), "post_file");
             filename = upload.postAttachmentUpload(request, post.getPostId());
             post.setAttachmentURL(filename);
+        }
+        
+        //update category map
+        //Delete all current category map of post
+        //Then add the new ones
+        postCatMapDAO.deleteCategoryMapsByPost(post);
+        String[] categories = request.getParameterValues("cat");
+        CategoryDAO catDAO = new CategoryDAO();
+        if(categories == null){
+            Category cat = catDAO.getCategoryByID(6);
+            postCatMapDAO.addPostCatMapEdit(post, cat);
+        }
+        else{
+            for(String id : categories){
+                Category cat = catDAO.getCategoryByID(Integer.parseInt(id));
+                postCatMapDAO.addPostCatMapEdit(post, cat);
+            }
         }
         postDAO.updatePost(post);
         response.sendRedirect("PostDetailServlet?id=" + post.getPostId());

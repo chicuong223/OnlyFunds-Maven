@@ -89,7 +89,7 @@
                 </div>
                 
                 <div>
-                    <label for="confPass">Confirm passowrd</label>
+                    <label for="confPass">Confirm password</label>
                     <input type='password' placeholder="Confirm your password" class='form-control' name='confPass' id='confPass' onkeypress="return blockSpaceKey()"/>
                     <font color="red" id="confPassError">${ERROR_LIST[5]}</font>
                     <small class="success">Error message</small>

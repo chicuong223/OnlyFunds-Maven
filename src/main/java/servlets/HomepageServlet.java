@@ -53,7 +53,7 @@ public class HomepageServlet extends HttpServlet {
         int start = pageIndex * 8 - (8 - 1);
         int end = pageIndex * 8;
 //        List<Post> postList = postDAO.getPosts(start, end);
-        TreeMap<Post, Boolean> postList = getPosts(user, start, end);
+        TreeMap<Post, int[]> postList = getPosts(user, start, end);
         int count = postDAO.countPosts();
         int endPage = count / 8;
         if (count % 8 != 0)
@@ -66,84 +66,58 @@ public class HomepageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        PrintWriter out = response.getWriter();
-//        User user = (User) request.getSession().getAttribute("user");
-////        PostDAO dao = new PostDAO();
-//        PostLikeDAO likeDAO = new PostLikeDAO();
-//        CommentDAO cmtDAO = new CommentDAO();
-//        int start = Integer.parseInt(request.getParameter("start"));
-//        int end = Integer.parseInt(request.getParameter("end"));
-////        ArrayList<Post> lst = dao.getPosts(start, end);
-//        TreeMap<Post, Boolean> postMap = getPosts(user, start, end);
-//        postMap.forEach((p, view) -> {
-//            int likeCount = likeDAO.countPostLikeByPost(p);
-//            int cmtCount = cmtDAO.countCommentsByPost(p.getPostId());
-//            out.write(""
-//                    + "<div class=\"col-lg-3 mb-2\">\n"
-//                    + "<div class=\"card\" id=\"post\">\n"
-//                    + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
-//                    + "<div class=\"card-header p-2 pt-1\">\n"
-//                    + "<h4 class=\"card-title fw-bold\">" + p.getTitle() + "</h4>\n"
-//                    + "<h6 class=\"card-subtitle text-muted\" style=\"font-size: 16px;\">" + p.getUploader().getUsername() + "</h6>\n"
-//                    + "</div>\n"
-//                    + "<div class=\"card-body p-2 pt-1\">\n"
-//                    + "<a href=\"PostDetailServlet?id=" + p.getPostId() + "\" class=\"stretched-link\"></a>\n"
-//                    + "<p class=\"card-text\">\n"
-//                    + p.getDescription() + "\n"
-//                    + "</p>\n"
-//                    + "</div>\n"
-//                    + "<div class=\"card-footer p-2 pt-1 pb-1\">\n"
-//                    + "<small><i class=\"fas fa-thumbs-up\"></i>" + likeCount + "</small>\n"
-//                    + "<small><i class=\"fas fa-comment\"></i>" + cmtCount + "</small>\n"
-//                    + "<small><i class=\"far fa-eye\"></i> 1234</small>\n"
-//                    + "</div>\n"
-//                    + "</div>"
-//                    + "</div>");
-//        });
     }
-//        for (Post post : lst)
-//            response.getWriter().write("<div class=\"col-3 mx-2 my-2 card\">\n"
-//                    + "<div class=\"card-header\">\n"
-//                    + "<p class=\"card-title\">" + post.getTitle() + "</p>\n"
-//                    + "</div>\n"
-//                    + "<div class=\"card-body overflow-hidden\" style=\"height: 150px\">\n"
-//                    + post.getDescription() + "\n"
-//                    + "</div>\n"
-//                    + "<div class=\"card-footer\">\n"
-//                    + "<a href=\"PostDetailServlet?id=" + post.getPostId() + "\">See more</a>\n"
-//                    + "</div>\n"
-//                    + "</div>");
 
-    private TreeMap<Post, Boolean> getPosts(User currUser, int start, int end) {
+    private TreeMap<Post, int[]> getPosts(User currUser, int start, int end) {
         PostDAO dao = new PostDAO();
-        TierDAO tierDAO = new TierDAO();
         List<Post> postList = dao.getPosts(start, end);
-        TreeMap<Post, Boolean> postMap = new TreeMap<>();
-        for (Post post : postList) {
-            ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-            if (post.getUploader().getUsername().equalsIgnoreCase(currUser.getUsername()))
-                postMap.put(post, Boolean.TRUE);
-            if (postTiers.size() <= 0)
-                postMap.put(post, Boolean.TRUE);
-            if (postTiers.size() > 0) {
-                ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currUser);
-                for (Tier postTier : postTiers) {
-                    boolean view = false;
-                    for (Tier userTier : userTiers)
-                        if (userTier.getTierId() == postTier.getTierId()) {
-                            view = true;
-                            break;
-                        }
-                    postMap.put(post, view);
-                }
-            }
-        }
+        TreeMap<Post, int[]> postMap = new TreeMap<>();
+        PostLikeDAO likeDAO = new PostLikeDAO();
+        CommentDAO cmtDAO = new CommentDAO();
+        postList.forEach(post -> {
+            int allowed = checkTier(post, currUser);
+            int likeCount = likeDAO.countPostLikeByPost(post);
+            int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+            int[] value = {likeCount, cmtCount, allowed};
+            postMap.put(post, value);
+        });
+//        for (Post post : postList) {
+//            ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
+//            if (post.getUploader().getUsername().equalsIgnoreCase(currUser.getUsername()))
+//                postMap.put(post, Boolean.TRUE);
+//            else if (postTiers.size() <= 0)
+//                postMap.put(post, Boolean.TRUE);
+//            else if (postTiers.size() > 0) {
+//                ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currUser);
+//                for (Tier postTier : postTiers) {
+//                    boolean view = false;
+//                    for (Tier userTier : userTiers)
+//                        if (userTier.getTierId() == postTier.getTierId()) {
+//                            view = true;
+//                            break;
+//                        }
+//                    postMap.put(post, view);
+//                }
+//            }
+//        }
         return postMap;
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+    private int checkTier(Post post, User user) {
+        TierDAO tierDAO = new TierDAO();
+        List<Tier> userTiers = tierDAO.getTiersBySubscription(user);
+        List<Tier> postTiers = tierDAO.getTiersByPost(post);
+        if (postTiers.size() <= 0)
+            return 1;
+        else
+            if (user == null)
+                return 0;
+            else if (user.getUsername().equalsIgnoreCase(post.getUploader().getUsername()))
+                return 1;
+        for (Tier userTier : userTiers)
+            for (Tier postTier : postTiers)
+                if (userTier.getTierId() == postTier.getTierId())
+                    return 1;
+        return 0;
+    }
 }

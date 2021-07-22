@@ -29,7 +29,7 @@
                             <!-- Mỗi post tạo 1 column tương ứng -->
                         <c:forEach var="post" items="${postList}">
                             <div class='col-lg-3 mb-3'>
-                                <c:if test="${post.value == false}">
+                                <c:if test="${post.value[2] == 0}">
                                     <div class='card post premium mx-auto' id=post>
                                         <div class="ribbon-wrapper">
                                             <div class="ribbon">
@@ -46,9 +46,14 @@
                                                 You must subscribe to the author of this post to view
                                             </p>
                                         </div>
+                                        <div class='card-footer p-2 pt-1 pb-1'>
+                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                        </div>
                                     </div>
                                 </c:if>
-                                <c:if test="${post.value == true}">
+                                <c:if test="${post.value[2] == 1}">
                                     <div class='card post' id=post>
                                         <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
                                         <div class='card-header p-2 pt-1'>
@@ -60,6 +65,11 @@
                                             <p class='card-text'>
                                                 ${post.key.description}
                                             </p>
+                                        </div>
+                                        <div class='card-footer p-2 pt-1 pb-1'>
+                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>
