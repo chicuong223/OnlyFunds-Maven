@@ -52,10 +52,12 @@ ion-icon {
   font-weight: bold;
   border-bottom: 2px solid black;
 }
+
 .vertical-navbar .second-list button {
   margin-top: .3rem;
   width: 80px;
 }
+
 .vertical-navbar .active, .vertical-navbar .active {
   height: auto;
   max-height: 100%;
@@ -128,8 +130,8 @@ ion-icon {
 
 .vertical-navbar .active .marker ion-icon {
   transform: rotate(90deg);
-  padding:0 0 1.1rem 1.1rem;
-} 
+  padding: 0 0 1.1rem 1.1rem;
+}
 
 .main-content {
   position: absolute;
@@ -137,6 +139,6 @@ ion-icon {
   height: 100%;
   width: calc(100% - 14rem);
   left: 14rem;
-  overflow-x: hidden;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
