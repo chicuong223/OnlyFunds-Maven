@@ -71,7 +71,7 @@ public class PostDAO {
                 ps = con.prepareStatement("SELECT * FROM\n"
                         + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
                         + "* FROM Post WHERE uploader_username = ? AND is_active = 1) as x\n"
-                        + "WHERE x.r between ?*3-(3-1) and ?*3");
+                        + "WHERE x.r between ?*4-(4-1) and ?*4");
                 ps.setString(1, user.getUsername());
                 ps.setInt(2, pageIndex);
                 ps.setInt(3, pageIndex);
