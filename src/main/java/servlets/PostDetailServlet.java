@@ -94,10 +94,10 @@ public class PostDetailServlet extends HttpServlet {
                         }
                         else if (currentUser.getUsername().equals(post.getUploader().getUsername()))
                             cmp = true;
-                    if (cmp == false)
-                        request.setAttribute("tiererror", "You are not allowed to view this post");
                 }
             }
+            if (cmp == false)
+                request.setAttribute("tiererror", "You are not allowed to view this post");
         }
         if (currentUser != null) {
             boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);

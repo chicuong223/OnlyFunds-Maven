@@ -57,6 +57,11 @@ public class PostListServlet extends HttpServlet {
 //            postMap.forEach((p, c) -> System.out.println(p.getPostId()));
             postList = postDAO.getMostLikes(start, end);
             actionTitle = "Most Liked Posts";
+        } 
+        else if (action.equals("mostviews")) {
+            count = postDAO.countPosts();
+            postList = postDAO.getMostViews(start, end);
+            actionTitle = "Most Viewed Posts";
         }
         else if (action.equals("free")) {
             count = postDAO.countFreePosts();
