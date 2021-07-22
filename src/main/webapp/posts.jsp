@@ -4,6 +4,7 @@
     Author     : chiuy
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:import url="navbar.jsp"></c:import>
@@ -42,7 +43,7 @@
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
                                             <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploadDate}</h6>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></h6>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
@@ -68,7 +69,7 @@
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
                                             <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploadDate}</h6>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></h6>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <p class='card-text'>
