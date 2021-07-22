@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -404,39 +405,30 @@ public class UserDAO {
         return lst;
     }
 
-    //Not tested
-    public ArrayList<User> getSearchUser(String search) {
+    //Search for user using navbar
+    public List<User> getSearchUser(String search) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> lst = new ArrayList<>();
-        String sql
-                = "select u.*\n"
-                + "from [User] u\n"
-                + "where u.is_banned='0'\n"
-                + "     and(u.username Like ?\n"
-                + "	or	u.firstname Like ?\n"
-                + "	or u.lastname Like ?)";
+        List<User> lst = new ArrayList<>();
+        String sql = "SELECT *\n" +
+                "FROM [User] u\n" +
+                "WHERE u.is_banned='0'\n" +
+                "AND (u.username LIKE ?)";
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
                 ps = con.prepareStatement(sql);
                 search = "%" + search + "%";
                 ps.setString(1, search);
-                ps.setString(2, search);
-                ps.setString(3, search);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    String username = rs.getString("username");
-                    String password = rs.getString("password");
-                    String firstName = rs.getString("firstname");
-                    String lastName = rs.getString("lastname");
-                    String email = rs.getString("email");
-                    String bio = rs.getString("bio");
-                    String avatarURL = rs.getString("avatarURL");
-                    boolean isBanned = rs.getBoolean("is_banned");
-                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
-                    lst.add(subscriber);
+                    User user = new User();
+                    user.setUsername(rs.getString("username"));
+                    user.setBio(rs.getString("bio"));
+                    user.setAvatarURL(rs.getString("avatarURL"));
+                    user.setIsBanned(false);
+                    lst.add(user);
                 }
             }
         }
@@ -457,6 +449,49 @@ public class UserDAO {
         return lst;
     }
 
+    //Search for user by selecting category 
+    public List<User> getSearchCatUser(Category cat) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<User> lst = new ArrayList<>();
+        String sql = "SELECT u.*\n" +
+            "FROM [User] u INNER JOIN User_Category_Map uc ON (u.username=uc.username) \n" +
+            "WHERE u.is_banned='0' \n" +
+            "AND uc.category_id = ?";
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, cat.getCategoryId());
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    User user = new User();
+                    user.setUsername(rs.getString("username"));
+                    user.setBio(rs.getString("bio"));
+                    user.setAvatarURL(rs.getString("avatarURL"));
+                    user.setIsBanned(false);
+                    lst.add(user);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+    
     //update bio
     public boolean changeBio(String username, String bio) {
         Connection con = null;

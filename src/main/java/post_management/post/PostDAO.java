@@ -5,6 +5,7 @@
  */
 package post_management.post;
 
+import category.Category;
 import user_management.user.User;
 import user_management.user.UserDAO;
 import java.sql.Connection;
@@ -337,38 +338,78 @@ public class PostDAO {
         return lst;
     }
 
-    //Not tested
-    public ArrayList<Post> getSearchedPost(String search) {
+    //Search for posts using navbar
+    public List<Post> getSearchPost(String search) {
+        List lst = new ArrayList();
+        UserDAO userDAO = new UserDAO();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Post> lst = new ArrayList<>();
-        String sql
-                = "select p.*\n"
-                + "from Post p\n"
-                + "where p.is_active='1'"
-                + "     and(p.uploader_username Like ?\n"
-                + "	or p.title Like ?)";
+        String sql = "SELECT *\n" +
+                "FROM Post p\n" +
+                "WHERE p.is_active='1'\n"+
+                "AND (p.title LIKE ?)";
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
                 ps = con.prepareStatement(sql);
                 search = "%" + search + "%";
                 ps.setString(1, search);
-                ps.setString(2, search);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    int postID = rs.getInt("id");
-                    String postTitle = rs.getString("title");
-                    String postDescription = rs.getString("description");
-                    String attachmentURL = rs.getString("attachment_URL");
-                    String uploaderUName = rs.getString("uploader_username");
-                    UserDAO uDAO = new UserDAO();
-                    User uploader = uDAO.getUserByUsername(uploaderUName);
-                    int viewCount = rs.getInt("view_count");
-                    Date uploadDate = rs.getDate("upload_date");
-                    boolean isActive = rs.getBoolean("is_active");
-                    Post post = new Post(postID, uploader, postTitle, postDescription, attachmentURL, uploadDate, viewCount, isActive);
+                    Post post = new Post();
+                    post.setPostId(rs.getInt("id"));
+                    post.setTitle(rs.getString("title"));
+                    post.setDescription(rs.getString("description"));
+                    post.setUploadDate(rs.getDate("upload_date"));
+                    User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                    post.setUploader(uploader);
+                    lst.add(post);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+    
+    //Search for posts by selecting category
+    public List<Post> getSearchCatPost(Category cat) {
+        List lst = new ArrayList();
+        UserDAO userDAO = new UserDAO();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT p.*\n" +
+            "FROM Post p INNER JOIN Post_Category_Map pc ON (p.id=pc.post_id) \n" +
+            "WHERE p.is_active = '1'\n" +
+            "AND pc.category_id = ?";
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, cat.getCategoryId());
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    Post post = new Post();
+                    post.setPostId(rs.getInt("id"));
+                    post.setTitle(rs.getString("title"));
+                    post.setDescription(rs.getString("description"));
+                    post.setUploadDate(rs.getDate("upload_date"));
+                    User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
+                    post.setUploader(uploader);
                     lst.add(post);
                 }
             }

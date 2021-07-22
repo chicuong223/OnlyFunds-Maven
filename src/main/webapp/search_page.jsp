@@ -25,7 +25,12 @@
                 <c:import url="navbar.jsp">
                 </c:import>
                 <main class="main-container">
-                    <c:import url="vertical_navbar_post.jsp"></c:import>
+                    <c:if test="${sessionScope.user!=null}">
+                        <c:import url="vertical_navbar_post.jsp"></c:import>
+                    </c:if>
+                    <c:if test="${sessionScope.user==null}">
+                        <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
+                    </c:if>
                     <div class="main-content" id="main-content">
                         <div class="content container-fluid">
                             <div class="row gx-4 p-3 mb-2">
