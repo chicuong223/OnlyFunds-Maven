@@ -57,6 +57,8 @@ public class FollowingListServlet extends HttpServlet {
             List<Category> cateList = userCateMap.getCategoriesByUser(user);
             userMap.put(user, cateList);
         });
+        request.setAttribute("title", "Creators You Are Following");
+        request.setAttribute("type", "follow");
         request.setAttribute("end", endPage);
         request.setAttribute("creatorList", userMap);
         request.getRequestDispatcher("creator_list.jsp").forward(request, response);
