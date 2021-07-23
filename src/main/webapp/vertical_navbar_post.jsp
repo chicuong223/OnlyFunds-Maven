@@ -80,13 +80,13 @@
                 </a>
             </li>
             <li class="list">
-                <a href="LikedPostsServlet">
+                <a href="PostListServlet?action=liked">
                     <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
                     <span class="title">Liked Posts</span>
                 </a>
             </li>
             <li class="list">
-                <a href="BookmarkedPostsServlet">
+                <a href="PostListServlet?action=saved">
                     <span class="icon"><ion-icon name="save-outline"></ion-icon></span>
                     <span class="title"> Saved Posts</span>
                 </a>

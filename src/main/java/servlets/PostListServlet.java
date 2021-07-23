@@ -56,7 +56,7 @@ public class PostListServlet extends HttpServlet {
 //            postMap.forEach((p, c) -> System.out.println(p.getPostId()));
             postList = postDAO.getMostLikes(start, end);
             actionTitle = "Most Liked Posts";
-        } 
+        }
         else if (action.equals("mostviews")) {
             count = postDAO.countPosts();
             postList = postDAO.getMostViews(start, end);
@@ -71,6 +71,29 @@ public class PostListServlet extends HttpServlet {
             actionTitle = "Recent Posts";
             count = postDAO.countPosts();
             postList = postDAO.getPosts(start, end);
+        }
+        else if (action.equals("saved")) {
+            if (user == null) {
+                response.sendRedirect("WelcomePageServlet");
+                return;
+            }
+            postList = postDAO.getBookmarkedPost(user, start, end);
+            count = postDAO.countBookmarkedPosts(user);
+            actionTitle = "Saved Posts";
+        }
+        else if (action.equals("liked")) {
+            if (user == null) {
+                response.sendRedirect("WelcomePageServlet");
+                return;
+            }
+            postList = postDAO.getLikedPost(user, start, end);
+            count = postDAO.countLikedPosts(user);
+            actionTitle = "Liked Posts";
+        }
+        else {
+            request.setAttribute("posterror", "Invalid parameter");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
         int endPage = count / 8;
         if (count % 8 != 0)
@@ -117,7 +140,7 @@ public class PostListServlet extends HttpServlet {
     private int checkTier(Post post, User user) {
         if (user == null)
             return 0;
-        if(user.getUsername().equalsIgnoreCase(post.getUploader().getUsername()))
+        if (user.getUsername().equalsIgnoreCase(post.getUploader().getUsername()))
             return 1;
         TierDAO tierDAO = new TierDAO();
         List<Tier> userTiers = tierDAO.getTiersBySubscription(user);
