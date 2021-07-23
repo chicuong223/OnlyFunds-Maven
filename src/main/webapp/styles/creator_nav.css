@@ -1,0 +1,130 @@
+* {
+    font-family: 'Helvetica Neue', "Sans-Serif";
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    min-height: 100vh;
+    overflow: hidden;
+    font-size: 16px;
+  }
+  
+  .main-container {
+    height: 92vh;
+    width: 100%;
+    position: relative;
+  }
+  
+  .vertical-navbar {
+    position: absolute;
+    height: 100%;
+    width: 14rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition: all .5s;
+    border-right: 1px solid #bdbdbd;
+  }
+  
+  ion-icon {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+  }
+  
+  .vertical-navbar ul {
+    width: 100%;
+    height: auto;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+  
+  .vertical-navbar .second-list , .vertical-navbar .third-list {
+    max-height: 72px;
+    overflow: hidden;
+    transition: max-height 1s;
+  }
+  
+  .vertical-navbar ul li {
+    position: relative;
+    padding: 5px;
+    list-style: none;
+    width: 100%;
+  }
+  
+  .vertical-navbar ul li.active {
+    background-color: #dddddd;
+  }
+
+  .vertical-navbar ul li.active span {
+    color: #ce68a8;
+  }
+  
+  .vertical-navbar ul li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: black;
+  }
+  
+  .vertical-navbar ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+  }
+  
+  .vertical-navbar ul li.active a {
+    color: #ce68a8;
+  }
+
+  .vertical-navbar ul li a .icon i {
+    position: relative;
+    font-size: 1.5em;
+    z-index: 1;
+  }
+  
+  .vertical-navbar ul li a .title, .marker {
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+  }
+
+  .vertical-navbar ul li#logout {
+      position: absolute;
+      bottom: 0;
+  }
+
+  .marker {
+    font-size: 26px;
+    font-weight: bold;
+  }
+
+  .marker ion-icon {
+    padding: 1.1rem 0 0 1.1rem;
+    font-size: 1.5em;
+    transition: all .5s;
+  }
+
+  .vertical-navbar .active .marker ion-icon {
+    transform: rotate(90deg);
+    padding:0 0 1.1rem 1.1rem;
+  } 
+
+  .main-content {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: calc(100% - 14rem);
+    left: 14rem;
+    overflow-y: scroll;
+  }
+  

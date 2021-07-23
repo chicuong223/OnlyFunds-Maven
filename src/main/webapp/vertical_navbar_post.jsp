@@ -54,21 +54,9 @@
         </c:if>
         <c:if test="${sessionScope.user != null}">
             <li class="list">
-                <a href="ManageSubscriptions">
-                    <span class="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
-                    <span class="title"> My Subscription</span>
-                </a>
-            </li>
-            <li class="list">
                 <a href="ManageFollows">
                     <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
                     <span class="title"> Follow</span>
-                </a>
-            </li>
-            <li>
-                <a href="GetReports">
-                    <span class="icon"><ion-icon name="clipboard-outline"></ion-icon></span>
-                    <span class="title"> My reports</span>
                 </a>
             </li>
         </c:if>
