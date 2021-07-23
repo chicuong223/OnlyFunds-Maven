@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +24,8 @@ import post_management.comment.CommentDAO;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
+import subscription_management.tier.Tier;
+import subscription_management.tier.TierDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
 
@@ -66,23 +69,25 @@ public class WelcomePageServlet extends HttpServlet {
                     pageIndex = 1;
                 else
                     pageIndex = Integer.parseInt(strPage);
-                int start = pageIndex * 8 - (8 - 1);
-                int end = pageIndex * 8;
-                int count = postDAO.countFreePosts();
-                int endPage = count / 8;
-                if (count % 8 != 0)
-                    endPage++;
-                ArrayList<Post> freePosts = postDAO.getFreePosts(start, end);
+                int start = pageIndex * 4 - (4 - 1);
+                int end = pageIndex * 4;
+                List<Post> postList = postDAO.getPosts(start, end);
                 LinkedHashMap<Post, int[]> postMap = new LinkedHashMap<>();
-                freePosts.forEach(freePost -> {
-                    int likeCount = likeDAO.countPostLikeByPost(freePost);
-                    int cmtCount = cmtDAO.countCommentsByPost(freePost.getPostId());
-                    int[] arr = {likeCount, cmtCount};
-                    postMap.put(freePost, arr);
+                TierDAO tierDAO = new TierDAO();
+                postList.forEach(post -> {
+                    int allowed = 0;
+                    List<Tier> tiers = tierDAO.getTiersByPost(post);
+                    int likeCount = likeDAO.countPostLikeByPost(post);
+                    int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+                    if(tiers.size() <= 0)
+                        allowed = 1;
+                    else
+                        allowed = 0;
+                    int[] arr = {likeCount, cmtCount, allowed};
+                    postMap.put(post, arr);
                 });
                 request.setAttribute("postList", postMap);
                 request.setAttribute("userList", userCatMap);
-                request.setAttribute("end", endPage);
 //                System.out.println(postMap.size());
                 rd.forward(request, response);
             }

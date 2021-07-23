@@ -65,7 +65,7 @@ function clickLikePost(username, postId) {
     } else {
         numOfLike++;
         countPostLike.innerHTML = numOfLike;
-        likePost.className = ("fa fa-heart");/*Replace with icon when liked, turn to like icon*/
+        likePost.className = ("fas fa-thumbs-up");/*Replace with icon when liked, turn to like icon*/
         $.ajax({
             type: "POST",
             url: 'LikeOrUnlikePostServlet',

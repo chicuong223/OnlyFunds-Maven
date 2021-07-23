@@ -4,6 +4,7 @@
     Author     : ASUS GAMING
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Navigation bar -->
@@ -13,8 +14,9 @@
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <title>Only Funds</title>
-            <link type="text/css" rel="stylesheet" href="styles/main_page.css">
             <link type="text/css" rel="stylesheet" href="styles/welcome_page.css">
+            <link rel="stylesheet" href="styles/main_page.css">
+            <link rel="stylesheet" href="styles/shared.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
@@ -29,7 +31,7 @@
                             <div class="header mb-4">
                                 <span class="p-0 mb-5 mt-3"
                                       style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Popular
-                                    Creators</span>
+                                    Creators</span> <a href='#' class='link-primary'>View More</a>
                             </div>
                         <c:forEach var="creator" items="${userList}">
                             <div class="col-lg-3 m-0 p-0">
@@ -55,47 +57,58 @@
                         <div class="header mb-4">
                             <span class="p-0 mb-5 mt-3"
                                   style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
+                                  <a href='PostListServlet?action=recent' class='link-primary'>View More</a>
                         </div>
                         <c:forEach var="post" items="${postList}">
                             <div class='col-lg-3 mb-3'>
-                                <div class=card id=post>
-                                    <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
-                                    <div class='card-header p-2 pt-1'>
-                                        <h4 class='card-title fw-bold text-truncate'>${post.key.title}</h4>
-                                        <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                <c:if test="${post.value[2] == 1}">
+                                    <div class=card id=post>
+                                        <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
+                                        <div class='card-header p-2 pt-1'>
+                                            <h4 class='card-title fw-bold text-truncate'>${post.key.title}  <fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></h4>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                        </div>
+                                        <div class='card-body p-2 pt-1'>
+                                            <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
+                                            <p class='card-text'>
+                                                ${post.key.description}
+                                            </p>
+                                        </div>
+                                        <div class='card-footer p-2 pt-1 pb-1'>
+                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                        </div>
                                     </div>
-                                    <div class='card-body p-2 pt-1'>
-                                        <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
-                                        <p class='card-text'>
-                                            ${post.key.description}
-                                        </p>
+                                </c:if>
+                                <c:if test="${post.value[2] == 0}">
+                                    <div class='card post premium mx-auto' id=post>
+                                        <div class="ribbon-wrapper">
+                                            <div class="ribbon">
+                                                Premium
+                                            </div>
+                                        </div>
+                                        <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
+                                        <div class='card-header p-2 pt-1'>
+                                            <h4 class='card-title fw-bold text-truncate'>${post.key.title}</h4>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username} <fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></h6>
+                                        </div>
+                                        <div class='card-body p-2 pt-1'>
+                                            <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
+                                            <p class='card-text'>
+                                                 You must subscribe to the author of this post to view
+                                            </p>
+                                        </div>
+                                        <div class='card-footer p-2 pt-1 pb-1'>
+                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                        </div>
                                     </div>
-                                    <div class='card-footer p-2 pt-1 pb-1'>
-                                        <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
-                                        <small><i class='fas fa-comment'></i>${post.value[1]}</small>
-                                        <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
-                                    </div>
-                                </div>
+                                </c:if>
                             </div>
                         </c:forEach>
                     </div>
-                    <nav class="d-flex justify-content-center mb-4">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <c:forEach var="index" begin="1" end="${end}">
-                                <li class="page-item"><a class="page-link" href='WelcomePageServlet?page=${index}'>${index}</a></li>
-                                </c:forEach>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </main>
