@@ -734,7 +734,7 @@ public class UserDAO {
         int sub_count = 0;
         String sql = "SELECT COUNT(b.id) AS sub_count FROM\n" +
             "(SELECT s.id FROM Subscription s INNER JOIN \n" +
-            "(SELECT id FROM Tier where username=? AND is_active='1') p\n" +
+            "(SELECT id FROM Tier where username=? AND is_active=1) p\n" +
             " ON (s.tier_id=p.id)) b";
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
@@ -763,7 +763,7 @@ public class UserDAO {
             "AND f.followed_username IN \n" +
             "	(SELECT username \n" +
             "	FROM [User] u \n" +
-            "	WHERE u.is_banned='0')) ftb";
+            "	WHERE u.is_banned=0)) ftb";
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -784,9 +784,8 @@ public class UserDAO {
     // list of following users
     public ArrayList<User>getFollowingUsers(User user, int start, int end) {
         ArrayList<User> lst = new ArrayList<>();
-        String sql = "SELECT * FROM \n" +
-            "(SELECT username, avatarURL, ROW_NUMBER() OVER (ORDER BY username) AS r FROM [User] u WHERE u.is_banned='0' \n" +
-            "AND u.username IN (SELECT f.followed_username\n" +
+        String sql = "SELECT username, avatarURL FROM [User] u WHERE u.is_banned=0 \n" +
+            "AND u.username IN (SELECT f.followed_username \n" +
             "FROM Follow f \n" +
             "WHERE f.follower_username=?))\n" +
             "AS list\n" +
