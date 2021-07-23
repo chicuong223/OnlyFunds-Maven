@@ -457,7 +457,7 @@ public class UserDAO {
         List<User> lst = new ArrayList<>();
         String sql = "SELECT u.*\n" +
             "FROM [User] u INNER JOIN User_Category_Map uc ON (u.username=uc.username) \n" +
-            "WHERE u.is_banned='0' \n" +
+            "WHERE u.is_banned=0 \n" +
             "AND uc.category_id = ?";
         try {
             con = DBConnect.makeConnection();

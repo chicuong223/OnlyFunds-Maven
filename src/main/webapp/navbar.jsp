@@ -61,7 +61,8 @@
                     <!--Left nav-->
                     <nav class="nav navbar-nav w-50 d-flex justify-content-end" id="middle-nav">
                         <span class="nav-item">
-                            <form method="post" action="SearchServlet?a=searchstring">
+                            <form method="get" action="SearchServlet">
+                                <input type="hidden" value="searchstring" name="a"/>
                                 <div class="input-group input-group-sm" id="search-input">
                                     <input type="text" class="form-control" name="search" placeholder="Search...">
                                     <button class="input-group-text" id="basic-addon2" type="submit"><i
