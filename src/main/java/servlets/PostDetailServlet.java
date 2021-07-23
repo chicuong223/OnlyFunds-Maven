@@ -122,8 +122,8 @@ public class PostDetailServlet extends HttpServlet {
         }
         //check if user already liked comment
         CommentLikeDAO clDAO = new CommentLikeDAO();
-        ArrayList<Boolean> isCommnetLikedList = new ArrayList<Boolean>();
-        ArrayList<Integer> countCommentLikeList = new ArrayList<Integer>();
+        ArrayList<Boolean> isCommnetLikedList = new ArrayList<>();
+        ArrayList<Integer> countCommentLikeList = new ArrayList<>();
         for (Comment comment : cmtList) {
             if (currentUser != null) {
                 boolean isCommnetLiked = clDAO.CheckCommentLike(currentUser.getUsername(), comment.getCommentID());
