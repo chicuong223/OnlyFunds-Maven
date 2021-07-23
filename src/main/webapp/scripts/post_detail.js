@@ -39,12 +39,10 @@ function clickBookmarkPost(username, postId) {
 }
 
 function clickLikePost(username, postId) {
-    alert("here");
-    alert(postId + typeof (postId));
     var likePost = document.querySelector("#postLike");
     var countPostLike = document.querySelector("#countPostLike");
     var numOfLike = countPostLike.innerHTML;
-    if (likePost.className == "fas fa-thumbs-up"/*icon when liked*/) {
+    if (likePost.className === "fas fa-thumbs-up"/*icon when liked*/) {
         //call action likePost
         numOfLike--;
         countPostLike.innerHTML = numOfLike;
@@ -59,7 +57,6 @@ function clickLikePost(username, postId) {
             },
             cache: false,
             success: function () {
-                alert("unliked post");
             }
         });
     } else {
@@ -76,7 +73,6 @@ function clickLikePost(username, postId) {
             },
             cache: false,
             success: function () {
-                alert("liked post");
             }
         });
     }
