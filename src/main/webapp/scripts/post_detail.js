@@ -44,11 +44,11 @@ function clickLikePost(username, postId) {
     var likePost = document.querySelector("#postLike");
     var countPostLike = document.querySelector("#countPostLike");
     var numOfLike = countPostLike.innerHTML;
-    if (likePost.className == "fa fa-heart"/*icon when liked*/) {
+    if (likePost.className == "fas fa-thumbs-up"/*icon when liked*/) {
         //call action likePost
         numOfLike--;
         countPostLike.innerHTML = numOfLike;
-        likePost.className = ("fa fa-heart-o");/*Replace with icon when liked, turn to unlike button*/
+        likePost.className = ("far fa-thumbs-up");/*Replace with icon when liked, turn to unlike button*/
         $.ajax({
             type: "POST",
             url: 'LikeOrUnlikePostServlet',
