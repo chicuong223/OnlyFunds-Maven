@@ -9,6 +9,7 @@ import post_management.comment.Comment;
 import post_management.comment.CommentDAO;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,8 @@ import notification.NotificationDAO;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
+import report.Report;
+import report.ReportDAO;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.user.User;
@@ -45,10 +48,6 @@ public class PostDetailServlet extends HttpServlet {
             NotificationDAO notiDAO = new NotificationDAO();
             ArrayList<Notification> notiList = (ArrayList<Notification>) request.getSession().getAttribute("notiList");
             Notification notification = notiList.stream().filter(noti -> noti.getNotificationId() == Integer.parseInt(strNotiID)).findFirst().orElse(null);
-//            notiList.remove(notification);
-            //remove the old list from session, replace with the modified one
-//            session.removeAttribute("notiList");
-//            session.setAttribute("notiList", notiList);
             notiDAO.setIsRead(notification);
         }
         //get post info
@@ -77,7 +76,7 @@ public class PostDetailServlet extends HttpServlet {
                 cmp = true;
             else { //check if user has alr subscribed
                 ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currentUser);
-                for (Tier userTier : userTiers) {
+                for (Tier userTier : userTiers)
                     for (Tier postTier : postTiers)
                         if (userTier.getTierId() == postTier.getTierId()) {
                             cmp = true;
@@ -85,7 +84,6 @@ public class PostDetailServlet extends HttpServlet {
                         }
                         else if (currentUser.getUsername().equals(post.getUploader().getUsername()))
                             cmp = true;
-                }
             }
             if (cmp == false)
                 request.setAttribute("tiererror", "You are not allowed to view this post");
@@ -108,7 +106,19 @@ public class PostDetailServlet extends HttpServlet {
             request.setAttribute("isPostLiked", isPostLiked);
             //check if user already
             BookmarkDAO bmDAO = new BookmarkDAO();
+            ReportDAO reportDAO = new ReportDAO();
             boolean isBookmarked = bmDAO.CheckBookmark(currentUser.getUsername(), postID);
+            List<Report> reportPosts = reportDAO.getReportsByObjIdAndType(String.valueOf(postID), "Post");
+            List<Report> userReports = reportDAO.getReportsByUser(currentUser);
+            boolean reported = false;
+            OUTERLOOP:
+            for (Report userReport : userReports)
+                for (Report postReport : reportPosts)
+                    if (postReport.getId() == userReport.getId()) {
+                        reported = true;
+                        break OUTERLOOP;
+                    }
+            request.setAttribute("reported", reported);
             request.setAttribute("isBookmarked", isBookmarked);
         }
         //check if user already liked comment
@@ -119,9 +129,9 @@ public class PostDetailServlet extends HttpServlet {
             if (currentUser != null) {
                 boolean isCommnetLiked = clDAO.CheckCommentLike(currentUser.getUsername(), comment.getCommentID());
                 isCommnetLikedList.add(isCommnetLiked);
-            } else {
-                isCommnetLikedList.add(Boolean.FALSE);
             }
+            else
+                isCommnetLikedList.add(Boolean.FALSE);
             return comment;
         }).map(comment -> clDAO.countCommentLikeByCommentId(comment.getCommentID())).forEachOrdered(countCommentLike -> {
             countCommentLikeList.add(countCommentLike);

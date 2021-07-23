@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import user_management.user.User;
 import user_management.user.UserDAO;
 import utils.DBConnect;
@@ -58,19 +59,19 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
@@ -110,19 +111,19 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
@@ -162,23 +163,24 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
     }
+
     //no check
     public ArrayList<Report> getReportsByStatusAndType(String status, String type) {
         Connection con = null;
@@ -213,23 +215,24 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
     }
+
     //no check
     public ArrayList<Report> getReportsByObjIdAndType(String objId, String type) {
         Connection con = null;
@@ -256,7 +259,7 @@ public class ReportDAO {
                     String title = rs.getString("title");
                     String description = rs.getString("description");
                     Date reportDate = rs.getDate("report_date");
-                    String status=rs.getString("status");
+                    String status = rs.getString("status");
                     Date solveDate = rs.getDate("solve_date");
                     Report report = new Report(id, reportUser, objId, type,
                             solveStaff, title, description, reportDate,
@@ -264,27 +267,29 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
     }
 //no check
+
     public Report getReportById(String id) {
-            return getReportById(Integer.parseInt(id));
+        return getReportById(Integer.parseInt(id));
     }
+
     public Report getReportById(int id) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -317,19 +322,19 @@ public class ReportDAO {
                     return report;
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return null;
@@ -356,22 +361,24 @@ public class ReportDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
     }
 //no check
+
     public boolean updateReport(Report report) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -393,21 +400,23 @@ public class ReportDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
     }
+
     //notcheck
     public boolean approveReports(String objectId, String type, Staff staff) {
         Connection con = null;
@@ -424,21 +433,23 @@ public class ReportDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
     }
+
     //notcheck
     public boolean declineReports(String objectId, String type, Staff staff) {
         Connection con = null;
@@ -456,20 +467,56 @@ public class ReportDAO {
                 System.err.println("declineReports() success");
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
+    }
+
+    public List<Report> getReportsByUser(User user) {
+        List<Report> lst = new ArrayList<>();
+        String sql = "SELECT * FROM Report WHERE report_username = ?";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        int id = rs.getInt("id");
+                        String reportedObjectId = rs.getString("reported_id");
+                        String type = rs.getString("type");
+                        String staffUsername = rs.getString("solved_by_staff");
+                        Staff solveStaff = null;
+                        if (staffUsername != null && staffUsername.isEmpty()) {
+                            StaffDAO sDAO = new StaffDAO();
+                            solveStaff = sDAO.getStaffByUsername(staffUsername);
+                        }
+                        String title = rs.getString("title");
+                        String description = rs.getString("description");
+                        Date reportDate = rs.getDate("report_date");
+                        String status = rs.getString("status");
+                        Date solveDate = rs.getDate("solve_date");
+                        Report report = new Report(id, user, reportedObjectId, type,
+                                solveStaff, title, description, reportDate,
+                                status, solveDate);
+                        lst.add(report);
+                    }
+                }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lst;
     }
 //    //notcheck
 //    public boolean pendReports(String objectId, String type, Staff staff) {
