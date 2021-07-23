@@ -15,6 +15,8 @@
             <link rel="stylesheet" href="styles/main_page.css">
             <link rel="stylesheet" href="styles/shared.css">
             <title>
+            <c:if test='${type eq "follow"}'>Follow</c:if>
+            <c:if test='${type eq "explore"}'>Explore</c:if>
             </title>
         </head>
         <body>

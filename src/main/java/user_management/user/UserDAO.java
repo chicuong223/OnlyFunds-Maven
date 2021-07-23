@@ -638,18 +638,18 @@ public class UserDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, user.getUsername());
-                    ps.setString(2, user.getUsername());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        while (rs.next()) {
-                            User creator = new User();
-                            creator.setUsername(rs.getString("username"));
-                            creator.setBio(rs.getString("bio"));
-                            creator.setAvatarURL(rs.getString("avatarURL"));
-                            lst.add(creator);
-                        }
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        User creator = new User();
+                        creator.setUsername(rs.getString("username"));
+                        creator.setBio(rs.getString("bio"));
+                        creator.setAvatarURL(rs.getString("avatarURL"));
+                        lst.add(creator);
                     }
                 }
+            }
         }
         catch (Exception ex) {
             System.out.println(ex.getStackTrace());
@@ -732,94 +732,92 @@ public class UserDAO {
     // count subs
     public int countSubscribers(User user) {
         int sub_count = 0;
-        String sql = "SELECT COUNT(b.id) AS sub_count FROM\n" +
-            "(SELECT s.id FROM Subscription s INNER JOIN \n" +
-            "(SELECT id FROM Tier where username=? AND is_active=1) p\n" +
-            " ON (s.tier_id=p.id)) b";
+        String sql = "SELECT COUNT(b.id) AS sub_count FROM\n"
+                + "(SELECT s.id FROM Subscription s INNER JOIN \n"
+                + "(SELECT id FROM Tier where username=? AND is_active=1) p\n"
+                + " ON (s.tier_id=p.id)) b";
         try (Connection con = DBConnect.makeConnection()) {
-            if (con != null) {
+            if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
                     try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
+                        if (rs.next())
                             sub_count = rs.getInt("sub_count");
-                        }
                     }
                 }
-            }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println(ex.getStackTrace());
         }
         return sub_count;
     }
-    
+
     // count followers
     public int countFollowers(User user) {
         int follow_count = 0;
-        String sql = "SELECT COUNT(*) AS follow_count \n" +
-            "FROM (SELECT f.follower_username \n" +
-            "FROM Follow f \n" +
-            "WHERE f.followed_username=? \n" +
-            "AND f.followed_username IN \n" +
-            "	(SELECT username \n" +
-            "	FROM [User] u \n" +
-            "	WHERE u.is_banned=0)) ftb";
+        String sql = "SELECT COUNT(*) AS follow_count \n"
+                + "FROM (SELECT f.follower_username \n"
+                + "FROM Follow f \n"
+                + "WHERE f.followed_username=? \n"
+                + "AND f.followed_username IN \n"
+                + "	(SELECT username \n"
+                + "	FROM [User] u \n"
+                + "	WHERE u.is_banned=0)) ftb";
         try (Connection con = DBConnect.makeConnection()) {
-            if (con != null) {
+            if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
                     try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
+                        if (rs.next())
                             follow_count = rs.getInt("follow_count");
-                        }
                     }
                 }
-            }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println(ex.getStackTrace());
         }
         return follow_count;
     }
-    
+
     // count following
     public int countFollowing(User user) {
         int follow_count = 0;
-        String sql = "SELECT COUNT(*) AS follow_count \n" +
-            "FROM (SELECT f.followed_username \n" +
-            "FROM Follow f \n" +
-            "WHERE f.follower_username=? \n" +
-            "AND f.follower_username IN \n" +
-            "	(SELECT username \n" +
-            "	FROM [User] u \n" +
-            "	WHERE u.is_banned=0)) ftb";
+        String sql = "SELECT COUNT(*) AS follow_count \n"
+                + "FROM (SELECT f.followed_username \n"
+                + "FROM Follow f \n"
+                + "WHERE f.follower_username=? \n"
+                + "AND f.follower_username IN \n"
+                + "	(SELECT username \n"
+                + "	FROM [User] u \n"
+                + "	WHERE u.is_banned=0)) ftb";
         try (Connection con = DBConnect.makeConnection()) {
-            if (con != null) {
+            if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
                     try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
+                        if (rs.next())
                             follow_count = rs.getInt("follow_count");
-                        }
                     }
                 }
-            }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println(ex.getStackTrace());
         }
         return follow_count;
     }
-    
+
     // list of following users
-    public ArrayList<User>getFollowingUsers(User user, int start, int end) {
+    public ArrayList<User> getFollowingUsers(User user, int start, int end) {
         ArrayList<User> lst = new ArrayList<>();
-        String sql = "SELECT username, avatarURL FROM [User] u WHERE u.is_banned=0 \n" +
-            "AND u.username IN (SELECT f.followed_username \n" +
-            "FROM Follow f \n" +
-            "WHERE f.follower_username=?))\n" +
-            "AS list\n" +
-            "WHERE list.r BETWEEN ? and ?";
+        String sql = "SELECT * FROM\n"
+                + "(SELECT ROW_NUMBER() OVER (ORDER BY username) AS r, username, avatarURL FROM [User] u WHERE u.is_banned=0\n"
+                + "AND u.username IN (SELECT f.followed_username \n"
+                + "FROM Follow f \n"
+                + "WHERE f.follower_username=?))\n"
+                + "AS List\n"
+                + "WHERE list.r BETWEEN ? and ?";
         try (Connection con = DBConnect.makeConnection()) {
-            if (con != null) {
+            if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
                     ps.setInt(2, start);
@@ -828,23 +826,23 @@ public class UserDAO {
                         while (rs.next()) {
                             User followingUser = new User();
                             followingUser.setUsername(rs.getString("username"));
-                            followingUser.setAvatarURL(rs.getString("avtarURL"));
+                            followingUser.setAvatarURL(rs.getString("avatarURL"));
                             lst.add(followingUser);
                         }
                     }
                 }
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getStackTrace());
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
         return lst;
     }
-    
+
     public List<User> getCreators(int start, int end) {
         List<User> lst = new ArrayList<>();
         String sql = "SELECT * FROM (\n"
-                + "SELECT ROW_NUMBER() OVER (ORDER BY username) AS r, username, avatarURL FROM [User] WHERE is_banned = 0) as x\n" +
-        "WHERE x.r BETWEEN ? AND ?";
+                + "SELECT ROW_NUMBER() OVER (ORDER BY username) AS r, username, avatarURL FROM [User] WHERE is_banned = 0) as x\n"
+                + "WHERE x.r BETWEEN ? AND ?";
         try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, start);
             ps.setInt(2, end);
@@ -865,7 +863,7 @@ public class UserDAO {
 
     public int countCreators() {
         int count = -1;
-        String sql = "SELECT COUNT(username) AS user_count FROM [User]";
+        String sql = "SELECT COUNT(username) AS user_count FROM [User] WHERE is_banned = 0";
         try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next())
