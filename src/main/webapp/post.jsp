@@ -101,13 +101,12 @@
                                             <i class="fas fa-comment"></i> ${cmtList.size()}
                                         </a>
                                         <!-- Report button -->
-                                        <!-- Ngày mai nhớ thêm modal -->
                                         <c:choose>
                                             <%-- Nếu user không phải là tác giả và chưa report thì cho phép report --%>
                                             <c:when
                                                 test="${sessionScope.user != null && sessionScope.user.username != post.uploader.username}">
-                                                <a href="#" class="float-end" data-bs-toggle="modal"
-                                                    data-bs-target="#reportForm">
+                                                <a id="report_post_btn" href="#" class="float-end" data-bs-toggle="modal"
+                                                    data-bs-target="#reportForm" onclick="openFormReport(${post.postId}, 'post')">
                                                     <i class="fa fa-exclamation-triangle text-dark"></i>
                                                 </a>
                                             </c:when>
@@ -115,10 +114,10 @@
                                             <%-- Cái này hiện tại đang sai --%>
                                             <c:when
                                                 test="${sessionScope.user == null || sessionScope.user.username != post.uploader.username }">
-                                                <span href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                <a id="report-post-btn" href="#" data-bs-toggle="tooltip" data-bs-placement="top"
                                                     title="You have already reported this post!" style="float: right;">
                                                     <i class="fas fa-exclamation-triangle"></i>
-                                                </span>
+                                                </a>
                                             </c:when>
                                             <%-- NếU user là tác giả --%>
                                             <c:when
@@ -157,6 +156,48 @@
                             </div>
                         </div>
                     </main>
+                    <!-- Report modal -->
+                    <div class="modal fade" id="reportForm" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <form action="Report" id="reportForm" onsubmit="submitReport()">
+                                <input type="hidden" name="objectId" id="reportForm-objectId"/>
+                                <input type="hidden" name="type" id="reportForm-type"/>
+                                <div class="modal-content p-3">
+                                    <div class="modal-header d-flex justify-content-center">
+                                        <h6 class="m-0 p-0 fw-bold">Please provide information about your problem</h6>
+                                        <button style="position: absolute; top:10px; right: 10px;" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body p-2">
+                                        <div class="container-fluid ps-4 pt-2 m-0">
+                                            <div class="row mb-3">
+                                                <div class="col-12 my-auto">
+                                                    <span>Title: </span>
+                                                    <i class="fas fa-asterisk fa-xs" style="color: red;"></i>
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="text" class="form-control form-control-sm" 
+                                                    id="reportForm-title" name="title">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <span>Description: </span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <textarea style="min-height: 10rem;" class="p-2 w-100 form-control" name="description" id="reportForm-description" placeholder="Additional information if needed..."></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-success w-100">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <!-- Delete modal -->
                     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">

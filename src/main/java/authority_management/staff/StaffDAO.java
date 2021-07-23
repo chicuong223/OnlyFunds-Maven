@@ -69,6 +69,59 @@ public class StaffDAO {
         return result;
     }
     
+    
+    //no check
+    public Staff getStaffByUsername(String username) {
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=?");
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
+                    String password = rs.getString("password");
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    return staff;
+                }
+                rs.close();
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    public Staff CheckLogin(String username, String password) {
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=? And password=?");
+                ps.setString(1, username);
+                ps.setString(2, password);
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    return staff;
+                }
+                rs.close();
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
     public static void main(String[] args) {
         StaffDAO dao = new StaffDAO();
         Staff staff = new Staff("staff2", HashPassword.HashPassword("staff2"), "Tang","Chi-Cuong", "chicuong@gmail.com", true);

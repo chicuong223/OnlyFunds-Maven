@@ -33,12 +33,12 @@ public class PostDAO {
                 try (PreparedStatement ps = con.prepareStatement("SELECT MAX(id) as id FROM Post WHERE uploader_username = ?")) {
                 ps.setString(1, user.getUsername());
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
+                    if (rs.next()) {
                         postId = rs.getInt("id");
+                    }
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
         }
         return postId;
     }
@@ -46,16 +46,19 @@ public class PostDAO {
     public int countPostsByUser(User user) {
         int count = 0;
         try (Connection con = DBConnect.makeConnection()) {
-            if (con != null)
+
+            if (con != null) {
+
                 try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 1")) {
-                ps.setString(1, user.getUsername());
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        count = rs.getInt("countNo");
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            count = rs.getInt("countNo");
+                        }
+                    }
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
         }
         return count;
     }
@@ -89,19 +92,19 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (ps != null)
+                }
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return lst;
@@ -132,19 +135,19 @@ public class PostDAO {
                     post = new Post(postID, uploader, postTitle, postDescription, attachmentURL, uploadDate, viewCount, isActive);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (ps != null)
+                }
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return post;
@@ -161,17 +164,94 @@ public class PostDAO {
                 ps.setInt(1, post.getPostId());
                 success = ps.executeUpdate() >= 1;
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
-                if (ps != null)
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
+                }
+            } catch (SQLException e) {
             }
-            catch (SQLException e) {
+        }
+        return success;
+    }
+
+    public boolean deactivatePost(int id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE Post SET is_active = 0 WHERE id = ?");
+                ps.setInt(1, id);
+                success = ps.executeUpdate() >= 1;
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return success;
+    }
+
+    public boolean activatePost(int id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE Post SET is_active = 1 WHERE id = ?");
+                ps.setInt(1, id);
+                success = ps.executeUpdate() >= 1;
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return success;
+    }
+
+    public boolean activatePost(Post post) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("UPDATE Post SET is_active = 1 WHERE id = ?");
+                ps.setInt(1, post.getPostId());
+                success = ps.executeUpdate() >= 1;
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
             }
         }
         return success;
@@ -195,18 +275,17 @@ public class PostDAO {
                 ps.executeUpdate();
                 return true;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
-                if (ps != null)
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return false;
@@ -226,18 +305,17 @@ public class PostDAO {
                 ps.executeUpdate();
                 return true;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             try {
-                if (ps != null)
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return false;
@@ -267,19 +345,19 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (ps != null)
+                }
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return lst;
@@ -320,19 +398,19 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (ps != null)
+                }
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return lst;
@@ -413,40 +491,40 @@ public class PostDAO {
                     lst.add(post);
                 }
             }
-        }
-        catch (SQLException e) {
-        }
-        finally {
+        } catch (SQLException e) {
+        } finally {
             try {
-                if (rs != null)
+                if (rs != null) {
                     rs.close();
-                if (ps != null)
+                }
+                if (ps != null) {
                     ps.close();
-                if (con != null)
+                }
+                if (con != null) {
                     con.close();
-            }
-            catch (SQLException e) {
+                }
+            } catch (SQLException e) {
             }
         }
         return lst;
     }
-    
-    public int countFreePosts(){
+
+    public int countFreePosts() {
         int count = -1;
         String sql = "SELECT Count(id) as count FROM Post WHERE id NOT IN\n"
                 + "(SELECT post_id FROM Tier_Map)\n"
                 + "AND is_active = 1";
-        try(Connection con = DBConnect.makeConnection()){
-            if(con != null){
-                try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
-                   if(rs.next()){
-                       count = rs.getInt("count");
-                   }
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        count = rs.getInt("count");
+                    }
                 }
             }
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
         return count;
@@ -479,8 +557,7 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return lst;
@@ -521,8 +598,7 @@ public class PostDAO {
 //        }
 //        return lst;
 //    }
-    
-    public List<Post> getPosts(int start, int end){
+    public List<Post> getPosts(int start, int end) {
         List<Post> lst = new ArrayList<>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
@@ -547,64 +623,108 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return lst;
     }
 
-    public int countPostsThatHasLikes(){
-         int count = -1;
+    public int CountReportedPostsByUser(User user) {
+        return CountReportedPostsByUsername(user.getUsername());
+    }
+
+    public int CountReportedPostsByUsername(String username) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                String sql
+                        = "select count (p.id) as num\n"
+                        + "from Post p\n"
+                        + "where p.id in \n"
+                        + "	(select r.reported_id\n"
+                        + "	from Report r\n"
+                        + "	where r.type='post'\n"
+                        + "		and r.status='approved')\n"
+                        + "	and p.uploader_username=?";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, username);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("num");
+                }
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return 0;
+    }
+
+    public int countPostsThatHasLikes() {
+        int count = -1;
         String sql = "SELECT Count(*) as count FROM Post WHERE is_active = 1 AND id IN \n("
                 + "SELECT post_id FROM Post_Like)";
-        try(Connection con = DBConnect.makeConnection()){
-            if(con != null){
-                try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
-                   if(rs.next()){
-                       count = rs.getInt("count");
-                   }
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        count = rs.getInt("count");
+                    }
                 }
             }
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
         return count;
     }
-    
-     public int countPosts(){
-         int count = -1;
+
+    public int countPosts() {
+        int count = -1;
         String sql = "SELECT Count(*) as count FROM Post WHERE is_active = 1";
-        try(Connection con = DBConnect.makeConnection()){
-            if(con != null){
-                try(PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
-                   if(rs.next()){
-                       count = rs.getInt("count");
-                   }
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        count = rs.getInt("count");
+                    }
                 }
             }
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
         return count;
     }
-    
+
     public List<Post> getMostLikes(int start, int end) {
         List<Post> lst = new ArrayList<>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SELECT * FROM \n" +
-                    "(SELECT post_id, title, description, upload_date, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n" +
-                    "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
-                    "WHERE Post.is_active=1\n" +
-                    "GROUP BY post_id, title, description, upload_date, view_count, uploader_username)\n" +
-                    "AS list\n" +
-                    "WHERE list.r BETWEEN ? AND ?";
+                String sql = "SELECT * FROM \n"
+                        + "(SELECT post_id, title, description, upload_date, view_count, uploader_username, row_number() OVER (ORDER BY COUNT(*) DESC) AS r\n"
+                        + "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n"
+                        + "WHERE Post.is_active=1\n"
+                        + "GROUP BY post_id, title, description, upload_date, view_count, uploader_username)\n"
+                        + "AS list\n"
+                        + "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setInt(1, start);
                     ps.setInt(2, end);
@@ -623,24 +743,23 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return lst;
     }
-    
+
     public List<Post> getLikedPost(User user, int start, int end) {
         List<Post> lst = new ArrayList<Post>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SELECT * FROM\n" +
-                    "(SELECT *, row_number() OVER (ORDER BY post_id DESC) AS r\n" +
-                    "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n" +
-                    "WHERE Post.is_active=1 and username=?)\n" +
-                    "AS list\n" +
-                    "WHERE list.r BETWEEN ? AND ?";
+                String sql = "SELECT * FROM\n"
+                        + "(SELECT *, row_number() OVER (ORDER BY post_id DESC) AS r\n"
+                        + "FROM Post_Like INNER JOIN Post ON (Post.id = Post_Like.post_id)\n"
+                        + "WHERE Post.is_active=1 and username=?)\n"
+                        + "AS list\n"
+                        + "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
                     ps.setInt(2, start);
@@ -660,24 +779,23 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return lst;
     }
-    
+
     public List<Post> getBookmarkedPost(User user, int start, int end) {
         List<Post> lst = new ArrayList<Post>();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SELECT * FROM\n" +
-                    "(SELECT *, row_number() OVER (ORDER BY post_id DESC) AS r\n" +
-                    "FROM Bookmark INNER JOIN Post ON (Post.id = Bookmark.post_id)\n" +
-                    "WHERE Post.is_active=1 and username='?')\n" +
-                    "AS list\n" +
-                    "WHERE list.r BETWEEN ? AND ?";
+                String sql = "SELECT * FROM\n"
+                        + "(SELECT *, row_number() OVER (ORDER BY post_id DESC) AS r\n"
+                        + "FROM Bookmark INNER JOIN Post ON (Post.id = Bookmark.post_id)\n"
+                        + "WHERE Post.is_active=1 and username='?')\n"
+                        + "AS list\n"
+                        + "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
                     ps.setInt(2, start);
@@ -697,24 +815,23 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return lst;
     }
-    
+
     public List<Post> getMostViews(int start, int end) {
         List<Post> lst = new ArrayList();
         UserDAO userDAO = new UserDAO();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "SELECT * FROM\n" +
-                    "(SELECT row_number() OVER (ORDER BY view_count DESC) AS r, *\n" +
-                    "FROM Post\n" +
-                    "WHERE Post.is_active=1)\n" +
-                    "as list\n" +
-                    "WHERE list.r BETWEEN ? AND ?";
+                String sql = "SELECT * FROM\n"
+                        + "(SELECT row_number() OVER (ORDER BY view_count DESC) AS r, *\n"
+                        + "FROM Post\n"
+                        + "WHERE Post.is_active=1)\n"
+                        + "as list\n"
+                        + "WHERE list.r BETWEEN ? AND ?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setInt(1, start);
                     ps.setInt(2, end);
@@ -733,13 +850,12 @@ public class PostDAO {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
         return lst;
     }
-    
+
     public static void main(String[] args) {
         User user = new User();
         user.setUsername("chicuong");
