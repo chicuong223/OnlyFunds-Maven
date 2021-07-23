@@ -720,6 +720,85 @@ public class UserDAO {
         return result;
     }
 
+    // count subs
+    public int countSubscribers(User user) {
+        int sub_count = 0;
+        String sql = "SELECT COUNT(b.id) AS sub_count FROM\n" +
+            "(SELECT s.id FROM Subscription s INNER JOIN \n" +
+            "(SELECT id FROM Tier where username=? AND is_active='1') p\n" +
+            " ON (s.tier_id=p.id)) b";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            sub_count = rs.getInt("sub_count");
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+        }
+        return sub_count;
+    }
+    
+    // count followers
+    public int countFollowers(User user) {
+        int follow_count = 0;
+        String sql = "SELECT COUNT(*) AS follow_count \n" +
+            "FROM (SELECT f.follower_username \n" +
+            "FROM Follow f \n" +
+            "WHERE f.followed_username=? \n" +
+            "AND f.followed_username IN \n" +
+            "	(SELECT username \n" +
+            "	FROM [User] u \n" +
+            "	WHERE u.is_banned='0')) ftb";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            follow_count = rs.getInt("follow_count");
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+        }
+        return follow_count;
+    }
+    
+    // list of following users
+    public ArrayList<User>followingUsers(User user) {
+        ArrayList<User> lst = new ArrayList<>();
+        String sql = "SELECT username, avatarURL FROM [User] u WHERE u.is_banned='0' \n" +
+            "AND u.username IN (SELECT f.followed_username \n" +
+            "FROM Follow f \n" +
+            "WHERE f.follower_username=?)";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            User followingUser = new User();
+                            followingUser.setUsername(rs.getString("username"));
+                            followingUser.setAvatarURL(rs.getString("avtarURL"));
+                            lst.add(followingUser);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+        }
+        return lst;
+    }
+    
     public static void main(String[] args) {
         UserDAO dao = new UserDAO();
 //        User user = dao.getUserByUsername("");
