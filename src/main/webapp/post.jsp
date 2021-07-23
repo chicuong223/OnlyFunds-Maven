@@ -50,7 +50,8 @@
                                         </div>
                                         <div class="row mb-2">
                                             <!-- Date here -->
-                                            <div class="col ps-0 fw-bold" style="font-size: 17px;">${post.uploadDate}
+                                            <div class="col ps-0 fw-bold" style="font-size: 17px;">
+                                                <fmt:formatDate value="${post.uploadDate}" pattern="dd-MM-yyyy"></fmt:formatDate>
                                             </div>
                                             <!-- View count here -->
                                             <div class="col pe-0 fw-bold">
@@ -75,284 +76,194 @@
                                                     </a>
                                                 </div>
                                             </c:if>
-                                            <div class="col-12 pb-2 border-bottom" style="position: relative;"
-                                                id="icon-bar">
+                                            <div class="col-12 pb-2 border-bottom" style="position: relative;" id="icon-bar">
                                                 <!-- Like button -->
                                                 <c:choose>
                                                     <%-- Nếu user đã login, cho phép like, unlike --%>
-                                                        <c:when test="${sessionScope.user != null}">
-                                                            <c:choose>
-                                                                <c:when test="${isPostLiked}">
-                                                                    <i id="postLike" class="fas fa-thumbs-up"
-                                                                        onclick="clickLikePost('${user.username}',${post.postId})">
-                                                                        <span
-                                                                            id="countPostLike">${requestScope.postLikeCount}</span>
-                                                                    </i>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <i id="postLike" class="far fa-thumbs-up"
-                                                                        onclick="clickLikePost('${user.username}',${post.postId})">
-                                                                        <span
-                                                                            id="countPostLike">${requestScope.postLikeCount}</span>
-                                                                    </i>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </c:when>
-                                                        <%-- Nếu user chưa login, bắt user phải login --%>
+                                                    <c:when test="${sessionScope.user != null}">
+                                                        <c:choose>
+                                                            <%-- Đã like --%>
+                                                            <c:when test="${isPostLiked}">
+                                                                <a id="like-btn" class="me-4" href="#" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                                    <i class="fas fa-thumbs-up" id="postLike"></i>
+                                                                    <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                                                </a>
+                                                            </c:when>
+                                                            <%-- Chưa like --%>
                                                             <c:otherwise>
-                                                                <i id="postLike" class="far fa-thumbs-up"
-                                                                    aria-hidden="true">
-                                                                    <span id="countPostLike" data-bs-toggle="modal"
-                                                                        data-bs-target="#modal-login">
-                                                                        ${requestScope.postLikeCount}
-                                                                    </span>
-                                                                </i>
+                                                                <a id="like-btn" class="me-4" href="#" onclick="clickLikePost('${user.username}',${post.postId})">
+                                                                    <i class="far fa-thumbs-up" id="postLike"></i>
+                                                                    <span id="countPostLike">${requestScope.postLikeCount}</span>
+                                                                </a>
                                                             </c:otherwise>
+                                                        </c:choose>
+                                                    </c:when>
+                                                    <%-- Nếu user chưa login, bắt user phải login --%>
+                                                    <c:otherwise>
+                                                        <i id="postLike" class="far fa-thumbs-up"
+                                                            aria-hidden="true">
+                                                            <span id="countPostLike" data-bs-toggle="modal"
+                                                                data-bs-target="#modal-login">
+                                                                ${requestScope.postLikeCount}
+                                                            </span>
+                                                        </i>
+                                                    </c:otherwise>
                                                 </c:choose>
-                                                <!-- Comment number -->
+                                                <%-- Comment number --%>
                                                 <a href="#CommentWrite" class="comment-number">
                                                     <i class="fas fa-comment"></i> ${cmtList.size()}
                                                 </a>
-                                                <!-- Report button -->
                                                 <c:choose>
-                                                    <%-- Nếu user chưa login, hiện form login--%>
-                                                        <c:when test="${sessionScope.user == null}">
-                                                            <a id="report-post-btn" href="#" data-bs-toggle="modal"
-                                                                data-bs-target="#modal-login" style="float: right;" class="me-4">
-                                                                <i class="fas fa-exclamation-triangle"></i>
-                                                            </a>
-                                                        </c:when>
-                                                        <%-- Nếu user không phải là tác giả và chưa report thì cho phép
-                                                            report --%>
-                                                            <c:when
-                                                                test="${sessionScope.user.username != post.uploader.username}">
-                                                                <a id="report_post_btn" href="#" class="float-end"
+                                                    <%-- Nếu là user hoặc chưa login, hiện nút bookmark và nút report--%>
+                                                    <c:when test="${sessionScope.user == null || sessionScope.user.username != post.uploader.username}">
+                                                        <!-- Report button -->
+                                                        <c:choose>
+                                                            <%-- Nếu user chưa login, hiện form login--%>
+                                                            <c:when test="${sessionScope.user == null}">
+                                                                <a id="report-post-btn" href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#modal-login" style="float: right;" class="ms-4">
+                                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                                </a>
+                                                            </c:when>
+                                                            <%-- Nếu user không phải là tác giả và chưa report thì cho phép report --%>
+                                                            <c:when test="${sessionScope.user.username != post.uploader.username && reported == false}">
+                                                                <a id="report_post_btn" href="#" class="float-end ms-4"
                                                                     data-bs-toggle="modal" data-bs-target="#reportForm"
                                                                     onclick="openFormReport(${post.postId}, 'post')" class="me-4">
                                                                     <i class="fa fa-exclamation-triangle text-dark"></i>
                                                                 </a>
                                                             </c:when>
-                                                            <%-- Nếu user không phải là tác giả và đã report thì không
-                                                                cho phép report nữa --%>
-                                                                <%-- Cái này hiện tại vẫn đang sai--%>
-                                                                    <c:when
-                                                                        test="${sessionScope.user.username != post.uploader.username && reported ==true}">
-                                                                        <a id="report-post-btn" href="#"
-                                                                            data-bs-toggle="tooltip"
-                                                                            data-bs-placement="top"
-                                                                            title="You have already reported this post!"
-                                                                            style="float: right;" class="me-4">
-                                                                            <i class="fas fa-exclamation-triangle"
-                                                                                style="cursor: default;"></i>
-                                                                        </a>
-                                                                    </c:when>
-                                                                    <%-- NếU user là tác giả --%>
-                                                                        <c:when
-                                                                            test="${sessionScope.user.username == post.uploader.username}">
-                                                                            <%-- Edit button --%>
-                                                                                <a href="EditPostServlet?id=${requestScope.post.postId}"
-                                                                                    class="float-end ms-2">
-                                                                                    <i
-                                                                                        class="fa fa-pencil text-dark"></i>
-                                                                                </a>
-                                                                                <%-- Delete button --%>
-                                                                                    <a href="#" class="float-end"
-                                                                                        data-bs-toggle="modal"
-                                                                                        data-bs-target="#deleteModal">
-                                                                                        <i
-                                                                                            class="fa fa-trash text-dark"></i>
-                                                                                    </a>
-                                                                        </c:when>
-                                                </c:choose>
-                                                <!-- Bookmark button -->
-                                                <c:choose>
-                                                    <%-- Nếu user chưa login, hiện form login--%>
-                                                    <c:when test="${sessionScope.user == null}">
-                                                        <a id="report-post-btn" href="#" data-bs-toggle="modal"
-                                                            data-bs-target="#modal-login" style="float: right;">
-                                                            <i class="far fa-bookmark"></i>
-                                                        </a>
-                                                    </c:when>
-                                                    <%-- Nếu user không phải là tác giả--%>
-                                                    <c:when
-                                                        test="${sessionScope.user.username != post.uploader.username}">
-                                                        <c:choose>
-                                                            <%-- Nếu user đã bookmark --%>
-                                                                <c:when test="${isBookmarked}">
-                                                                    <span class="me-2"
-                                                                        style="cursor: pointer; float: right;">
-                                                                        <i id="btnBookmark"
-                                                                            onclick="clickBookmarkPost('${user.username}',${post.postId})"
-                                                                            class="fas fa-bookmark"></i>
-                                                                    </span>
-                                                                </c:when>
-                                                                <%-- Nếu user chưa bookmark --%>
-                                                                    <c:otherwise>
-                                                                        <span class="me-2"
-                                                                            style="cursor: pointer; float: right;">
-                                                                            <i id="btnBookmark"
-                                                                                onclick="clickBookmarkPost('${user.username}',${post.postId})"
-                                                                                class="far fa-bookmark"></i>
-                                                                        </span>
-                                                                    </c:otherwise>
+                                                            <%-- Nếu user không phải là tác giả và đã report thì không cho phép report nữa --%>
+                                                            <c:when test="${sessionScope.user.username != post.uploader.username && reported == true}">
+                                                                <span id="report-post-btn" href="#"
+                                                                    data-bs-toggle="tooltip"
+                                                                    data-bs-placement="top"
+                                                                    title="You have already reported this post!"
+                                                                    style="float: right;" class="ms-4">
+                                                                    <i class="fas fa-exclamation-triangle"
+                                                                        style="cursor: default;"></i>
+                                                                </span>
+                                                            </c:when>
                                                         </c:choose>
+                                                        <!-- Bookmark button -->
+                                                        <c:choose>
+                                                            <%-- Nếu user chưa login, hiện form login--%>
+                                                            <c:when test="${sessionScope.user == null}">
+                                                                <a id="report-post-btn" href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#modal-login" style="float: right;">
+                                                                    <i class="far fa-bookmark"></i>
+                                                                </a>
+                                                            </c:when>
+                                                            <%-- Nếu user đã bookmark --%>
+                                                            <c:when test="${isBookmarked}">
+                                                                <span
+                                                                    style="cursor: pointer; float: right;">
+                                                                    <i id="btnBookmark"
+                                                                        onclick="clickBookmarkPost('${user.username}',${post.postId})"
+                                                                        class="fas fa-bookmark"></i>
+                                                                </span>
+                                                            </c:when>
+                                                            <%-- Nếu user chưa bookmark --%>
+                                                            <c:otherwise>
+                                                                <span
+                                                                    style="cursor: pointer; float: right;">
+                                                                    <i id="btnBookmark"
+                                                                        onclick="clickBookmarkPost('${user.username}',${post.postId})"
+                                                                        class="far fa-bookmark"></i>
+                                                                </span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:when>
+                                                    <%-- NếU user là tác giả --%>
+                                                    <c:when test="${sessionScope.user.username == post.uploader.username}">
+                                                        <%-- Edit button --%>
+                                                        <a href="EditPostServlet?id=${requestScope.post.postId}" class="float-end ms-4">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <%-- Delete button --%>
+                                                        <a href="#" class="float-end" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
                                                     </c:when>
                                                 </c:choose>
                                             </div>
                                             <%-- Write comment --%>
-                                                <div class="comment-input mt-3 mb-3">
-                                                    <%-- Nếu user chưa login --%>
-                                                        <c:if test="${sessionScope.user == null}">
-                                                            <h4 class="text-center text-danger">You must login to
-                                                                comment on
-                                                                this post</h4>
-                                                        </c:if>
-                                                        <c:if test="${sessionScope.user != null}">
-                                                            <div class="comment-ava">
-                                                                <img src="images/avatars/${sessionScope.user.avatarURL}"
-                                                                    alt="avatar">
+                                            <div class="comment-input mt-3 mb-3">
+                                                <%-- Nếu user chưa login --%>
+                                                <c:if test="${sessionScope.user == null}">
+                                                    <h4 class="text-center text-danger">You must login to
+                                                        comment on
+                                                        this post</h4>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user != null}">
+                                                    <div class="comment-ava">
+                                                        <img src="images/avatars/${sessionScope.user.avatarURL}" alt="avatar">
+                                                    </div>
+                                                    <div class="comment-text">
+                                                        <form action="WriteCommentServlet" method="post">
+                                                            <input type="hidden" name="postId" value="${post.postId}">
+                                                            <input class="rounded-pill ps-2" type="text"
+                                                                name="content" placeholder="Write a comment...">
+                                                        </form>
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <%-- Comment list --%>
+                                            <div class="comment-list">
+                                                <c:forEach items="${cmtList}" var="cmt" varStatus="cmtLoop">
+                                                    <div class="comment mb-3" id="cmt-${cmt.commentID}">
+                                                        <div class="comment-ava">
+                                                            <img src="images/avatars/${cmt.user.avatarURL}"
+                                                                alt="avatar" class="avatar" />
+                                                        </div>
+                                                        <div class="comment-body">
+                                                            <div class="comment-content border rounded p-2 pt-1">
+                                                                <div class="comment-name">
+                                                                    <a href="#author-page" class="info fw-bold" id="author-link">${cmt.user.username}</a>
+                                                                </div>
+                                                                <p class="mb-0" id="${cmt.commentID}-content">
+                                                                    ${cmt.content}
+                                                                </p>
                                                             </div>
-                                                            <div class="comment-text">
-                                                                <form action="WriteCommentServlet" method="post">
-                                                                    <input class="rounded-pill ps-2" type="text"
-                                                                        placeholder="Write a comment...">
-                                                                </form>
-                                                            </div>
-                                                        </c:if>
-                                                </div>
-                                                <%-- Comment list --%>
-                                                    <c:forEach items="${cmtList}" var="cmt" varStatus="cmtLoop">
-                                                        <div class="row" id="cmt-${cmt.commentID}">
-                                                            <div class="col-2">
-                                                                <img src="images/avatars/${cmt.user.avatarURL}"
-                                                                    alt="${cmt.user.avatarURL}" class="img-thumbnail" />
-                                                            </div>
-                                                            <div class="col">
-                                                                <p class="fw-bold">${cmt.user.username}</p>
-                                                                <p id="${cmt.commentID}-content">${cmt.content}</p>
-                                                                <c:if
-                                                                    test="${cmt.user.username eq sessionScope.user.username}">
-                                                                    <button class="btn btn-warning"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#edit-modal-${cmt.commentID}">Edit</button>
-                                                                    <div class="editform modal"
-                                                                        id="edit-modal-${cmt.commentID}">
-                                                                        <div class="modal-dialog modal-dialog-centered">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title">Edit comment
-                                                                                    </h5>
-                                                                                    <button type="button"
-                                                                                        class="btn-close"
-                                                                                        data-bs-dismiss="modal"
-                                                                                        aria-label="Close"></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="EditCommentServlet"
-                                                                                        method="post"
-                                                                                        id="edit-form-${cmt.commentID}">
-                                                                                        <input type="hidden"
-                                                                                            name="cmtID"
-                                                                                            value="${cmt.commentID}" />
-                                                                                        <p>New Content: </p>
-                                                                                        <textarea class="form-control"
-                                                                                            style="resize:none"
-                                                                                            id="newContent-${cmt.commentID}">${cmt.content}</textarea>
-                                                                                    </form>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-secondary"
-                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                    <button class="btn btn-warning"
-                                                                                        type="button"
-                                                                                        onclick="editCmt(${cmt.commentID})"
-                                                                                        data-bs-dismiss="modal">Edit</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <button class="btn btn-danger"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#delete-modal-${cmt.commentID}">Delete</button>
-                                                                    <div class="modal"
-                                                                        id="delete-modal-${cmt.commentID}">
-                                                                        <div class="modal-dialog modal-dialog-centered">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title">Delete
-                                                                                        comment</h5>
-                                                                                    <button type="button"
-                                                                                        class="btn-close"
-                                                                                        data-bs-dismiss="modal"
-                                                                                        aria-label="Close"></button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form action="DeleteCommentServlet"
-                                                                                        method="post"
-                                                                                        id="delete-form-${cmt.commentID}">
-                                                                                        <input type="hidden"
-                                                                                            name="cmtID"
-                                                                                            value="${cmt.commentID}" />
-                                                                                        <p>You and other users will not
-                                                                                            be able
-                                                                                            to see this comment anymore
-                                                                                        </p>
-                                                                                        <p class="text-danger">Are you
-                                                                                            sure ?
-                                                                                        </p>
-                                                                                    </form>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-secondary"
-                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                    <button class="btn btn-danger"
-                                                                                        onclick="deleteCmt(${cmt.commentID})"
-                                                                                        data-bs-dismiss="modal" />Delete</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </c:if>
-                                                            </div>
-                                                            <c:choose>
-                                                                <c:when test="${sessionScope.user != null}">
+                                                            <ul class="comment icon p-0 ps-2 pt-1">
+                                                                <li>
                                                                     <c:choose>
-                                                                        <c:when
-                                                                            test="${isCommnetLikedList[cmtLoop.index]}">
-                                                                            <%-- when user already liked post --%>
-                                                                                <i id="cmtLike-${cmt.commentID}"
-                                                                                    class="fa fa-heart"
-                                                                                    aria-hidden="true"
-                                                                                    onclick="clickLikeComment('${user.username}',${cmt.commentID})">
-                                                                                    <span
-                                                                                        id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
-                                                                                </i>
+                                                                        <c:when test="${sessionScope.user != null}">
+                                                                            <c:choose>
+                                                                                <c:when test="${isCommnetLikedList[cmtLoop.index]}">
+                                                                                    <%-- when user already liked post --%>
+                                                                                    <a class="like" href="#Like" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                                                        <i id="cmtLike-${cmt.commentID}" class="fas fa-thumbs-up"></i>
+                                                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                                                    </a>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <a class="like" href="#Like" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                                                        <i id="cmtLike-${cmt.commentID}" class="far fa-thumbs-up"></i>
+                                                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                                                    </a>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
                                                                         </c:when>
                                                                         <c:otherwise>
                                                                             <i id="cmtLike-${cmt.commentID}"
-                                                                                class="fa fa-heart-o" aria-hidden="true"
-                                                                                onclick="clickLikeComment('${user.username}',${cmt.commentID})">
+                                                                                class="far fa-thumbs-up">
                                                                                 <span
                                                                                     id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
                                                                             </i>
                                                                         </c:otherwise>
                                                                     </c:choose>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <i id="cmtLike-${cmt.commentID}"
-                                                                        class="fa fa-heart-o" aria-hidden="true">
-                                                                        <span
-                                                                            id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
-                                                                    </i>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                    </c:forEach>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="line"></div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>   
                                         </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
-                            </c:otherwise>
-                            </c:choose>
                         </div>
                     </main>
                     <!-- Report modal -->

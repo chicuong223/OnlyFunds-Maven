@@ -42,11 +42,12 @@ function clickLikePost(username, postId) {
     var likePost = document.querySelector("#postLike");
     var countPostLike = document.querySelector("#countPostLike");
     var numOfLike = countPostLike.innerHTML;
-    if (likePost.className === "fas fa-thumbs-up"/*icon when liked*/) {
+    if (likePost.className === "fas fa-thumbs-up" || likePost.className === "fas fa-thumbs-up scaleUp") {
         //call action likePost
         numOfLike--;
         countPostLike.innerHTML = numOfLike;
-        likePost.className = ("far fa-thumbs-up");/*Replace with icon when liked, turn to unlike button*/
+        likePost.classList = ("far fa-thumbs-up");/*Replace with icon when liked, turn to unlike button*/
+        scaleUp('postLike');
         $.ajax({
             type: "POST",
             url: 'LikeOrUnlikePostServlet',
@@ -57,12 +58,16 @@ function clickLikePost(username, postId) {
             },
             cache: false,
             success: function () {
+                setTimeout(function () {
+                    likePost.classList.remove('scaleUp');
+                }, 500);
             }
         });
     } else {
         numOfLike++;
         countPostLike.innerHTML = numOfLike;
-        likePost.className = ("fas fa-thumbs-up");/*Replace with icon when liked, turn to like icon*/
+        likePost.classList = ("fas fa-thumbs-up");/*Replace with icon when liked, turn to like icon*/
+        scaleUp('postLike');
         $.ajax({
             type: "POST",
             url: 'LikeOrUnlikePostServlet',
@@ -73,6 +78,9 @@ function clickLikePost(username, postId) {
             },
             cache: false,
             success: function () {
+                setTimeout(function () {
+                    likePost.classList.remove('scaleUp');
+                }, 500);
             }
         });
     }
@@ -122,13 +130,12 @@ function editCmt(cmt) {
 }
 
 function clickLikeComment(username, cmtId) {
-    alert("clickLikeComment");
     console.log(username, cmtId);
     event.preventDefault();
     var likeCmt = document.querySelector("#cmtLike-" + cmtId);
     var countCmtLike = document.querySelector("#countCommentLike-" + cmtId);
     var numOfLike = countCmtLike.innerHTML;
-    if (likeCmt.className === "fa fa-heart") {
+    if (likeCmt.className === "fas fa-thumbs-up") {
         //call action likeCmt
         $.ajax({
             type: "POST",
@@ -140,10 +147,13 @@ function clickLikeComment(username, cmtId) {
             },
             cache: false,
             success: function () {
-                alert("unliked comment");
                 numOfLike--;
                 countCmtLike.innerHTML = numOfLike;
-                likeCmt.className = ("fa fa-heart-o");
+                likeCmt.className = ("far fa-thumbs-up");
+                scaleUp('cmtLike-' + cmtId);
+                setTimeout(function () {
+                    likeCmt.classList.remove('scaleUp');
+                }, 500);
             }
         });
     } else {
@@ -157,11 +167,48 @@ function clickLikeComment(username, cmtId) {
             },
             cache: false,
             success: function () {
-                alert("liked comment");
                 numOfLike++;
                 countCmtLike.innerHTML = numOfLike;
-                likeCmt.className = ("fa fa-heart");
+                likeCmt.className = ("fas fa-thumbs-up");
+                scaleUp('cmtLike-' + cmtId);
+                setTimeout(function () {
+                    likeCmt.classList.remove('scaleUp');
+                }, 500);
             }
         });
     }
+}
+
+function openFormReport(objectId, type) {
+    alert("openFormReport called");
+    document.querySelector('#reportForm-objectId').value = objectId;
+    document.querySelector('#reportForm-type').value = type;
+}
+
+function submitReport() {
+    alert("submitReport called")
+    event.preventDefault();
+    let objectId = document.querySelector('#reportForm-objectId').value;
+    let type = document.querySelector('#reportForm-type').value;
+    let title = document.querySelector('#reportForm-title').value;
+    let description = document.querySelector('#reportForm-description').value;
+    $.ajax({
+        type: "POST",
+        url: 'Report',
+        data: {
+            objectId: objectId,
+            type: type,
+            title: title,
+            description: description
+        },
+        cache: false,
+        success: function () {
+            alert("ajax success");
+            $('#reportForm').modal('hide');
+        }
+    });
+}
+
+function scaleUp(element) {
+    document.getElementById(element).classList.add('scaleUp');
 }

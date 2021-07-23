@@ -1,8 +1,20 @@
+@keyframes scaleUp {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3) rotate(-20deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
 a {
     text-decoration: none;
     color: black;
 }
-li {
+.comment.icon li {
     display: inline-block;
 }
 a[id*="author-link"]:hover {
@@ -15,11 +27,17 @@ img[alt*="avatar"] {
     border-radius: 50%;
 }
 .comment, .comment-input {
+    position: relative;
+    clear: both;
+}
+.comment:after {
+    content: " ";
+    display: table;
     clear: both;
 }
 .comment-ava {
     width: 50px;
-    height: 50px;
+    height: 20%;
 }
 .comment-body {
     max-width: 90%;
@@ -28,8 +46,16 @@ img[alt*="avatar"] {
     width: 100%;
     margin-bottom: 10px;
 }
+.comment-text {
+    vertical-align: baseline;
+}
 .comment-text input {
     width: 90%;
+    height: 2rem;
+}
+.comment-text button {
+    width: 7%;
+    height: 2rem;
 }
 .comment-text input:focus {
     outline:0px !important;
@@ -38,4 +64,20 @@ img[alt*="avatar"] {
 }
 .comment-ava, .comment-body, .comment-input {
     float: left;
+}
+ul.p-0 {
+    margin-bottom: 0;
+}
+.line {
+    position: absolute;
+    left: 0.95rem;
+    background-color: black;
+    bottom: 0;
+    max-height: 100%;
+    top: 45px;
+    border: 1px solid black;
+}
+
+.scaleUp {
+    animation: scaleUp .8s ease;
 }
