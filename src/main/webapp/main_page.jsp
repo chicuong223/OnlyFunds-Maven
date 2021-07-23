@@ -40,7 +40,7 @@
                                         <a href="CreatorInfoServlet?username=${post.key.uploader.username}" class=stretched-link></a>
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
+                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username} <fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></h6>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <p class='card-text'>
