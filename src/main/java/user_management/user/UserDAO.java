@@ -781,6 +781,34 @@ public class UserDAO {
         return follow_count;
     }
     
+    // count following
+    public int countFollowing(User user) {
+        int follow_count = 0;
+        String sql = "SELECT COUNT(*) AS follow_count \n" +
+            "FROM (SELECT f.followed_username \n" +
+            "FROM Follow f \n" +
+            "WHERE f.follower_username=? \n" +
+            "AND f.follower_username IN \n" +
+            "	(SELECT username \n" +
+            "	FROM [User] u \n" +
+            "	WHERE u.is_banned=0)) ftb";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setString(1, user.getUsername());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            follow_count = rs.getInt("follow_count");
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+        }
+        return follow_count;
+    }
+    
     // list of following users
     public ArrayList<User>getFollowingUsers(User user, int start, int end) {
         ArrayList<User> lst = new ArrayList<>();
