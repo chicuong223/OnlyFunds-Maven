@@ -54,7 +54,7 @@
         </c:if>
         <c:if test="${sessionScope.user != null}">
             <li class="list">
-                <a href="ManageFollows">
+                <a href="FollowingListServlet">
                     <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
                     <span class="title"> Follow</span>
                 </a>
