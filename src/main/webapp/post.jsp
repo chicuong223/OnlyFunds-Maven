@@ -76,6 +76,7 @@
                                                     </a>
                                                 </div>
                                             </c:if>
+                                            <!-- Icon bar -->
                                             <div class="col-12 pb-2 border-bottom" style="position: relative;" id="icon-bar">
                                                 <!-- Like button -->
                                                 <c:choose>
@@ -100,13 +101,9 @@
                                                     </c:when>
                                                     <%-- Nếu user chưa login, bắt user phải login --%>
                                                     <c:otherwise>
-                                                        <i id="postLike" class="far fa-thumbs-up"
-                                                            aria-hidden="true">
-                                                            <span id="countPostLike" data-bs-toggle="modal"
-                                                                data-bs-target="#modal-login">
-                                                                ${requestScope.postLikeCount}
-                                                            </span>
-                                                        </i>
+                                                        <a class="me-4" id="like-post-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-login">
+                                                            <i class="far fa-thumbs-up"></i>
+                                                        </a>
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <%-- Comment number --%>
@@ -127,7 +124,7 @@
                                                             </c:when>
                                                             <%-- Nếu user không phải là tác giả và chưa report thì cho phép report --%>
                                                             <c:when test="${sessionScope.user.username != post.uploader.username && reported == false}">
-                                                                <a id="report_post_btn" href="#" class="float-end ms-4"
+                                                                <a id="report-post-btn" href="#" class="float-end ms-4"
                                                                     data-bs-toggle="modal" data-bs-target="#reportForm"
                                                                     onclick="openFormReport(${post.postId}, 'post')" class="me-4">
                                                                     <i class="fa fa-exclamation-triangle text-dark"></i>
@@ -149,7 +146,7 @@
                                                         <c:choose>
                                                             <%-- Nếu user chưa login, hiện form login--%>
                                                             <c:when test="${sessionScope.user == null}">
-                                                                <a id="report-post-btn" href="#" data-bs-toggle="modal"
+                                                                <a id="bookmark-post-btn" href="#" data-bs-toggle="modal"
                                                                     data-bs-target="#modal-login" style="float: right;">
                                                                     <i class="far fa-bookmark"></i>
                                                                 </a>
@@ -228,6 +225,7 @@
                                                             <ul class="comment icon p-0 ps-2 pt-1">
                                                                 <li>
                                                                     <c:choose>
+                                                                        <%-- Nếu user --%>
                                                                         <c:when test="${sessionScope.user != null}">
                                                                             <c:choose>
                                                                                 <c:when test="${isCommnetLikedList[cmtLoop.index]}">
@@ -245,12 +243,16 @@
                                                                                 </c:otherwise>
                                                                             </c:choose>
                                                                         </c:when>
+                                                                        <%-- Nếu user chưa login hiện form login --%>
                                                                         <c:otherwise>
-                                                                            <i id="cmtLike-${cmt.commentID}"
-                                                                                class="far fa-thumbs-up">
-                                                                                <span
-                                                                                    id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
-                                                                            </i>
+                                                                            <%-- Nút like --%>
+                                                                            <a class="me-2" id="like-cmt-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-login">
+                                                                                <i class="far fa-thumbs-up"></i>
+                                                                            </a>
+                                                                            <%-- Nút report --%>
+                                                                            <a id="report-cmt-btn" href="#" data-bs-toggle="modal" data-bs-target="#modal-login">
+                                                                                <i class="fas fa-exclamation-triangle"></i>
+                                                                            </a>
                                                                         </c:otherwise>
                                                                     </c:choose>
                                                                 </li>
