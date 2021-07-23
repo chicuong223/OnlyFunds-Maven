@@ -269,6 +269,7 @@ public class ReportDAO {
             }
         }
         catch (SQLException e) {
+            System.out.println(e.getStackTrace());
         }
         finally {
             try {
@@ -490,8 +491,9 @@ public class ReportDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, user.getUsername());
-                    try (ResultSet rs = ps.executeQuery()) {
+                ps.setString(1, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
                         int id = rs.getInt("id");
                         String reportedObjectId = rs.getString("reported_id");
                         String type = rs.getString("type");
@@ -512,9 +514,11 @@ public class ReportDAO {
                         lst.add(report);
                     }
                 }
+            }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
         return lst;
     }

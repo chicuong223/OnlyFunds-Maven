@@ -25,6 +25,8 @@ public class Report implements Serializable {
     private Date reportDate;
     private String status;
     private Date solveDate;
+    
+    public Report(){}
 
     public Report(int id, User reportUser, String reportedObjectId, String type,
             Staff solveStaff, String title, String description, Date reportDate,

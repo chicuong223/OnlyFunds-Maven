@@ -91,7 +91,7 @@ public class PostDetailServlet extends HttpServlet {
         if (currentUser != null) {
             boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
             request.setAttribute("isPostLiked", isPostLiked);
-            System.err.println(isPostLiked);
+//            System.err.println(isPostLiked);
         }
         ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
         //count likes of the post
@@ -118,6 +118,7 @@ public class PostDetailServlet extends HttpServlet {
                         reported = true;
                         break OUTERLOOP;
                     }
+            System.out.println(reported);
             request.setAttribute("reported", reported);
             request.setAttribute("isBookmarked", isBookmarked);
         }
