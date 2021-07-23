@@ -31,7 +31,7 @@
                             <div class="header mb-4">
                                 <span class="p-0 mb-5 mt-3"
                                       style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Popular
-                                    Creators</span> <a href='#' class='link-primary'>View More</a>
+                                    Creators</span> <a href='explore' class='link-primary'>View More</a>
                             </div>
                         <c:forEach var="creator" items="${userList}">
                             <div class="col-lg-3 m-0 p-0">

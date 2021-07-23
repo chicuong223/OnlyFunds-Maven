@@ -35,7 +35,7 @@
             </c:if>
         </li>
         <li class="list">
-            <a href="#Explore">
+            <a href="explore">
                 <span class="icon"><i class="far fa-compass"></i></span>
                 <span class="title">Explore</span>
             </a>
