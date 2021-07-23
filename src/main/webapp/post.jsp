@@ -140,7 +140,7 @@
                                         <%-- Nếu user chưa login --%>
                                         <c:if test="${sessionScope.user != null}">
                                             <div class="comment-ava">
-                                                <img src="images/Avatar.png" alt="avatar">
+                                                <img src="images/avatars/${sessionScope.user.avatarURL}" alt="avatar">
                                             </div>
                                             <div class="comment-text">
                                                 <form action="WriteCommentServlet" method="post">
