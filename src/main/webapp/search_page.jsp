@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="card-body p-2 pt-1">
                                                 <p class="card-text">
-                                                    ${post.key.description}
+                                                    You must subscribe to the author of this post to view
                                                 </p>
                                             </div>
                                             <div class="card-footer p-2 pt-1 pb-1">
