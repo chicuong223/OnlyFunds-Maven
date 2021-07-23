@@ -9,6 +9,7 @@ import post_management.comment.Comment;
 import post_management.comment.CommentDAO;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -94,20 +95,23 @@ public class PostDetailServlet extends HttpServlet {
 //            System.err.println(isPostLiked);
         }
         ArrayList<Comment> cmtList = cDAO.getCommentsByPost(postID);
-        //count likes of the post
-        int postLikeCount = postLikeDAO.countPostLikeByPost(post);
-        request.setAttribute("postLikeCount", postLikeCount);
-        request.setAttribute("cmtList", cmtList);
-        request.setAttribute("post", post);
 
+        //true: has reported
+        //false: not reported
+        LinkedHashMap<Comment, Boolean> cmtMap = new LinkedHashMap<>();
+        cmtList.forEach(comment -> {
+            cmtMap.put(comment, Boolean.FALSE);
+        });
         if (currentUser != null) {
             //check if user already liked post
             boolean isPostLiked = postLikeDAO.CheckPostLike(currentUser.getUsername(), postID);
             request.setAttribute("isPostLiked", isPostLiked);
-            //check if user already
             BookmarkDAO bmDAO = new BookmarkDAO();
             ReportDAO reportDAO = new ReportDAO();
+            //check if user has bookmarked the post
             boolean isBookmarked = bmDAO.CheckBookmark(currentUser.getUsername(), postID);
+
+            //check if user has reported the post
             List<Report> reportPosts = reportDAO.getReportsByObjIdAndType(String.valueOf(postID), "Post");
             List<Report> userReports = reportDAO.getReportsByUser(currentUser);
             boolean reported = false;
@@ -118,10 +122,27 @@ public class PostDetailServlet extends HttpServlet {
                         reported = true;
                         break OUTERLOOP;
                     }
-            System.out.println(reported);
+
+            //check for each comment, user has reported
+            cmtList.forEach(cmt -> {
+                List<Report> cmtReports = reportDAO.getReportsByObjIdAndType(String.valueOf(cmt.getCommentID()), "comment");
+                OUTER:
+                for (Report cmtReport : cmtReports)
+                    for (Report userReport : userReports)
+                        if (userReport.getId() == cmtReport.getId()) {
+                            cmtMap.put(cmt, Boolean.TRUE);
+                            break OUTER;
+                        }
+            });
             request.setAttribute("reported", reported);
             request.setAttribute("isBookmarked", isBookmarked);
         }
+        //count likes of the post
+        int postLikeCount = postLikeDAO.countPostLikeByPost(post);
+        request.setAttribute("postLikeCount", postLikeCount);
+//        request.setAttribute("cmtList", cmtList);
+        request.setAttribute("post", post);
+
         //check if user already liked comment
         CommentLikeDAO clDAO = new CommentLikeDAO();
         ArrayList<Boolean> isCommnetLikedList = new ArrayList<>();
@@ -137,6 +158,7 @@ public class PostDetailServlet extends HttpServlet {
         }).map(comment -> clDAO.countCommentLikeByCommentId(comment.getCommentID())).forEachOrdered(countCommentLike -> {
             countCommentLikeList.add(countCommentLike);
         });
+        request.setAttribute("cmtList", cmtMap);
         request.setAttribute("isCommnetLikedList", isCommnetLikedList);
         request.setAttribute("countCommentLikeList", countCommentLikeList);
         request.getRequestDispatcher("post.jsp").forward(request, response);
