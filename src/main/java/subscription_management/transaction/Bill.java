@@ -5,6 +5,7 @@
  */
 package subscription_management.transaction;
 
+import java.io.Serializable;
 import user_management.user.User;
 import java.sql.Date;
 
@@ -12,7 +13,7 @@ import java.sql.Date;
  *
  * @author chiuy
  */
-public class Bill {
+public class Bill implements Serializable {
     private int billId;
     private User sender;
     private User recipient;

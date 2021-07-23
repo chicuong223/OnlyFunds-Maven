@@ -5,6 +5,7 @@
  */
 package post_management.like;
 
+import java.io.Serializable;
 import user_management.user.User;
 import post_management.comment.Comment;
 
@@ -12,7 +13,7 @@ import post_management.comment.Comment;
  *
  * @author chiuy
  */
-public class CommentLike {
+public class CommentLike implements Serializable{
     private Comment comment;
     private User user;
 

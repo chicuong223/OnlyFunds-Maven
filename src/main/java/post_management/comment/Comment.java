@@ -5,6 +5,7 @@
  */
 package post_management.comment;
 
+import java.io.Serializable;
 import post_management.post.Post;
 import user_management.user.User;
 import java.sql.Date;
@@ -13,7 +14,7 @@ import java.sql.Date;
  *
  * @author chiuy
  */
-public class Comment {
+public class Comment implements Serializable {
     private int commentID;
     private User user;
     private Post post;

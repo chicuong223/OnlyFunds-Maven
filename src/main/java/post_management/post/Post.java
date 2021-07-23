@@ -5,6 +5,7 @@
  */
 package post_management.post;
 
+import java.io.Serializable;
 import user_management.user.User;
 import java.sql.Date;
 
@@ -12,7 +13,7 @@ import java.sql.Date;
  *
  * @author chiuy
  */
-public class Post implements Comparable<Post>{
+public class Post implements Comparable<Post>, Serializable{
     private int postId;
     private User uploader;
     private String title;

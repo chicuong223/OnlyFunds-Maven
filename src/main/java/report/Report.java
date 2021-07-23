@@ -6,6 +6,7 @@
 package report;
 
 import authority_management.staff.Staff;
+import java.io.Serializable;
 import user_management.user.User;
 import java.sql.Date;
 
@@ -13,7 +14,7 @@ import java.sql.Date;
  *
  * @author chiuy
  */
-public class Report {
+public class Report implements Serializable {
     private User reportUser;
     private String reportedObjectId;
     private String type;

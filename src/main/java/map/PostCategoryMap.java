@@ -6,13 +6,14 @@
 package map;
 
 import category.Category;
+import java.io.Serializable;
 import post_management.post.Post;
 
 /**
  *
  * @author chiuy
  */
-public class PostCategoryMap {
+public class PostCategoryMap implements Serializable {
     private Category category;
     private Post post;
     

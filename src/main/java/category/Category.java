@@ -5,13 +5,14 @@
  */
 package category;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author chiuy
  */
-public class Category {
+public class Category implements Serializable {
     private int categoryId;
     private String categoryName;
     

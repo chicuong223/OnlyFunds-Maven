@@ -5,13 +5,14 @@
  */
 package user_management.follow;
 
+import java.io.Serializable;
 import user_management.user.User;
 
 /**
  *
  * @author chiuy
  */
-public class Follow {
+public class Follow implements Serializable {
     private User follower;
     private User followed;
     

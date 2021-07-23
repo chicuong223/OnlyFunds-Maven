@@ -5,6 +5,7 @@
  */
 package notification;
 
+import java.io.Serializable;
 import user_management.user.User;
 import java.sql.Date;
 import post_management.post.Post;
@@ -13,7 +14,7 @@ import post_management.post.Post;
  *
  * @author chiuy
  */
-public class Notification {
+public class Notification implements Serializable {
 
     private int notificationId;
     private User recipient;

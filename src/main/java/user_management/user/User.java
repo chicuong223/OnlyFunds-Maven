@@ -5,11 +5,13 @@
  */
 package user_management.user;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chiuy
  */
-public class User {
+public class User implements Serializable {
     private String username;
     private String password;
     private String lastName;

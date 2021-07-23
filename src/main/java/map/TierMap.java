@@ -5,6 +5,7 @@
  */
 package map;
 
+import java.io.Serializable;
 import post_management.post.Post;
 import subscription_management.tier.Tier;
 
@@ -12,7 +13,7 @@ import subscription_management.tier.Tier;
  *
  * @author chiuy
  */
-public class TierMap {
+public class TierMap implements Serializable {
     private Tier tier;
     private Post post;
 

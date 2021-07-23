@@ -5,6 +5,7 @@
  */
 package subscription_management.subscription;
 
+import java.io.Serializable;
 import user_management.user.User;
 import subscription_management.tier.Tier;
 import java.sql.Date;
@@ -13,7 +14,7 @@ import java.sql.Date;
  *
  * @author chiuy
  */
-public class Subscription {
+public class Subscription implements Serializable {
     private int subscriptionId;
     private User subscriber;
     private Tier tier;

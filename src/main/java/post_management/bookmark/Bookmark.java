@@ -5,6 +5,7 @@
  */
 package post_management.bookmark;
 
+import java.io.Serializable;
 import post_management.post.Post;
 import user_management.user.User;
 
@@ -12,7 +13,7 @@ import user_management.user.User;
  *
  * @author chiuy
  */
-public class Bookmark {
+public class Bookmark implements Serializable{
     private User user;
     private Post post;
     

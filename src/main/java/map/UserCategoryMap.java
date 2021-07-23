@@ -6,13 +6,14 @@
 package map;
 
 import category.Category;
+import java.io.Serializable;
 import user_management.user.User;
 
 /**
  *
  * @author chiuy
  */
-public class UserCategoryMap {
+public class UserCategoryMap implements Serializable {
     private Category category;
     private User user;
     

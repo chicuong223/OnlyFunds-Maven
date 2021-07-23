@@ -5,13 +5,14 @@
  */
 package subscription_management.tier;
 
+import java.io.Serializable;
 import user_management.user.User;
 
 /**
  *
  * @author chiuy
  */
-public class Tier {
+public class Tier implements Serializable {
     private int tierId;
     private String tierTitle;
     private String description;

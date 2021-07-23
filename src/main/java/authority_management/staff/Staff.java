@@ -5,11 +5,13 @@
  */
 package authority_management.staff;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chiuy
  */
-public class Staff {
+public class Staff implements Serializable {
     private String username;
     private String password;
     private String lastName;
