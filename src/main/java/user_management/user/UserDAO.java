@@ -782,16 +782,21 @@ public class UserDAO {
     }
     
     // list of following users
-    public ArrayList<User>followingUsers(User user) {
+    public ArrayList<User>getFollowingUsers(User user, int start, int end) {
         ArrayList<User> lst = new ArrayList<>();
-        String sql = "SELECT username, avatarURL FROM [User] u WHERE u.is_banned='0' \n" +
-            "AND u.username IN (SELECT f.followed_username \n" +
+        String sql = "SELECT * FROM \n" +
+            "(SELECT username, avatarURL, ROW_NUMBER() OVER (ORDER BY username) AS r FROM [User] u WHERE u.is_banned='0' \n" +
+            "AND u.username IN (SELECT f.followed_username\n" +
             "FROM Follow f \n" +
-            "WHERE f.follower_username=?)";
+            "WHERE f.follower_username=?))\n" +
+            "AS list\n" +
+            "WHERE list.r BETWEEN ? and ?";
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, user.getUsername());
+                    ps.setInt(2, start);
+                    ps.setInt(3, end);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
                             User followingUser = new User();
