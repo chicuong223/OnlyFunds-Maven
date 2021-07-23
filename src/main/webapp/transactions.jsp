@@ -10,90 +10,60 @@
     <!DOCTYPE html>
     <html>
         <head>
-            <title>Transactions History</title>
+            <meta charset="utf-8">
+            <meta http-equiv="Content-Type" content="text/html;">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+            <!-- Bootstrap -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+                  integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+            <!-- Logo -->
+            <link rel="icon" href="images/logo_head.png" type="image/icon type">
+            <!-- Navbar and shared css -->
+            <link type="text/css" rel="stylesheet" href="styles/navbar.css">
+            <link type="text/css" rel="stylesheet" href="styles/vertical_nav.css">
+            <link rel="stylesheet" href="styles/shared.css">
+            <!-- Main css -->
+            <link type="text/css" rel="stylesheet" href="styles/main_page.css">
+            <!-- Icon -->
+            <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
+            <!--Ajax-->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <!--JS for transaction list load-->
+            <script src="scripts/transaction.js"></script>
         </head>
-        <body>
-            <script>
-                $(document).ready(function () {
-                    var start = 1;
-                    var filter = "All";
-                    //if user changes filter
-                    //empty out the table
-                    //reset start = 1
-                    //get transactions according to filter
-                    function changeFilter(content) {
-                        filter = content;
-                        $('#billList').empty();
-                        start = 1;
-                        getTransactions(start, start + 7);
-                        start += 8;
-                    }
-                    //add events to all filter buttons
-                    $('.filter').each(function () {
-                        $(this).click(() => {
-                            changeFilter($(this).text());
-                        });
-                    });
-                    if ($(document).height() === $(window).height()) {
-                        getTransactions(start, start + 7, "");
-                        start += 8;
-                    }
-                    $(window).scroll(() => {
-                        if ($(window).scrollTop() === $(document).height() - $(window).height()) {
-                            getTransactions(start, start, "");
-                            start += 1;
-                        }
-                    });
-                    function getTransactions(startNo, endNo, creator) {
-                        $.post('ViewTransactionHistory', {filter: filter, start: startNo, end: endNo, creator: creator}, function (response) {
-                            $('#billList').append(response);
-                        }, 'text');
-                    }
 
-                    $('#btnSearchTrans').click(() => {
-                        var creatorName = document.getElementById("creatorName").value;
-                        filter = "search";
-                        $('#billList').empty();
-                        start = 1;
-                        getTransactions(start, start+7, creatorName);
-                        start += 8;
-                    });
-                });
-            </script>
-            <header>
-                <h1>Transactions History</h1>
-            </header>
-            <main>
-                <div class="input-group">
-                    <input type="input" name="searchText" id="creatorName"/>
-                    <button class="btn btn-secondary fas fa-search" id="btnSearchTrans"></button>
-                </div>
-            <c:set var="user" value="${sessionScope.user}"></c:set>
-            <button class="btn btn-primary filter">All</button>
-            <button class="btn btn-danger filter">Sent</button>
-            <button class="btn btn-success filter">Received</button>
-            <table class="table table-bordered table-hover w-75 mx-auto">
-                <thead class="table-primary">
-                    <tr>
-                        <th>Content</th>
-                        <th>Sender</th>
-                        <th>Recipient</th>
-                        <th>Amount</th>
-                        <th>Transaction Date</th>
-                    </tr>
-                </thead>
-                <tbody class="table-success" id="billList">
-                    <!-- the list of transactions is here -->
-                </tbody>
-            </table>
+        <body>  
+            <main class="main-container">
+                <!-- Vertical navbar -->
+            <c:import url="creator_vertical_navbar.jsp"></c:import>
+                <!-- Main content of the page -->
+                <div class="main-content" id="main-content">
+                    <h1>Transactions History</h1>
+                    <div class="input-group">
+                        <input type="input" name="searchText" id="creatorName"/>
+                        <button class="btn btn-secondary fas fa-search" id="btnSearchTrans"></button>
+                    </div>
+                <c:set var="user" value="${sessionScope.user}"></c:set>
+                <button class="btn btn-primary filter">All</button>
+                <button class="btn btn-danger filter">Sent</button>
+                <button class="btn btn-success filter">Received</button>
+                <table class="table table-bordered table-hover w-75 mx-auto">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Content</th>
+                            <th>Sender</th>
+                            <th>Recipient</th>
+                            <th>Amount</th>
+                            <th>Transaction Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-success" id="billList">
+                        <!--The list of transactions is here--> 
+                    </tbody>
+                </table>
+            </div>
         </main>
-        <footer>
-            <nav>
-                <ul class="pagination" id="pages">
-
-                </ul>
-            </nav>
-        </footer>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>
 </html>

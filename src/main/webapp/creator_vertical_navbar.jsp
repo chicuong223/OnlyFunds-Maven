@@ -9,43 +9,37 @@
 <div class="vertical-navbar" id="vertical-navbar">
     <ul class="first-list">
         <li class="list">
-            <a href="#Explore">
+            <a href="ManageAccount">
                 <span class="icon"><ion-icon name="person-outline"></ion-icon></i></span>
                 <span class="title">Manage Account</span>
             </a>
         </li>
         <li class="list">
-            <a href="#Explore">
+            <a href="ManageCreatorPage">
                 <span class="icon"><i class="far fa-newspaper"></i></span>
                 <span class="title">Creator's Page</span>
             </a>
         </li>
         <li class="list">
-            <a href="#Explore">
-                <span class="icon"><ion-icon name="wallet-outline"></ion-icon></i></span>
-                <span class="title">Billing History</span>
-            </a>
-        </li>
-        <li class="list">
-            <a href="#Explore">
+            <a href="ManageSubscriptions">
                 <span class="icon"><ion-icon name="pricetags-outline"></ion-icon></span>
                 <span class="title">My Subscription</span>
             </a>
         </li>
         <li class="list">
-            <a href="#Explore">
-                <span class="icon"><ion-icon name="file-tray-stacked-outline"></ion-icon></span>
-                <span class="title">Tier Management</span>
+            <a href="ViewTransactionHistory">
+                <span class="icon"><ion-icon name="wallet-outline"></ion-icon></i></span>
+                <span class="title">Billing History</span>
             </a>
         </li>
         <li class='list'>
-            <a href='#MyReport'>
+            <a href='MyReport'>
                 <span class="icon"><i class="far fa-clipboard"></i></span>
                 <span class='title'>My Reports</span>
             </a>
         </li>
         <li class='list mb-2' id="logout">
-            <a href='#Logout'>
+            <a href='logout'>
                 <span class="icon ps-1"><i class="fas fa-sign-out-alt"></i></span>
                 <span class='title'>Logout</span>
             </a>

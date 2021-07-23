@@ -112,9 +112,7 @@
                                         <a href="ManageAccount" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage account</a>
                                         <a href="ManageCreatorPage" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage creator page</a>
                                         <a href="ManageSubscriptions" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage subscription</a>
-                                        <form class="col-12 nav-link m-0 p-0 text-center border-bottom" action="ViewTransactionHistory" method="post">
-                                            <input type="submit" style="outline: none; background: none; border: none" value="Transactions History"/>
-                                        </form>
+                                        <a href="ViewTransactionHistory" class="col-12 nav-link m-0 p-0 text-center border-bottom">Billing History</a>
                                         <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
                                     </div>
                                 </div>
