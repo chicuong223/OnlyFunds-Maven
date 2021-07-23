@@ -61,8 +61,6 @@ public class SearchServlet extends HttpServlet {
                     request.getRequestDispatcher(SEARCHPAGE).forward(request, response);
                     return;
                 }
-                if (type == null)
-                    type = "post";
                 System.out.println(type);
                 if (type.equals("post")) {
                     PostDAO pDAO = new PostDAO();
@@ -87,8 +85,10 @@ public class SearchServlet extends HttpServlet {
             }
         else if (action.equals("searchstring")) {
             String searchedString = request.getParameter("search");
-            if (searchedString == null)
-                throw new ServletException("search string not found");
+            if (searchedString == null || searchedString.trim().isEmpty()){
+                response.sendRedirect(request.getHeader("Referer"));
+                return;
+            }
             else if (type.equals("creator")) {
                 UserDAO uDAO = new UserDAO();
                 List<User> searchedUsers = uDAO.getSearchUser(searchedString);

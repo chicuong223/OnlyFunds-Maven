@@ -8,26 +8,17 @@ package servlets;
 import post_management.comment.Comment;
 import post_management.comment.CommentDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import static java.util.stream.Collectors.toSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import post_management.bookmark.Bookmark;
 import post_management.bookmark.BookmarkDAO;
 import post_management.like.CommentLikeDAO;
 import notification.Notification;
 import notification.NotificationDAO;
-import post_management.like.PostLike;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
@@ -124,16 +115,17 @@ public class PostDetailServlet extends HttpServlet {
         CommentLikeDAO clDAO = new CommentLikeDAO();
         ArrayList<Boolean> isCommnetLikedList = new ArrayList<>();
         ArrayList<Integer> countCommentLikeList = new ArrayList<>();
-        for (Comment comment : cmtList) {
+        cmtList.stream().map(comment -> {
             if (currentUser != null) {
                 boolean isCommnetLiked = clDAO.CheckCommentLike(currentUser.getUsername(), comment.getCommentID());
                 isCommnetLikedList.add(isCommnetLiked);
             } else {
                 isCommnetLikedList.add(Boolean.FALSE);
             }
-            int countCommentLike = clDAO.countCommentLikeByCommentId(comment.getCommentID());
+            return comment;
+        }).map(comment -> clDAO.countCommentLikeByCommentId(comment.getCommentID())).forEachOrdered(countCommentLike -> {
             countCommentLikeList.add(countCommentLike);
-        }
+        });
         request.setAttribute("isCommnetLikedList", isCommnetLikedList);
         request.setAttribute("countCommentLikeList", countCommentLikeList);
         request.getRequestDispatcher("post.jsp").forward(request, response);
