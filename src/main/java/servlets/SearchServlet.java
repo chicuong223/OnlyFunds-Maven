@@ -11,13 +11,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import post_management.comment.CommentDAO;
+import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
+import subscription_management.tier.Tier;
+import subscription_management.tier.TierDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
 
@@ -38,8 +43,6 @@ public class SearchServlet extends HttpServlet {
         String type = request.getParameter("type");
         if (type == null)
             type = "post";
-        System.out.println("action: " + action);
-        System.out.println("type: " + type);
         if (action == null || action.trim().isEmpty()) {
             System.out.println(action);
             //write code for action==null
@@ -61,17 +64,24 @@ public class SearchServlet extends HttpServlet {
                     request.getRequestDispatcher(SEARCHPAGE).forward(request, response);
                     return;
                 }
-                System.out.println(type);
                 if (type.equals("post")) {
                     PostDAO pDAO = new PostDAO();
-//                        ArrayList<Post> postInCategory = pDAO.getTopPostsInCategory(categoryID);
+                    PostLikeDAO likeDAO = new PostLikeDAO();
+                    CommentDAO cmtDAO = new CommentDAO();
                     List<Post> postInCategory = pDAO.getSearchCatPost(searchedCat);
+                    TreeMap<Post, int[]> postMap = new TreeMap<>();
                     title = "Posts with category: " + searchedCat.getCategoryName();
-                    request.setAttribute("postList", postInCategory);
+                    for (Post post : postInCategory) {
+                        int likeCount = likeDAO.countPostLikeByPost(post);
+                        int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+                        int allowed = checkTiers(post, request);
+                        int[] value = {likeCount, cmtCount, allowed};
+                        postMap.put(post, value);
+                    }
+                    request.setAttribute("postList", postMap);
                 }
                 else if (type.equals("creator")) {
                     UserDAO uDAO = new UserDAO();
-//                        ArrayList<User> creatorInCategoryList = uDAO.getBestCreatorsInCategory(categoryID);
                     List<User> creatorInCategoryList = uDAO.getSearchCatUser(searchedCat);
                     title = "Creators with category: " + searchedCat.getCategoryName();
                     request.setAttribute("userList", creatorInCategoryList);
@@ -85,7 +95,7 @@ public class SearchServlet extends HttpServlet {
             }
         else if (action.equals("searchstring")) {
             String searchedString = request.getParameter("search");
-            if (searchedString == null || searchedString.trim().isEmpty()){
+            if (searchedString == null || searchedString.trim().isEmpty()) {
                 response.sendRedirect(request.getHeader("Referer"));
                 return;
             }
@@ -97,9 +107,19 @@ public class SearchServlet extends HttpServlet {
             }
             else if (type.equals("post")) {
                 PostDAO pDAO = new PostDAO();
+                PostLikeDAO likeDAO = new PostLikeDAO();
+                CommentDAO cmtDAO = new CommentDAO();
                 List<Post> searchedPosts = pDAO.getSearchPost(searchedString);
                 title = "Posts with keyword: " + searchedString;
-                request.setAttribute("postList", searchedPosts);
+                TreeMap<Post, int[]> postMap = new TreeMap<>();
+                for (Post post : searchedPosts) {
+                    int likeCount = likeDAO.countPostLikeByPost(post);
+                    int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+                    int allowed = checkTiers(post, request);
+                    int[] value = {likeCount, cmtCount, allowed};
+                    postMap.put(post, value);
+                }
+                request.setAttribute("postList", postMap);
             }
             request.setAttribute("search", searchedString);
         }
@@ -112,6 +132,22 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    }
+
+    private int checkTiers(Post post, HttpServletRequest request) {
+        TierDAO tierDAO = new TierDAO();
+        List<Tier> tiers = tierDAO.getTiersByPost(post);
+        if (tiers.size() <= 0)
+            return 1;
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null)
+            return 0;
+        List<Tier> userTiers = tierDAO.getTiersByUser(user);
+        for (Tier userTier : userTiers)
+            for (Tier postTier : tiers)
+                if (userTier.getTierId() == postTier.getTierId())
+                    return 1;
+        return 0;
     }
 
 }

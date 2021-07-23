@@ -1,5 +1,6 @@
 <%-- Document : search_page Created on : Jul 2, 2021, 3:08:06 PM Author : DELL --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -70,23 +71,49 @@
                         <c:if test='${type.equals("post")}'>
                             <c:forEach  items="${postList}" var="post" varStatus="postLoop">
                                 <div class="col-lg-3 mb-2">
-                                    <div class="card" id="post">
-                                        <a href="PostDetailServlet?id=${post.postId}" class="stretched-link"></a>
-                                        <div class="card-header p-2 pt-1">
-                                            <h4 class="card-title fw-bold">${post.title}</h4>
-                                            <h6 class="card-subtitle text-muted" style="font-size: 16px; position: relative; z-index: 100;">${post.uploader.username}</h6>
+                                    <c:if test="${post.value[2] == 1}">
+                                        <div class="card" id="post">
+                                            <a href="PostDetailServlet?id=${post.key.postId}" class="stretched-link"></a>
+                                            <div class="card-header p-2 pt-1">
+                                                <h4 class="card-title fw-bold">${post.key.title}</h4>
+                                                <h6 class="card-subtitle text-muted" style="font-size: 16px; position: relative; z-index: 100;">${post.key.uploader.username}   <fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></h6>
+                                            </div>
+                                            <div class="card-body p-2 pt-1">
+                                                <p class="card-text">
+                                                    ${post.key.description}
+                                                </p>
+                                            </div>
+                                            <div class="card-footer p-2 pt-1 pb-1">
+                                                <small><i class="fas fa-thumbs-up"></i> ${post.value[0]}</small>
+                                                <small><i class="fas fa-comment"></i> ${post.value[1]}</small>
+                                                <small><i class="far fa-eye"></i> ${post.key.viewCount}</small>
+                                            </div>
                                         </div>
-                                        <div class="card-body p-2 pt-1">
-                                            <p class="card-text">
-                                                ${post.description}
-                                            </p>
+                                    </c:if>
+                                    <c:if test="${post.value[2] == 0}">
+                                        <div class="card premium post" id="post">
+                                            <div class="ribbon-wrapper">
+                                                <div class="ribbon">
+                                                    Premium
+                                                </div>
+                                            </div>
+                                            <a href="PostDetailServlet?id=${post.key.postId}" class="stretched-link"></a>
+                                            <div class="card-header p-2 pt-1">
+                                                <h4 class="card-title fw-bold">${post.key.title}</h4>
+                                                <h6 class="card-subtitle text-muted" style="font-size: 16px; position: relative; z-index: 100;">${post.key.uploader.username}   <fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></h6>
+                                            </div>
+                                            <div class="card-body p-2 pt-1">
+                                                <p class="card-text">
+                                                    ${post.key.description}
+                                                </p>
+                                            </div>
+                                            <div class="card-footer p-2 pt-1 pb-1">
+                                                <small><i class="fas fa-thumbs-up"></i> ${post.value[0]}</small>
+                                                <small><i class="fas fa-comment"></i> ${post.value[1]}</small>
+                                                <small><i class="far fa-eye"></i> ${post.key.viewCount}</small>
+                                            </div>
                                         </div>
-                                        <div class="card-footer p-2 pt-1 pb-1">
-                                            <small><i class="fas fa-thumbs-up"></i> ${numLikeList[postLoop.index]}</small>
-                                            <small><i class="fas fa-comment"></i> ${numCommentList[postLoop.index]}</small>
-                                            <small><i class="far fa-eye"></i> ${post.viewCount}</small>
-                                        </div>
-                                    </div>
+                                    </c:if>
                                 </div>
                             </c:forEach>
                         </c:if>
