@@ -10,8 +10,20 @@
     <ul class="first-list">
         <li class="list">
             <a href="#Explore">
+                <span class="icon"><ion-icon name="person-outline"></ion-icon></i></span>
+                <span class="title">Manage Account</span>
+            </a>
+        </li>
+        <li class="list">
+            <a href="#Explore">
                 <span class="icon"><i class="far fa-newspaper"></i></span>
                 <span class="title">Creator's Page</span>
+            </a>
+        </li>
+        <li class="list">
+            <a href="#Explore">
+                <span class="icon"><ion-icon name="wallet-outline"></ion-icon></i></span>
+                <span class="title">Billing History</span>
             </a>
         </li>
         <li class="list">
