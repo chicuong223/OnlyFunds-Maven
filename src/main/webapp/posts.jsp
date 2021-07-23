@@ -43,7 +43,7 @@
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
                                             <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></h6>
+                                            <%--<h6 class='card-subtitle text-muted' style='font-size: 16px;'><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></h6>--%>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
@@ -69,7 +69,7 @@
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
                                             <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username}</h6>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></h6>
+                                            <%--<h6 class='card-subtitle text-muted' style='font-size: 16px;'><fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></h6>--%>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <p class='card-text'>
