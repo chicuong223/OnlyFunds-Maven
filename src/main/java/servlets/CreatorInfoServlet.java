@@ -51,7 +51,11 @@ public class CreatorInfoServlet extends HttpServlet {
         }
         else
             getOwnPost(request, creator);
+        int followerCount = userDAO.countFollowers(creator);
+        int subCount = userDAO.countSubscribers(creator);
         getCategories(request, creator);
+        request.setAttribute("followCount", followerCount);
+        request.setAttribute("subCount", subCount);
         request.setAttribute("creator", creator);
         request.getRequestDispatcher("creator_info.jsp").forward(request, response);
     }

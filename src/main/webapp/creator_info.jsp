@@ -51,12 +51,12 @@
                                 <h4>${count}</h4>
                             </span>
                             <span class="text-center">
-                                <h4>Following</h4>
-                                <h4>1234</h4>
+                                <h4>Subscribers</h4>
+                                <h4>${subCount}</h4>
                             </span>
                             <span class="text-center">
-                                <h4>Follower</h4>
-                                <h4>1234</h4>
+                                <h4>Followers</h4>
+                                <h4>${followCount}</h4>
                             </span>
                         </div>
                     </div>
