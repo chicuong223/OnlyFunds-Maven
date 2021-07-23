@@ -75,13 +75,13 @@
             </a>
         </li>
         <li class="list">
-            <a href="5">
+            <a href="SearchServlet?a=searchtag&id=5">
                 <span class="icon"><ion-icon name="musical-notes-outline"></ion-icon></span>
                 <span class="title"> Music</span>
             </a>
         </li>
         <li class="list">
-            <a href="6">
+            <a href="SearchServlet?a=searchtag&id=6">
                 <span class="icon"><ion-icon name="ellipsis-horizontal-outline"></ion-icon></span>
                 <span class="title"> Others</span>
             </a>
