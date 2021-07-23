@@ -43,8 +43,10 @@
                         </c:when>
                         <c:otherwise>
                             <h2 class="text-center mb-0 fw-bold">${post.title}</h2>
-                            <div class="text-center col ps-0 mb-3" style="font-size: 18px;">Author:
-                                ${post.uploader.username}</div>
+                            <div class="text-center col ps-0 mb-3">
+                                <a href="CreatorInfoServlet?username=${post.uploader.username}" style="font-size: 18px;">Author:
+                                    ${post.uploader.username}</a>
+                            </div>
                             <div class="row mb-2">
                                 <!-- Date here -->
                                 <div class="col ps-0 fw-bold" style="font-size: 17px;">${post.uploadDate}</div>
