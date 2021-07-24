@@ -41,7 +41,7 @@
                             </h3>
                             <h4>Please subscribe to the tiers below to be able to view this post</h4>
                                 <c:forEach items="${tierList}" var="tier">
-                                    <p><a href="CreatorInfoServlet?username=${post.uploader.username}">${tier.tierTitle}</a></p>
+                                    <p><a href="CreatorInfoServlet?username=${tier.creator.username}">${tier.tierTitle}</a></p>
                                 </c:forEach>
                         </c:when>
                         <c:otherwise>
