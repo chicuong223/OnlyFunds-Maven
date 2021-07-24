@@ -6,7 +6,6 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
@@ -20,7 +19,7 @@ and open the template in the editor.
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a href="dashboard" class="nav-link d-flex align-items-center">
-                        <img src="images/Logo.png" style="width:90px;" height="30px"/>
+                        <img src="images/Logo.png" height="30" width='90'/>
                     </a>
                     <!-- Button when navbar is collapsed -->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -36,22 +35,11 @@ and open the template in the editor.
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Right nav -->
                     <nav class="navbar-nav ms-auto" id="right-nav">
-                        <!-- For user -->
-                        <div class="nav-item" id="notification">
-                            <a href="#Category" class="nav-link" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown"><i class="fas fa-bell"></i>
-                            </a>
-                            <div class="dropdown-menu p-2" id="dropdown-noti">
-                                <c:forEach items="${sessionScope.notiList}" var="noti">
-                                    <a href="PostDetailServlet?id=${noti.post.postId}&noti=${noti.notificationId}">${noti.content}</a>
-                                </c:forEach>
-                            </div>
-                        </div>
                         <!-- User management -->
                         <div class="nav-item" id="user-dropdown">
                             <img class="rounded-pill nav-link"
-                                 src="images/avatars/${sessionScope.user.avatarURL}" 
-                                 width='40px' height='40px' alt="Avatar">
+                                 src="images/avatars/Admin_Ava" 
+                                 width='40' height='40' alt="Avatar">
                             <div class="dropdown-menu m-0 p-0" style="width: 200px; position: absolute; left: 85vw;">
                                 <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
                             </div>
@@ -60,5 +48,8 @@ and open the template in the editor.
                 </div>
             </div>
         </nav>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
     </body>
 </html>

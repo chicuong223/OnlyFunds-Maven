@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<c:import url='navbar.jsp'></c:import>
+<c:import url='admin_navbar.html'></c:import>
 <!DOCTYPE html>
 <html>
     <head>

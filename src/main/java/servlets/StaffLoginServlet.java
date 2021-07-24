@@ -43,7 +43,7 @@ public class StaffLoginServlet extends HttpServlet {
             request.setAttribute("LOGINERROR", "Enter username and password");
             request.getRequestDispatcher(staffLoginPage).forward(request, response);
         } else {
-            Staff currentStaff = sDAO.CheckLogin(username, password);
+            Staff currentStaff = sDAO.checkLogin(username, password);
             if (currentStaff == null) {
                 request.setAttribute("LOGINERROR", "Username or password is incorrect");
                 request.getRequestDispatcher(staffLoginPage).forward(request, response);

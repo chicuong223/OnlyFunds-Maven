@@ -27,7 +27,6 @@
         <link rel="icon" href="images/logo_head.png" type="image/icon type">
         <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
     </head>
-
     <body>
         <!-- Navigation bar -->
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 " style="position: sticky; top: 0;">
