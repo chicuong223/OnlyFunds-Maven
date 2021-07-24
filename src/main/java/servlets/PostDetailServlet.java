@@ -163,9 +163,6 @@ public class PostDetailServlet extends HttpServlet {
         // check if postID in postViewed AL
         // if false -> viewCount++ / add postID to AL
         ArrayList<Integer> postViewed = (ArrayList<Integer>) getServletContext().getAttribute("postViewed");
-        postViewed.forEach((poID) -> {
-            System.out.println(poID);
-        });
         if (!postViewed.contains(postID)) {
             System.out.println(170);
             post.setViewCount(post.getViewCount()+1);
