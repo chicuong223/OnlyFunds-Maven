@@ -222,7 +222,7 @@
                                             <div class="comment-body">
                                                 <div class="comment-content border rounded p-2 pt-1">
                                                     <div class="comment-name">
-                                                        <a href="#author-page" class="info fw-bold" id="author-link">${cmt.key.user.username}</a>
+                                                        <a href="CreatorInfoServlet?username=${cmt.key.user.username}" class="info fw-bold" id="author-link">${cmt.key.user.username}</a>
                                                     </div>
                                                     <p class="mb-0" id="${cmt.key.commentID}-content">
                                                         ${cmt.key.content}
