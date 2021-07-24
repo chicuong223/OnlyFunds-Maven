@@ -40,7 +40,7 @@ public class FollowingListServlet extends HttpServlet {
             page = 1;
         else
             page = Integer.parseInt(strPage);
-        int count = userDAO.countCreators();
+        int count = userDAO.countFollowing(userSession);
         int endPage;
         endPage = count / 8;
         if(count % 8 != 0)
@@ -48,15 +48,13 @@ public class FollowingListServlet extends HttpServlet {
         int start = page * 8 - (8 - 1);
         int end = page * 8;
         List<User> userList = userDAO.getFollowingUsers(userSession, start, end);
-//        System.out.println("");
-        for (User user : userList) {
-            System.out.println(user);
-        }
         LinkedHashMap<User, List<Category>> userMap = new LinkedHashMap<>();
         userList.forEach(user -> {
             List<Category> cateList = userCateMap.getCategoriesByUser(user);
             userMap.put(user, cateList);
         });
+        request.setAttribute("title", "Creators You Are Following");
+        request.setAttribute("type", "follow");
         request.setAttribute("end", endPage);
         request.setAttribute("creatorList", userMap);
         request.getRequestDispatcher("creator_list.jsp").forward(request, response);

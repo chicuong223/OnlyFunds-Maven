@@ -186,7 +186,6 @@ function openFormReport(objectId, type) {
 }
 
 function submitReport() {
-    alert("submitReport called")
     event.preventDefault();
     let objectId = document.querySelector('#reportForm-objectId').value;
     let type = document.querySelector('#reportForm-type').value;
