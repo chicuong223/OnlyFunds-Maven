@@ -14,6 +14,7 @@
             <link rel="stylesheet" href="styles/user_page.css">
             <link rel="stylesheet" href="styles/shared.css">
             <title>Creator's Info</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
             <main class="main-container">
@@ -32,9 +33,28 @@
                         </div>
                         <div class="col-lg-8 ps-0">
                             <h3 class="fw-bold">
-                                ${creator.username}
-                                <button style="background-color: #ce68a8; border-color: #ce68a8"
-                                        class="btn btn-sm btn-primary ms-2" id="follow">Follow</button>
+                                <span  id="creator-username" class='h3'>
+                                    ${creator.username}
+                                </span>
+                                <!-- if user is not signed in, click follow button will open login modal -->
+                                <c:if test="${sessionScope.user == null}">
+                                    <button style="background-color: #ce68a8; border-color: #ce68a8"
+                                            class="btn btn-sm btn-primary ms-2" 
+                                            data-bs-toggle="modal" data-bs-target="#modal-login">Follow</button>
+                                </c:if>
+                                <!-- if user has logged in -->
+                                <c:if test="${sessionScope.user != null}">
+                                    <c:if test="${followed == false}">
+                                        <button style="background-color: #ce68a8; border-color: #ce68a8"
+                                                class="btn btn-sm btn-primary ms-2" 
+                                                id="follow">Follow</button>
+                                    </c:if>
+                                    <c:if test="${followed == true}">
+                                        <button style="background-color: #cecece; border-color: #cecece"
+                                                class="btn btn-sm btn-primary ms-2" 
+                                                id="follow">Following</button>
+                                    </c:if>
+                                </c:if>
                             </h3>
                             <div class="cat-list text-muted mb-2">
                                 <c:forEach items="${cateList}" var="cate">
@@ -56,7 +76,7 @@
                             </span>
                             <span class="text-center">
                                 <h4>Followers</h4>
-                                <h4>${followCount}</h4>
+                                <h4 id='follow-count'>${followCount}</h4>
                             </span>
                         </div>
                     </div>
@@ -211,5 +231,6 @@
                 </div>
             </div>
         </div>
+        <script src='scripts/creator_info_script.js'></script>
     </body>
 </html>

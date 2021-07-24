@@ -24,6 +24,8 @@ import post_management.post.Post;
 import post_management.post.PostDAO;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
+import user_management.follow.Follow;
+import user_management.follow.FollowDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
 
@@ -37,7 +39,6 @@ public class CreatorInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TierDAO tierDAO = new TierDAO();
         String username = request.getParameter("username");
         UserDAO userDAO = new UserDAO();
         HttpSession session = request.getSession();
@@ -51,9 +52,18 @@ public class CreatorInfoServlet extends HttpServlet {
         }
         else
             getOwnPost(request, creator);
+        //check if user is following this creator
+        boolean followed = false;
+        if(currentUser != null && !currentUser.getUsername().equalsIgnoreCase(creator.getUsername())){
+            FollowDAO followDAO = new FollowDAO();
+            Follow follow = followDAO.getFollow(currentUser, creator);
+            if(follow != null)
+                followed = true;
+        }
         int followerCount = userDAO.countFollowers(creator);
         int subCount = userDAO.countSubscribers(creator);
         getCategories(request, creator);
+        request.setAttribute("followed", followed);
         request.setAttribute("followCount", followerCount);
         request.setAttribute("subCount", subCount);
         request.setAttribute("creator", creator);
@@ -108,7 +118,7 @@ public class CreatorInfoServlet extends HttpServlet {
         ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
 //        System.out.println(postList.size());
         TreeMap<Post, int[]> postMap = new TreeMap<>();
-        for (Post post : postList) {
+        postList.forEach(post -> {
             int allowed = 0;
             List<Tier> postTiers = tierDAO.getTiersByPost(post);
             if (postTiers.size() <= 0)
@@ -122,7 +132,7 @@ public class CreatorInfoServlet extends HttpServlet {
             int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
             int[] value = {likeCount, cmtCount, allowed};
             postMap.put(post, value);
-        }
+        });
         int count = dao.countPostsByUser(creator);
         int pageSize = 4;
         int endPage = count / pageSize;
