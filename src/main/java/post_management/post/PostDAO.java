@@ -444,6 +444,7 @@ public class PostDAO {
                     post.setPostId(rs.getInt("id"));
                     post.setTitle(rs.getString("title"));
                     post.setDescription(rs.getString("description"));
+                    post.setViewCount(rs.getInt("view_count"));
                     post.setUploadDate(rs.getDate("upload_date"));
                     User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                     post.setUploader(uploader);
@@ -490,6 +491,7 @@ public class PostDAO {
                     post.setPostId(rs.getInt("id"));
                     post.setTitle(rs.getString("title"));
                     post.setDescription(rs.getString("description"));
+                    post.setViewCount(rs.getInt("view_count"));
                     post.setUploadDate(rs.getDate("upload_date"));
                     User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                     post.setUploader(uploader);
@@ -901,7 +903,6 @@ public class PostDAO {
     
     //increase view count
     public void increaseView(Post post) {
-        List<Post> lst = new ArrayList<>();
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
                 String sql = "UPDATE Post\n" +
@@ -918,15 +919,5 @@ public class PostDAO {
             System.out.println(e);
         }
     }
-    
-    public static void main(String[] args) {
-        User user = new User();
-        user.setUsername("chicuong");
-        PostDAO dao = new PostDAO();
-
-//        System.out.println(dao.getLatestPostIdByUser(user));
-        ArrayList<Post> lst = dao.getFreePosts(1, 3);
-        lst.forEach(p -> System.out.println(p.getPostId()));
-        System.out.println(lst.size());
-    }
+   
 }
