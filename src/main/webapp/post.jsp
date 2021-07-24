@@ -271,7 +271,7 @@
                     <!-- Report modal -->
                     <div class="modal fade" id="reportForm" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
-                            <form action="Report" id="reportForm" onsubmit="submitReport()">
+                            <form action="Report" id="reportForm">
                                 <input type="hidden" name="objectId" id="reportForm-objectId" />
                                 <input type="hidden" name="type" id="reportForm-type" />
                                 <div class="modal-content p-3">
@@ -286,6 +286,7 @@
                                                 <div class="col-12 my-auto">
                                                     <span>Title: </span>
                                                     <i class="fas fa-asterisk fa-xs" style="color: red;"></i>
+                                                    <span id='report-error'></span>
                                                 </div>
                                                 <div class="col-12">
                                                     <input type="text" class="form-control form-control-sm"
