@@ -875,4 +875,127 @@ public class UserDAO {
         }
         return count;
     }
+     public ArrayList<User> getAllUser() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<User> lst = new ArrayList<>();
+        String sql = "SELECT DISTINCT * FROM [User]";
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String firstName = rs.getString("firstname");
+                    String lastName = rs.getString("lastname");
+                    String email = rs.getString("email");
+                    String bio = rs.getString("bio");
+                    String avatarURL = rs.getString("avatarURL");
+                    boolean isBanned = rs.getBoolean("is_banned");
+                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
+                    lst.add(subscriber);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+     public ArrayList<User> getAllUnbannedUser() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<User> lst = new ArrayList<>();
+        String sql = "SELECT DISTINCT * FROM [User] where is_banned=0";
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String firstName = rs.getString("firstname");
+                    String lastName = rs.getString("lastname");
+                    String email = rs.getString("email");
+                    String bio = rs.getString("bio");
+                    String avatarURL = rs.getString("avatarURL");
+                    boolean isBanned = rs.getBoolean("is_banned");
+                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
+                    lst.add(subscriber);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+     public ArrayList<User> getAllBannedUser() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<User> lst = new ArrayList<>();
+        String sql = "SELECT DISTINCT * FROM [User] where is_banned=1";
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String firstName = rs.getString("firstname");
+                    String lastName = rs.getString("lastname");
+                    String email = rs.getString("email");
+                    String bio = rs.getString("bio");
+                    String avatarURL = rs.getString("avatarURL");
+                    boolean isBanned = rs.getBoolean("is_banned");
+                    User subscriber = new User(username, password, lastName, firstName, email, bio, avatarURL, isBanned);
+                    lst.add(subscriber);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
 }
