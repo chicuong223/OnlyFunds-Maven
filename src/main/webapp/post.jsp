@@ -208,18 +208,18 @@
                                             <%-- Comment list --%>
                                             <div class="comment-list">
                                                 <c:forEach items="${cmtList}" var="cmt" varStatus="cmtLoop">
-                                                    <div class="comment mb-3" id="cmt-${cmt.commentID}">
+                                                    <div class="comment mb-3" id="cmt-${cmt.key.commentID}">
                                                         <div class="comment-ava">
-                                                            <img src="images/avatars/${cmt.user.avatarURL}"
+                                                            <img src="images/avatars/${cmt.key.user.avatarURL}"
                                                                 alt="avatar" class="avatar" />
                                                         </div>
                                                         <div class="comment-body">
                                                             <div class="comment-content border rounded p-2 pt-1">
                                                                 <div class="comment-name">
-                                                                    <a href="#author-page" class="info fw-bold" id="author-link">${cmt.user.username}</a>
+                                                                    <a href="#author-page" class="info fw-bold" id="author-link">${cmt.key.user.username}</a>
                                                                 </div>
-                                                                <p class="mb-0" id="${cmt.commentID}-content">
-                                                                    ${cmt.content}
+                                                                <p class="mb-0" id="${cmt.key.commentID}-content">
+                                                                    ${cmt.key.content}
                                                                 </p>
                                                             </div>
                                                             <ul class="comment icon p-0 ps-2 pt-1">
@@ -230,15 +230,15 @@
                                                                             <c:choose>
                                                                                 <c:when test="${isCommnetLikedList[cmtLoop.index]}">
                                                                                     <%-- when user already liked post --%>
-                                                                                    <a class="like" href="#Like" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
-                                                                                        <i id="cmtLike-${cmt.commentID}" class="fas fa-thumbs-up"></i>
-                                                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                                                    <a class="like" href="#Like" onclick="clickLikeComment('${user.username}',${cmt.key.commentID})">
+                                                                                        <i id="cmtLike-${cmt.key.commentID}" class="fas fa-thumbs-up"></i>
+                                                                                        <span id="countCommentLike-${cmt.key.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
                                                                                     </a>
                                                                                 </c:when>
                                                                                 <c:otherwise>
-                                                                                    <a class="like" href="#Like" onclick="clickLikeComment('${user.username}',${cmt.commentID})">
-                                                                                        <i id="cmtLike-${cmt.commentID}" class="far fa-thumbs-up"></i>
-                                                                                        <span id="countCommentLike-${cmt.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
+                                                                                    <a class="like" href="#Like" onclick="clickLikeComment('${user.username}',${cmt.key.commentID})">
+                                                                                        <i id="cmtLike-${cmt.key.commentID}" class="far fa-thumbs-up"></i>
+                                                                                        <span id="countCommentLike-${cmt.key.commentID}">${countCommentLikeList[cmtLoop.index]}</span>
                                                                                     </a>
                                                                                 </c:otherwise>
                                                                             </c:choose>

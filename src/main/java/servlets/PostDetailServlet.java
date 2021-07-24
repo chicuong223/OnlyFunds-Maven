@@ -42,6 +42,8 @@ public class PostDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         String strNotiID = request.getParameter("noti");
         HttpSession session = request.getSession();
+        int postID = Integer.parseInt(request.getParameter("id"));
+        
         //If user accesses the post via a notification
         //remove the notification from the notiList in session
         //set the notification is_read to true in the database
@@ -53,7 +55,6 @@ public class PostDetailServlet extends HttpServlet {
         }
         //get post info
         //if not found -> redirect to error page
-        int postID = Integer.parseInt(request.getParameter("id"));
         PostDAO dao = new PostDAO();
         Post post = dao.getPostByID(postID);
         if (post == null) {
@@ -158,6 +159,21 @@ public class PostDetailServlet extends HttpServlet {
         }).map(comment -> clDAO.countCommentLikeByCommentId(comment.getCommentID())).forEachOrdered(countCommentLike -> {
             countCommentLikeList.add(countCommentLike);
         });
+        
+        // check if postID in postViewed AL
+        // if false -> viewCount++ / add postID to AL
+        ArrayList<Integer> postViewed = (ArrayList<Integer>) getServletContext().getAttribute("postViewed");
+        postViewed.forEach((poID) -> {
+            System.out.println(poID);
+        });
+        if (!postViewed.contains(postID)) {
+            System.out.println(170);
+            post.setViewCount(post.getViewCount()+1);
+            postViewed.add(postID);
+            dao.increaseView(post);
+            getServletContext().setAttribute("postViewed", postViewed);
+        }
+        
         request.setAttribute("cmtList", cmtMap);
         request.setAttribute("isCommnetLikedList", isCommnetLikedList);
         request.setAttribute("countCommentLikeList", countCommentLikeList);

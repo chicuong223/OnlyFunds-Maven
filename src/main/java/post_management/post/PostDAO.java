@@ -896,7 +896,27 @@ public class PostDAO {
         }
         return lst;
     }
-
+    
+    //increase view count
+    public void increaseView(Post post) {
+        List<Post> lst = new ArrayList<>();
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                String sql = "UPDATE Post\n" +
+                    "SET view_count=?\n" +
+                    "WHERE Post.id=?";
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, post.getViewCount()); //view count has been +1 in servlet
+                    ps.setInt(2, post.getPostId());
+                    ps.executeUpdate();
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
     public static void main(String[] args) {
         User user = new User();
         user.setUsername("chicuong");
