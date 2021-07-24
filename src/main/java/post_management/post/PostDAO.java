@@ -554,6 +554,7 @@ public class PostDAO {
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
                             post.setUploadDate(rs.getDate("upload_date"));
+                            post.setViewCount(rs.getInt("view_count"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
                             lst.add(post);
@@ -621,6 +622,7 @@ public class PostDAO {
                             post.setTitle(rs.getString("title"));
                             post.setDescription(rs.getString("description"));
                             post.setUploadDate(rs.getDate("upload_date"));
+                            post.setViewCount(rs.getInt("view_count"));
                             User uploader = userDAO.getUserByUsername(rs.getString("uploader_username"));
                             post.setUploader(uploader);
                             lst.add(post);
