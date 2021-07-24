@@ -108,7 +108,10 @@
                                                 </c:choose>
                                                 <%-- Comment number --%>
                                                 <a href="#CommentWrite" class="comment-number">
-                                                    <i class="fas fa-comment"></i> ${cmtList.size()}
+                                                    <i class="fas fa-comment"></i>
+                                                    <span id="cmtCount">
+                                                        ${cmtList.size()}
+                                                    </span>
                                                 </a>
                                                 <c:choose>
                                                     <%-- Nếu là user hoặc chưa login, hiện nút bookmark và nút report--%>
@@ -225,8 +228,9 @@
                                                             <ul class="comment icon p-0 ps-2 pt-1">
                                                                 <li>
                                                                     <c:choose>
-                                                                        <%-- Nếu user --%>
+                                                                        <%-- Nếu user đã login--%>
                                                                         <c:when test="${sessionScope.user != null}">
+                                                                            <%-- Nút like comment --%>
                                                                             <c:choose>
                                                                                 <c:when test="${isCommnetLikedList[cmtLoop.index]}">
                                                                                     <%-- when user already liked post --%>
@@ -242,6 +246,100 @@
                                                                                     </a>
                                                                                 </c:otherwise>
                                                                             </c:choose>
+                                                                            <%-- Nếu user không phải là tác giả của comment --%>
+                                                                            <c:if test="${cmt.key.user.username ne sessionScope.user.username}">
+                                                                                <%-- Nếu user chưa report, cho phép report comment --%>
+                                                                                <c:if test="${cmt.value == false}">
+                                                                                    <a class="ms-2" id="report-cmt-btn-${cmt.key.commentID}" href="#" data-bs-toggle="modal" data-bs-target="#reportForm"
+                                                                                    onclick="openFormReport('${cmt.key.commentID}','comment')">
+                                                                                        <i class="fas fa-exclamation-triangle"></i>
+                                                                                    </a>
+                                                                                </c:if>
+                                                                                <%-- Nếu user đã report, không cho phép report comment --%>
+                                                                                <c:if test="${cmt.value == true}">
+                                                                                    <span id="report-cmt-btn" href="#"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-placement="top"
+                                                                                        title="You have already reported this comment!" class="ms-2">
+                                                                                        <i class="fas fa-exclamation-triangle"></i>
+                                                                                    </span>
+                                                                                </c:if>
+                                                                            </c:if>
+                                                                            <%-- Nếu user là tác giả của comment --%>
+                                                                            <c:if test="${cmt.key.user.username eq sessionScope.user.username}">
+                                                                                <%-- Form and button for edit --%>
+                                                                                <a class="ms-2 me-2" id="edit-cmt-btn" href="#" data-bs-toggle="modal" data-bs-target="#edit-modal-${cmt.key.commentID}">
+                                                                                    <i class="far fa-edit"></i>
+                                                                                </a>
+                                                                                <div class="editform modal" id="edit-modal-${cmt.key.commentID}" style="z-index: 1050;">
+                                                                                    <div class="modal-dialog modal-dialog-centered">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title">Edit comment</h5>
+                                                                                                <button type="button" class="btn-close"
+                                                                                                    data-bs-dismiss="modal"
+                                                                                                    aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <form action="EditCommentServlet" method="post"
+                                                                                                    id="edit-form-${cmt.key.commentID}">
+                                                                                                    <input type="hidden" name="cmtID"
+                                                                                                        value="${cmt.key.commentID}" />
+                                                                                                    <p>New Content: </p>
+                                                                                                    <textarea class="form-control"
+                                                                                                        style="resize:none"
+                                                                                                        id="newContent-${cmt.key.commentID}">${cmt.key.content}</textarea>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary"
+                                                                                                    data-bs-dismiss="modal">Close</button>
+                                                                                                <button class="btn btn-warning" type="button"
+                                                                                                    onclick="editCmt(${cmt.key.commentID})"
+                                                                                                    data-bs-dismiss="modal">Edit</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <%-- Form and delete for delete --%>
+                                                                                <a id="delete-cmt-btn" href="#" 
+                                                                                data-bs-toggle="modal" 
+                                                                                data-bs-target="#delete-modal-${cmt.key.commentID}">
+                                                                                    <i class="far fa-trash-alt"></i>
+                                                                                </a>
+                                                                                <div class="modal" id="delete-modal-${cmt.key.commentID}">
+                                                                                    <div class="modal-dialog modal-dialog-centered">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title">Delete comment</h5>
+                                                                                                <button type="button" class="btn-close"
+                                                                                                    data-bs-dismiss="modal"
+                                                                                                    aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <form action="DeleteCommentServlet"
+                                                                                                    method="post"
+                                                                                                    id="delete-form-${cmt.key.commentID}">
+                                                                                                    <input type="hidden" name="cmtID"
+                                                                                                        value="${cmt.key.commentID}" />
+                                                                                                    <p>You and other users will not be able to
+                                                                                                        see this comment anymore</p>
+                                                                                                    <p class="text-danger">Are you sure ?</p>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary"
+                                                                                                    data-bs-dismiss="modal">Close</button>
+                                                                                                <button class="btn btn-danger"
+                                                                                                    onclick="deleteCmt(${cmt.key.commentID})"
+                                                                                                    data-bs-dismiss="modal">Delete</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
+                                                                            <%-- Nếu user là tác giả của post, cho phép ẩn comment --%>
+                                                                            
                                                                         </c:when>
                                                                         <%-- Nếu user chưa login hiện form login --%>
                                                                         <c:otherwise>
@@ -286,7 +384,7 @@
                                                 <div class="col-12 my-auto">
                                                     <span>Title: </span>
                                                     <i class="fas fa-asterisk fa-xs" style="color: red;"></i>
-                                                    <span id='report-error'></span>
+                                                    <span id='report-error' class="text-danger"></span>
                                                 </div>
                                                 <div class="col-12">
                                                     <input type="text" class="form-control form-control-sm"
