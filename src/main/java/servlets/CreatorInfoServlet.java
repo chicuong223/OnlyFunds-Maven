@@ -119,7 +119,7 @@ public class CreatorInfoServlet extends HttpServlet {
 
     private TreeMap<Post, int[]> getPosts(User creator, User user, int page) {
         PostDAO dao = new PostDAO();
-        List<Post> postList = dao.getPostsByUserPage(creator, page);
+        List<Post> postList = dao.getPostsByUser(creator, page);
         TreeMap<Post, int[]> postMap = new TreeMap<>();
         PostLikeDAO likeDAO = new PostLikeDAO();
         CommentDAO cmtDAO = new CommentDAO();
@@ -144,7 +144,7 @@ public class CreatorInfoServlet extends HttpServlet {
 //            pageIndex = 1;
 //        else
 //            pageIndex = Integer.parseInt(pageStr);
-//        ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
+//        ArrayList<Post> postList = dao.getPostsByUser(creator, pageIndex);
 ////        System.out.println(postList.size());
 //        TreeMap<Post, int[]> postMap = new TreeMap<>();
 //        postList.forEach(post -> {
@@ -183,7 +183,7 @@ public class CreatorInfoServlet extends HttpServlet {
 //            pageIndex = 1;
 //        else
 //            pageIndex = Integer.parseInt(pageStr);
-//        ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
+//        ArrayList<Post> postList = dao.getPostsByUser(creator, pageIndex);
 //        TreeMap<Post, int[]> map = new TreeMap<>();
 //        for (Post post : postList) {
 //            int likeCount = likeDAO.countPostLikeByPost(post);

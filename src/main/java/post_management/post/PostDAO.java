@@ -44,26 +44,103 @@ public class PostDAO {
     }
 
     public int countPostsByUser(User user) {
-        int count = 0;
+        int count = -1;
         try (Connection con = DBConnect.makeConnection()) {
-
             if (con != null)
-
-                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 1")) {
-                    ps.setString(1, user.getUsername());
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next())
-                            count = rs.getInt("countNo");
-                    }
+                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ?")) {
+                ps.setString(1, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next())
+                        count = rs.getInt("countNo");
                 }
+            }
         }
         catch (SQLException e) {
         }
         return count;
     }
 
-    //get posts by user
-    public ArrayList<Post> getPostsByUserPage(User user, int pageIndex) {
+    public int countActivePostsByUser(User user) {
+        int count = -1;
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 1")) {
+                ps.setString(1, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next())
+                        count = rs.getInt("countNo");
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        return count;
+    }
+    
+    public int countInactivePostsByUser(User user){
+        int count = -1;
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(id) as countNo FROM Post WHERE uploader_username = ? AND is_active = 0")) {
+                ps.setString(1, user.getUsername());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next())
+                        count = rs.getInt("countNo");
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        return count;
+    }
+
+    public ArrayList<Post> getPostsByUser(User user, int pageIndex) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Post> lst = new ArrayList<>();
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("SELECT * FROM\n"
+                        + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
+                        + "* FROM Post WHERE uploader_username = ?) as x\n"
+                        + "WHERE x.r between ?*4-(4-1) and ?*4");
+                ps.setString(1, user.getUsername());
+                ps.setInt(2, pageIndex);
+                ps.setInt(3, pageIndex);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    int postID = rs.getInt("id");
+                    String postTitle = rs.getString("title");
+                    String postDescription = rs.getString("description");
+                    String attachmentURL = rs.getString("attachment_URL");
+                    int viewCount = rs.getInt("view_count");
+                    Date uploadDate = rs.getDate("upload_date");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Post post = new Post(postID, user, postTitle, postDescription, attachmentURL, uploadDate, viewCount, isActive);
+                    lst.add(post);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+
+    public ArrayList<Post> getActivePostsByUser(User user, int pageIndex) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -74,6 +151,52 @@ public class PostDAO {
                 ps = con.prepareStatement("SELECT * FROM\n"
                         + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
                         + "* FROM Post WHERE uploader_username = ? AND is_active = 1) as x\n"
+                        + "WHERE x.r between ?*4-(4-1) and ?*4");
+                ps.setString(1, user.getUsername());
+                ps.setInt(2, pageIndex);
+                ps.setInt(3, pageIndex);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    int postID = rs.getInt("id");
+                    String postTitle = rs.getString("title");
+                    String postDescription = rs.getString("description");
+                    String attachmentURL = rs.getString("attachment_URL");
+                    int viewCount = rs.getInt("view_count");
+                    Date uploadDate = rs.getDate("upload_date");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Post post = new Post(postID, user, postTitle, postDescription, attachmentURL, uploadDate, viewCount, isActive);
+                    lst.add(post);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
+
+    public ArrayList<Post> getInactivePostsByUser(User user, int pageIndex) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Post> lst = new ArrayList<>();
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("SELECT * FROM\n"
+                        + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
+                        + "* FROM Post WHERE uploader_username = ? AND is_active = 0) as x\n"
                         + "WHERE x.r between ?*4-(4-1) and ?*4");
                 ps.setString(1, user.getUsername());
                 ps.setInt(2, pageIndex);
@@ -524,9 +647,9 @@ public class PostDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        count = rs.getInt("count");
-                }
+                if (rs.next())
+                    count = rs.getInt("count");
+            }
         }
         catch (SQLException ex) {
             Logger.getLogger(PostDAO.class
@@ -690,9 +813,9 @@ public class PostDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        count = rs.getInt("count");
-                }
+                if (rs.next())
+                    count = rs.getInt("count");
+            }
         }
         catch (SQLException ex) {
             Logger.getLogger(PostDAO.class
@@ -708,9 +831,9 @@ public class PostDAO {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-                    if (rs.next())
-                        count = rs.getInt("count");
-                }
+                if (rs.next())
+                    count = rs.getInt("count");
+            }
         }
         catch (SQLException ex) {
             Logger.getLogger(PostDAO.class
@@ -847,8 +970,8 @@ public class PostDAO {
         }
         return lst;
     }
-    
-     public int countBookmarkedPosts(User user) {
+
+    public int countBookmarkedPosts(User user) {
         int count = -1;
         String sql = "SELECT Count(post_id) as post_count FROM Bookmark WHERE username = ?";
         try (Connection con = DBConnect.makeConnection();
@@ -900,14 +1023,14 @@ public class PostDAO {
         }
         return lst;
     }
-    
+
     //increase view count
     public void increaseView(Post post) {
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null) {
-                String sql = "UPDATE Post\n" +
-                    "SET view_count=?\n" +
-                    "WHERE Post.id=?";
+                String sql = "UPDATE Post\n"
+                        + "SET view_count=?\n"
+                        + "WHERE Post.id=?";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setInt(1, post.getViewCount()); //view count has been +1 in servlet
                     ps.setInt(2, post.getPostId());
@@ -919,5 +1042,5 @@ public class PostDAO {
             System.out.println(e);
         }
     }
-   
+
 }
