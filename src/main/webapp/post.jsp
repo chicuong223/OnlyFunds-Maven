@@ -354,6 +354,9 @@
                                                                         </c:otherwise>
                                                                     </c:choose>
                                                                 </li>
+                                                                <li class="float-end text-muted">
+                                                                    <fmt:formatDate pattern="dd-MM-yyyy" value="${cmt.key.commentDate}"></fmt:formatDate>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                         <div class="line"></div>
