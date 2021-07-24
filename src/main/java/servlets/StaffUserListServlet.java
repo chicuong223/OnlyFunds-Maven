@@ -57,8 +57,8 @@ public class StaffUserListServlet extends HttpServlet {
         int endIndex = pageNum * numReportInPage;
         endIndex = (endIndex > userList.size() ? userList.size() : endIndex);
 
+        System.err.println("full list size: "+ userList.size());
         ArrayList<User> subArray = new ArrayList<User>(userList.subList(startIndex, endIndex));
-        User reportedUser = new User();
         PostDAO pDAO = new PostDAO();
         CommentDAO cDAO = new CommentDAO();
         ArrayList<Integer> violationNumList=new ArrayList<>();
