@@ -277,18 +277,4 @@ public class CommentDAO {
         }
         return 0;
     }
-
-    public static void main(String[] args) {
-        CommentDAO dao = new CommentDAO();
-//        dao.getCommentsByPost(3).forEach(com -> {
-//            System.out.println(com.getCommentID());
-//        });
-//        System.out.println(dao.getCommentByID(2));
-//        dao.getReportedComments().forEach(com -> {
-//            System.out.println(com.getCommentID());
-//        });
-
-        dao.deactivateComment(1);
-        System.out.println(dao.getCommentByID(1).isIsActive());
-    }
 }
