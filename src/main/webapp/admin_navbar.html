@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+              crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 " style="position: sticky; top: 0;z-index: 100;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="dashboard" class="nav-link d-flex align-items-center">
+                        <img src="images/Logo.png" style="width:90px;" height="30px"/>
+                    </a>
+                    <!-- Button when navbar is collapsed -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!--collapse when screen is smaller than 1200px-->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Right nav -->
+                    <nav class="navbar-nav ms-auto" id="right-nav">
+                        <!-- For user -->
+                        <div class="nav-item" id="notification">
+                            <a href="#Category" class="nav-link" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown"><i class="fas fa-bell"></i>
+                            </a>
+                            <div class="dropdown-menu p-2" id="dropdown-noti">
+                                <c:forEach items="${sessionScope.notiList}" var="noti">
+                                    <a href="PostDetailServlet?id=${noti.post.postId}&noti=${noti.notificationId}">${noti.content}</a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <!-- User management -->
+                        <div class="nav-item" id="user-dropdown">
+                            <img class="rounded-pill nav-link"
+                                 src="images/avatars/${sessionScope.user.avatarURL}" 
+                                 width='40px' height='40px' alt="Avatar">
+                            <div class="dropdown-menu m-0 p-0" style="width: 200px; position: absolute; left: 85vw;">
+                                <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </nav>
+    </body>
+</html>
