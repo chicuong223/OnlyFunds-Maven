@@ -43,7 +43,7 @@
                                             data-bs-toggle="modal" data-bs-target="#modal-login">Follow</button>
                                 </c:if>
                                 <!-- if user has logged in -->
-                                <c:if test="${sessionScope.user != null}">
+                                <c:if test="${sessionScope.user != null && sessionScope.user.username ne creator.username}">
                                     <c:if test="${followed == false}">
                                         <button style="background-color: #ce68a8; border-color: #ce68a8"
                                                 class="btn btn-sm btn-primary ms-2" 
@@ -86,19 +86,22 @@
                         <div class="col-12 mb-3 text-center">
                             <h2 class="fw-bold" style="text-transform: uppercase;">Subscribe to this Creator</h2>
                         </div>
-                        <c:if test="${subscribed != null}">
+                        <c:if test="${subscribed == true}">
                             <h3 class="fw-bold text-danger">You have already subscribed to this creator</h3>
                         </c:if>
-                        <c:if test="${subscribed == null}">
+                        <c:if test="${subscribed == false}">
                             <c:forEach items="${tiers}" var="tier">
                                 <!-- Mỗi tier tạo 1 column -->
                                 <div class="col-lg-4 ps-0 pe-0 mx-auto">
                                     <div class="card tier mx-auto">
-                                        <c:if test="${sessionScope.user != null}">
-                                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
-                                        </c:if>
                                         <c:if test="${sessionScope.user == null}">
                                             <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#pleaseLogin"></a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.username ne creator.username}">
+                                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.username eq creator.username}">
+                                            <a href="#" class="stretched-link"></a>
                                         </c:if>
                                         <h4 class="card-header text-center text-truncate t-name">${tier.tierTitle}</h4>
                                         <div class="card-body p-2">
