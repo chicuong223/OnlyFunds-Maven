@@ -30,7 +30,7 @@ import user_management.user.User;
         })
 public class YourPostsServlet extends HttpServlet {
 
-    private int pageSize = 3;
+    private int pageSize = 4;
     private int endPage = 0;
     private int count = 0;
 
