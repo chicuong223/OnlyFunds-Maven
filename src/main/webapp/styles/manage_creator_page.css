@@ -1,0 +1,126 @@
+.main-content {
+    background-color: #f1f1f1;
+}
+
+#bio {
+    min-height: 20rem;
+}
+
+.btn.fill, .btn.slide  {
+    border: 1px solid #ce68a8;
+    width: 13.125rem;
+    transition: .5s all;
+}
+
+.fill:hover {
+    color: white;
+    box-shadow: inset -7em 0 0 0 #ce68a8, inset 7em 0 0 0 #ce68a8;
+}
+
+.btn.slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+.btn.slide i {
+    font-size: 1.2em;
+    margin-left: .5rem;
+    transition: .5s all;
+}
+
+.btn.slide:hover {
+    color: white;
+    box-shadow: inset 13.5em 0 0 0 #ce68a8;
+}
+
+.btn.slide:hover i {
+    transform: rotate(270deg);
+}
+
+.cat-list {
+    margin: 0 auto;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: middle;
+    text-align: center;
+    flex-direction: column;
+}
+
+.cat {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    padding: 0;
+    border: 1px solid rgb(206, 104, 168);
+    cursor: pointer;
+}
+
+.cat label {
+    cursor: pointer;
+    padding: 5px 10px 5px 10px;
+}
+
+.cat.selected {
+    background-color: rgb(206, 104, 168);
+    color: white;
+}
+
+.cat input {
+    display: none;
+}
+
+.tier {
+    width: 17rem;
+    height: 19rem;
+    box-shadow: 0 .125rem .25rem rgb(133, 133, 133);
+    border-radius: 15px;
+    transition: .5s all ease;
+}
+
+.tier:hover, #post:hover {
+    transform: scale(1.05);
+    box-shadow: 0 .5rem 1rem rgb(133, 133, 133);
+}
+
+.t-name {
+    font-weight: 500;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.tier .price {
+    font-weight: 900;
+    color: #707070;
+}
+
+.tier .card-body {
+    overflow: hidden;
+}
+
+.tier .description {
+    position: relative;
+    font-style: italic;
+    margin-bottom: 0.2rem;
+    max-height: 50%;
+    overflow: hidden;
+}
+
+.tier .description {
+    font-size: 14px;
+    line-height: 18px;
+    color: #6d6d6d;
+}
+
+.btn.action {
+    border: 1px solid #ce68a8;
+    width: 150px;
+    transition: all .5s;
+}
+/* 
+.btn.action:hover {
+    background-color: #ce68a8;
+    color: white;
+} */
