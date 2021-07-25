@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.HashPassword;
 
 /**
  *
@@ -46,20 +47,24 @@ public class AdminLoginServlet extends HttpServlet {
         if (username == null || password == null) {
             request.setAttribute("LOGINERROR", "Enter username and password");
             request.getRequestDispatcher(adminLoginPage).forward(request, response);
-        } else {
-            Admin currentAdmin = sDAO.CheckLogin(username, password);
+        }
+        else {
+            String hashedPassword = HashPassword.HashPassword(password);
+            Admin currentAdmin = sDAO.CheckLogin(username, hashedPassword);
             if (currentAdmin == null) {
                 request.setAttribute("LOGINERROR", "Username or password is incorrect");
                 request.getRequestDispatcher(adminLoginPage).forward(request, response);
-            } else {
+            }
+            else {
                 HttpSession session = request.getSession();
-                session.setAttribute("staff", currentAdmin);
+                session.setAttribute("admin", currentAdmin);
                 System.err.println("current staff is null?");
-                System.err.println(session.getAttribute("staff")==null);
+                System.err.println(session.getAttribute("admin") == null);
                 request.getRequestDispatcher(staffListPage).forward(request, response);
             }
         }
     }
+
     @Override
     public String getServletInfo() {
         return "Short description";
