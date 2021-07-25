@@ -59,19 +59,19 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
@@ -111,19 +111,19 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
@@ -163,120 +163,24 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
     }
 
-    public ArrayList<Report> getReportsByStaffUsername(String username) {
-        Staff solveStaff = null;
-        if (username != null && username.isEmpty()) {
-            StaffDAO sDAO = new StaffDAO();
-            solveStaff = sDAO.getStaffByUsername(username);
-            return getReportsByStaff(solveStaff);
-        }
-        else return new ArrayList<Report>();
-    }
-
-    public ArrayList<Report> getReportsByStaff(Staff solveStaff) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
-        try {
-            con = DBConnect.makeConnection();
-            if (con != null) {
-                ps = con.prepareStatement("SELECT * FROM Report Where solved_by_staff=?");
-                ps.setString(1, solveStaff.getUsername());
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    UserDAO uDAO = new UserDAO();
-                    User reportUser = uDAO.getUserByUsername(rs.getString("report_username"));
-                    String reportedObjectId = rs.getString("reported_id");
-                    String type = rs.getString("type");
-                    String title = rs.getString("title");
-                    String description = rs.getString("description");
-                    Date reportDate = rs.getDate("report_date");
-                    String status = rs.getString("status");
-                    Date solveDate = rs.getDate("solve_date");
-                    Report report = new Report(id, reportUser, reportedObjectId, type,
-                            solveStaff, title, description, reportDate,
-                            status, solveDate);
-                    reportList.add(report);
-                }
-            }
-        } catch (SQLException e) {
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-            }
-        }
-        return reportList;
-    }
-    public int countReportsByStaff(String username) {
-        Staff solveStaff = null;
-        if (username != null && username.isEmpty()) {
-            StaffDAO sDAO = new StaffDAO();
-            solveStaff = sDAO.getStaffByUsername(username);
-            return countReportsByStaff(solveStaff);
-        }
-        else return 0;
-    }
-    public int countReportsByStaff(Staff solveStaff) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            con = DBConnect.makeConnection();
-            if (con != null) {
-                ps = con.prepareStatement("SELECT count(id) as num FROM Report Where solved_by_staff=?");
-                ps.setString(1, solveStaff.getUsername());
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    int num = rs.getInt("num");
-                    return num;
-                }
-            }
-        } catch (SQLException e) {
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-            }
-        }
-        return 0;
-    }
     //no check
     public ArrayList<Report> getReportsByStatusAndType(String status, String type) {
         Connection con = null;
@@ -311,19 +215,19 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
@@ -363,20 +267,20 @@ public class ReportDAO {
                     reportList.add(report);
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getStackTrace());
-        } finally {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return reportList;
@@ -419,19 +323,19 @@ public class ReportDAO {
                     return report;
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return null;
@@ -458,17 +362,18 @@ public class ReportDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
@@ -496,17 +401,18 @@ public class ReportDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
@@ -528,17 +434,18 @@ public class ReportDAO {
                 ps.executeUpdate();
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
@@ -561,17 +468,18 @@ public class ReportDAO {
                 System.err.println("declineReports() success");
                 return true;
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }
+        finally {
             try {
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return false;
@@ -607,7 +515,8 @@ public class ReportDAO {
                     }
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
 //            System.out.println(e.getStackTrace());
             e.printStackTrace();
         }

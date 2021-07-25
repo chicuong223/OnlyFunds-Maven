@@ -9,6 +9,7 @@ import post_management.comment.CommentDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +31,7 @@ import user_management.user.User;
         })
 public class YourPostsServlet extends HttpServlet {
 
-    private int pageSize = 3;
+    private final int pageSize = 4;
     private int endPage = 0;
     private int count = 0;
 
@@ -42,14 +43,27 @@ public class YourPostsServlet extends HttpServlet {
         PostLikeDAO likeDAO = new PostLikeDAO();
         String pageStr = request.getParameter("page");
         CommentDAO cDAO = new CommentDAO();
+        String action = request.getParameter("action");
+        if (action == null)
+            action = "all";
         int pageIndex = 0;
-        if (pageStr == null) {
+        if (pageStr == null)
             pageIndex = 1;
-        }
-        else {
+        else
             pageIndex = Integer.parseInt(pageStr);
+        List<Post> postList = new ArrayList<>();
+        if (action.equalsIgnoreCase("all")) {
+            postList = dao.getPostsByUser(user, pageIndex);
+            count = dao.countPostsByUser(user);
         }
-        ArrayList<Post> postList = dao.getPostsByUserPage(user, pageIndex);
+        else if(action.equalsIgnoreCase("active")){
+            postList = dao.getActivePostsByUser(user, pageIndex);
+            count = dao.countActivePostsByUser(user);
+        }
+        else if(action.equalsIgnoreCase("disabled")){
+            count = dao.countInactivePostsByUser(user);
+            postList = dao.getInactivePostsByUser(user, pageIndex);
+        }
         TreeMap<Post, int[]> map = new TreeMap<>();
         for (Post post : postList) {
             int likeCount = likeDAO.countPostLikeByPost(post);
@@ -59,14 +73,13 @@ public class YourPostsServlet extends HttpServlet {
             };
             map.put(post, arr);
         }
-        count = dao.countPostsByUser(user);
         endPage = count / pageSize;
-        if (count % pageSize != 0) {
+        if (count % pageSize != 0)
             endPage++;
-        }
         request.setAttribute("postList", map);
         request.setAttribute("end", endPage);
         request.setAttribute("count", count);
+        request.setAttribute("action", action);
         request.getRequestDispatcher("your_posts.jsp").forward(request, response);
     }
 

@@ -134,11 +134,9 @@ ion-icon {
 }
 
 .main-content {
-  position: absolute;
-  z-index: 1;
   height: 100%;
   width: calc(100% - 14rem);
-  left: 14rem;
-  overflow-y: scroll;
+  margin-left: 14rem;
+  overflow-y: auto;
   overflow-x: hidden;
 }

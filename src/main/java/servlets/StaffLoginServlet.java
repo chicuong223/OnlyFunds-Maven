@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.HashPassword;
 
 @WebServlet(name = "StaffLoginServlet", urlPatterns = {"/staff"})
 public class StaffLoginServlet extends HttpServlet {
@@ -44,9 +43,7 @@ public class StaffLoginServlet extends HttpServlet {
             request.setAttribute("LOGINERROR", "Enter username and password");
             request.getRequestDispatcher(staffLoginPage).forward(request, response);
         } else {
-            String hashedPassword = HashPassword.HashPassword(password);
-            System.out.println(hashedPassword);
-            Staff currentStaff = sDAO.CheckLogin(username, hashedPassword);
+            Staff currentStaff = sDAO.checkLogin(username, password);
             if (currentStaff == null) {
                 request.setAttribute("LOGINERROR", "Username or password is incorrect");
                 request.getRequestDispatcher(staffLoginPage).forward(request, response);
