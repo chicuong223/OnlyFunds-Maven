@@ -29,7 +29,7 @@
     </head>
     <body>
         <!-- Navigation bar -->
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 " style="position: sticky; top: 0; z-index: 3000;">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 border-bottom" id="navbar-container">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <c:choose>

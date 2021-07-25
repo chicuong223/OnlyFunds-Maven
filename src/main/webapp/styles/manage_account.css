@@ -1,0 +1,43 @@
+.main-content {
+    background-color: #f1f1f1;
+}
+#left-panel {
+    position: relative;
+}
+.img-avatar {
+    border: 3px solid black;
+    border-radius: 50%;
+    min-width: 15rem;
+    min-height: 15rem;
+    max-width: 15rem;
+    max-height: 15rem;
+}
+
+#new-avatar {
+    visibility: hidden;
+}
+
+#new-avatar::before {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    border-radius: 50%;
+    content: '\f030';
+    font-family: FontAwesome;
+    font-size: 1.5em;
+    top: 0;
+    right: 13rem;
+    visibility: visible;
+    position: absolute;
+}
+
+.btn.action {
+    border-color: #ce68a8;
+}
+
+.btn.action:hover {
+    background-color: #ce68a8;
+    color: white;
+}
