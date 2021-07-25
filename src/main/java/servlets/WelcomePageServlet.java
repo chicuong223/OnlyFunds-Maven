@@ -43,6 +43,11 @@ public class WelcomePageServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("user")!=null) {
+                response.sendRedirect("homepage");
+                return;
+            }
             String a = request.getParameter("action");
             RequestDispatcher rd = request.getRequestDispatcher(WELCOME_PAGE);
             CategoryDAO cDao = new CategoryDAO();
@@ -52,12 +57,20 @@ public class WelcomePageServlet extends HttpServlet {
             UserDAO userDAO = new UserDAO();
             PostDAO postDAO = new PostDAO();
             
+            if (getServletContext().getAttribute("postViewed") == null) {
+                ArrayList<Integer> postViewed = new ArrayList(); //get viewed post for view counter
+                getServletContext().setAttribute("postViewed", postViewed);
+            }
+            
             //pass data for creator list
             //category list
-            ArrayList<Category> catList = cDao.getAllCategories();
+            if (getServletContext().getAttribute("catList") == null) {
+                ArrayList<Category> catList = cDao.getAllCategories();
+                getServletContext().setAttribute("catList", catList);
+            }
+            
             ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
             HashMap<User, ArrayList<Category>> userCatMap = new HashMap<>();
-            getServletContext().setAttribute("catList", catList);
             popularCreators.forEach(popularCreator -> {
                 ArrayList<Category> lst = uDao.getCategoriesByUser(popularCreator);
                 userCatMap.put(popularCreator, lst);
