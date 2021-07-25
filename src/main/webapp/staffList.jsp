@@ -10,7 +10,7 @@
         <a href="ReportListServlet">Report List</a>
         <a href="StaffUserListServlet">User List</a>
         <a href="">Transaction List</a>
-        <form method="get" action="StaffSearchUserServlet">
+        <form method="get" action="SearchStaffServlet">
             <input type="hidden" value="searchstring" name="a"/>
             <div class="input-group input-group-sm" id="search-input">
                 <input type="text" class="form-control" name="search" placeholder="Search..." value="${search}">
@@ -18,16 +18,16 @@
                         class="fas fa-search"></i></button>
             </div>
         </form>
-        <h1>User List</h1>
+        <h1>Staff List</h1>
         <c:choose>
             <c:when test="${empty search}">
                 <h3>Status</h3>
-                <a href="StaffUserListServlet?isBanned=all" style="${isBanned=="all"?"color: red":""}">All</a>
-                <a href="StaffUserListServlet?isBanned=banned" style="${isBanned=="banned"?"color: red":""}">Banned</a>
-                <a href="StaffUserListServlet?isBanned=unbanned" style="${isBanned=="unbanned"?"color: red":""}">Not Banned</a>
+                <a href="StaffListServlet?isBanned=all" style="${isBanned=="all"?"color: red":""}">All</a>
+                <a href="StaffListServlet?isBanned=banned" style="${isBanned=="banned"?"color: red":""}">Banned</a>
+                <a href="StaffListServlet?isBanned=unbanned" style="${isBanned=="unbanned"?"color: red":""}">Not Banned</a>
             </c:when>
             <c:otherwise>
-                <a href="StaffUserListServlet">Back to list</a>
+                <a href="StaffListServlet">Back to list</a>
             </c:otherwise>
         </c:choose>
         <table>
@@ -37,27 +37,27 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Status</th>
-            <th>Violations</th>
+            <th>Solved Reports</th>
         </thead>
-        <c:forEach var="user" items="${userList}" varStatus="userLoop">
+        <c:forEach var="staff" items="${staffList}" varStatus="staffLoop">
             <tr class="user status-${user.isBanned?"Banned":"Not banned"}">
                 <td>
-                    <div>${user.username}</div>
+                    <div>${staff.username}</div>
                 </td>
                 <td>
-                    <div>${user.firstName}</div>
+                    <div>${staff.firstName}</div>
                 </td>
                 <td>
-                    <div>${user.lastName}</div>
+                    <div>${staff.lastName}</div>
                 </td>
                 <td>
-                    <div>${user.email}</div>
+                    <div>${staff.email}</div>
                 </td>
                 <td>
-                    <div>${user.isBanned?"Banned":"Active"}</div>
+                    <div>${staff.isActive?"Active":"Banned"}</div>
                 </td>
                 <td>
-                    <div>${violationNumList[userLoop.index]}</div>
+                    <a>${numSolvedReportList[staffLoop.index]}</a> <%--div>${violationNumList[userLoop.index]}</div--%>
                 </td>
             </tr>
         </c:forEach>
@@ -66,10 +66,10 @@
     <c:forEach begin="1" end="${numPage}" var="pageNum">
         <c:choose>
             <c:when test="${empty search}">
-                <a href="StaffUserListServlet?page=${pageNum}" style="${pageNum==page?"color: red":""}">Page ${pageNum}</a>
+                <a href="StaffListServlet?page=${pageNum}" style="${pageNum==page?"color: red":""}">Page ${pageNum}</a>
             </c:when>
             <c:otherwise>
-                <a href="StaffSearchUserServlet?search=${search}&page=${pageNum}" style="${pageNum==page?"color: red":""}">Page ${pageNum}</a>
+                <a href="StaffListServlet?search=${search}&page=${pageNum}" style="${pageNum==page?"color: red":""}">Page ${pageNum}</a>
             </c:otherwise>
         </c:choose>
     </c:forEach>
