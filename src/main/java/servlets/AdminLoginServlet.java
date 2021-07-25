@@ -34,12 +34,24 @@ public class AdminLoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        AdminDAO dao = new AdminDAO();
-        Admin admin = dao.checkLogin(username, HashPassword.HashPassword(password));
-        if(admin == null){
-            request.setAttribute("LOGINERROR", "Incorrect username or Password");
-            request.getRequestDispatcher("admin_login.jsp").forward(request, response);
-            return;
+        if (username == null || password == null) {
+            request.setAttribute("LOGINERROR", "Enter username and password");
+            request.getRequestDispatcher(adminLoginPage).forward(request, response);
+        }
+        else {
+            String hashedPassword = HashPassword.HashPassword(password);
+            Admin currentAdmin = sDAO.checkLogin(username, hashedPassword);
+            if (currentAdmin == null) {
+                request.setAttribute("LOGINERROR", "Username or password is incorrect");
+                request.getRequestDispatcher(adminLoginPage).forward(request, response);
+            }
+            else {
+                HttpSession session = request.getSession();
+                session.setAttribute("admin", currentAdmin);
+                System.err.println("current staff is null?");
+                System.err.println(session.getAttribute("admin") == null);
+                request.getRequestDispatcher(staffListPage).forward(request, response);
+            }
         }
         request.getSession().setAttribute("admin", admin);
         response.sendRedirect("dashboard");

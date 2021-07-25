@@ -94,23 +94,21 @@ public class StaffDAO {
         }
         return staff;
     }
-
     public Staff checkLogin(String username, String password) {
-        Staff staff = null;
-        try (Connection con = DBConnect.makeConnection()) {
-            if (con != null)
-                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=? And password=?")) {
-                    ps.setString(1, username);
-                    ps.setString(2, password);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            String lastName = rs.getString("lastname");
-                            String firstName = rs.getString("firstname");
-                            String email = rs.getString("email");
-                            boolean isActive = rs.getBoolean("is_active");
-                            staff = new Staff(username, password, lastName, firstName, email, isActive);
-                        }
-                    }
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=? And password=?");
+                ps.setString(1, username);
+                ps.setString(2, password);
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    return staff;
                 }
         }
         catch (SQLException e) {
