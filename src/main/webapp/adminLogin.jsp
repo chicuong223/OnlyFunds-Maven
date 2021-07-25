@@ -39,7 +39,7 @@
         </header>
         <c:set var="x" value="${sessionScope.Lock}" />
         <div class="mx-auto w-25 p-3 shadow">
-            <form action="staff" method="POST" id="loginForm">
+            <form action="admin" method="POST" id="loginForm">
                 <h2 class="text-center">Welcome</h2>
                 <p class="text-center text-danger" id="error">${LOGINERROR}</p>
                 <div class="form-floating">
