@@ -24,7 +24,7 @@ import user_management.user.User;
 @WebServlet(name = "ViewTransactionHistory", urlPatterns = {"/ViewTransactionHistory"})
 public class ViewTransactionHistory extends HttpServlet {
 
-    private final int pageSize = 5;
+    private final int pageSize = 9;
 
     //View transactions of others -> Staff does this
     @Override
