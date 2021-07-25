@@ -96,7 +96,10 @@
                                     </a>
                                     <div class="dropdown-menu p-2" id="dropdown-noti">
                                         <c:forEach items="${sessionScope.notiList}" var="noti">
-                                            <a href="PostDetailServlet?id=${noti.post.postId}&noti=${noti.notificationId}">${noti.content}</a>
+                                            <a href="PostDetailServlet?id=${noti.post.postId}&noti=${noti.notificationId}" 
+                                                class="col-xl-12 nav-link m-0 p-0 text-break border-bottom">
+                                                ${noti.content}
+                                            </a>
                                         </c:forEach>
                                     </div>
                                 </div>

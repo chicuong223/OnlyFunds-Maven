@@ -25,13 +25,27 @@
             <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
                 <div class="main-content">
                     <!-- category bar -->
-                <c:import url="category-bar.html"></c:import>
-                    <div class="container">
+                <!-- <c:import url="category-bar.html"></c:import> -->
+                    <div class="container mt-3">
+                        <div class="row">
+                            <div class="col-lg-12 p-3 pb-1 my-auto text-center">
+                                <span style="font-size: 50px; color:#B82481; font-family: Righteous;">ONLY FUNDS</span>
+                                <p style="font-size: 36px; color:#69336D;">Create your own work and earn money!</p>
+                                <a href="#" class="register-link">
+                                    <span>Get started!</span>
+                                    <svg width="18px" height="15px" viewBox="0 0 13 10">
+                                        <path d="M1,5 L11,5"></path>
+                                        <polyline points="8 1 12 5 8 9"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                         <div class="row gx-4 p-3 mb-2">
-                            <div class="header mb-4">
-                                <span class="p-0 mb-5 mt-3"
-                                      style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Popular
-                                    Creators</span> <a href='explore' class='link-primary'>View More</a>
+                            <div class="title mb-4">
+                                <a href="explore">
+                                    <span>Popular Creators</span>
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
                             </div>
                         <c:forEach var="creator" items="${userList}">
                             <div class="col-lg-3 m-0 p-0">
@@ -53,10 +67,11 @@
                     </div>
                     <!-- Bottom -->
                     <div class="row gx-4 p-3" id="row">
-                        <div class="header mb-4">
-                            <span class="p-0 mb-5 mt-3"
-                                  style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">Newly uploaded posts</span>
-                                  <a href='PostListServlet?action=recent' class='link-primary'>View More</a>
+                        <div class="title mb-4">
+                            <a href="PostListServlet?action=recent">
+                                <span>Recent posts</span>
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
                         </div>
                         <c:forEach var="post" items="${postList}">
                             <div class='col-lg-3 mb-3'>
@@ -74,9 +89,9 @@
                                             </p>
                                         </div>
                                         <div class='card-footer p-2 pt-1 pb-1'>
-                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
-                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
-                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                            <small><i class='fas fa-thumbs-up'></i>&nbsp;${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>&nbsp;${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>&nbsp;${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>
@@ -99,9 +114,9 @@
                                             </p>
                                         </div>
                                         <div class='card-footer p-2 pt-1 pb-1'>
-                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
-                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
-                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                            <small><i class='fas fa-thumbs-up'></i>&nbsp;${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>&nbsp;${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>&nbsp;${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>

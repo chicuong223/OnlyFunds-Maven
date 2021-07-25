@@ -223,6 +223,7 @@
                                                 <div class="comment-content border rounded p-2 pt-1">
                                                     <div class="comment-name">
                                                         <a href="CreatorInfoServlet?username=${cmt.key.user.username}" class="info fw-bold" id="author-link">${cmt.key.user.username}</a>
+                                                        <small>commented on</small> <strong><fmt:formatDate pattern="dd-MM-yyyy" value="${cmt.key.commentDate}"></fmt:formatDate></strong>
                                                     </div>
                                                     <p class="mb-0" id="${cmt.key.commentID}-content">
                                                         ${cmt.key.content}
@@ -254,16 +255,16 @@
                                                                     <%-- Nếu user chưa report, cho phép report comment --%>
                                                                     <c:if test="${cmt.value == false}">
                                                                         <a class="ms-2" id="report-cmt-btn-${cmt.key.commentID}" href="#" data-bs-toggle="modal" data-bs-target="#reportForm"
-                                                                           onclick="openFormReport('${cmt.key.commentID}', 'comment')">
+                                                                            onclick="openFormReport('${cmt.key.commentID}', 'comment')">
                                                                             <i class="fas fa-exclamation-triangle"></i>
                                                                         </a>
                                                                     </c:if>
                                                                     <%-- Nếu user đã report, không cho phép report comment --%>
                                                                     <c:if test="${cmt.value == true}">
                                                                         <span id="report-cmt-btn" href="#"
-                                                                              data-bs-toggle="tooltip"
-                                                                              data-bs-placement="top"
-                                                                              title="You have already reported this comment!" class="ms-2">
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="top"
+                                                                                title="You have already reported this comment!" class="ms-2">
                                                                             <i class="fas fa-exclamation-triangle"></i>
                                                                         </span>
                                                                     </c:if>
@@ -285,13 +286,13 @@
                                                                                 </div>
                                                                                 <div class="modal-body">
                                                                                     <form action="EditCommentServlet" method="post"
-                                                                                          id="edit-form-${cmt.key.commentID}">
+                                                                                            id="edit-form-${cmt.key.commentID}">
                                                                                         <input type="hidden" name="cmtID"
-                                                                                               value="${cmt.key.commentID}" />
+                                                                                                value="${cmt.key.commentID}" />
                                                                                         <p>New Content: </p>
                                                                                         <textarea class="form-control"
-                                                                                                  style="resize:none"
-                                                                                                  id="newContent-${cmt.key.commentID}">${cmt.key.content}</textarea>
+                                                                                                    style="resize:none"
+                                                                                                    id="newContent-${cmt.key.commentID}">${cmt.key.content}</textarea>
                                                                                     </form>
                                                                                 </div>
                                                                                 <div class="modal-footer">
@@ -306,8 +307,8 @@
                                                                     </div>
                                                                     <%-- Form and delete for delete --%>
                                                                     <a id="delete-cmt-btn" href="#" 
-                                                                       data-bs-toggle="modal" 
-                                                                       data-bs-target="#delete-modal-${cmt.key.commentID}">
+                                                                        data-bs-toggle="modal" 
+                                                                        data-bs-target="#delete-modal-${cmt.key.commentID}">
                                                                         <i class="far fa-trash-alt"></i>
                                                                     </a>
                                                                     <div class="modal" id="delete-modal-${cmt.key.commentID}">
@@ -321,10 +322,10 @@
                                                                                 </div>
                                                                                 <div class="modal-body">
                                                                                     <form action="DeleteCommentServlet"
-                                                                                          method="post"
-                                                                                          id="delete-form-${cmt.key.commentID}">
+                                                                                            method="post"
+                                                                                            id="delete-form-${cmt.key.commentID}">
                                                                                         <input type="hidden" name="cmtID"
-                                                                                               value="${cmt.key.commentID}" />
+                                                                                                value="${cmt.key.commentID}" />
                                                                                         <p>You and other users will not be able to
                                                                                             see this comment anymore</p>
                                                                                         <p class="text-danger">Are you sure ?</p>
@@ -357,13 +358,10 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </li>
-                                                    <li class="float-end text-muted">
-                                                        <fmt:formatDate pattern="dd-MM-yyyy" value="${cmt.key.commentDate}"></fmt:formatDate>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="line"></div>
+                                                </ul>
                                             </div>
+                                            <div class="line"></div>
+                                        </div>
                                     </c:forEach>
                                 </div>   
                             </div>

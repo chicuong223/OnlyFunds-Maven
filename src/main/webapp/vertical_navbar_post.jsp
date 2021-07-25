@@ -25,13 +25,13 @@
             <li class="list">
             <c:if test="${sessionScope.user == null}">
                 <a href="WelcomePageServlet">
-                    <span class="icon" style="color: #ce68a8"><i class="fas fa-home"></i></span>
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                     <span class="title" id="home"> Home</span>
                 </a>
             </c:if>
             <c:if test="${sessionScope.user != null}">
                 <a href="homepage">
-                    <span class="icon" style="color: #ce68a8"><i class="fas fa-home"></i></span>
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                     <span class="title" id="home"> Home</span>
                 </a>
             </c:if>

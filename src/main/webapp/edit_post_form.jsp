@@ -42,9 +42,14 @@
                                     </div>
                                     <textarea id="desc" name="desc" class="content" placeholder="What is your post about?">${post.description}</textarea>
                                     <span class="error text-danger" id="descError">${descError}</span>
-                                    <div class="old-attachment attachment-grp" style="padding-left: 14px;">
-                                        <p class="fw-bold" style="margin-bottom: 0">Old attachment</p>
-                                        <a href="post_file/${post.attachmentURL}">${post.attachmentURL}</a>
+                                    <div class="old-attachment attachment-grp" style="padding: .5rem;">
+                                        <label><ion-icon name="attach-outline"></ion-icon> Old attachment</label>
+                                        <c:if test="${empty post.attachmentURL}">
+                                            <span class="text-danger ps-1">This post does not have any attachment</span>
+                                        </c:if>
+                                        <c:if test="${not empty post.attachmentURL ne null}">
+                                            <a href="post_file/${post.attachmentURL}">${post.attachmentURL}</a>
+                                        </c:if>
                                     </div>
                                     <div class="attachment-grp">
                                         <label for="attachment">

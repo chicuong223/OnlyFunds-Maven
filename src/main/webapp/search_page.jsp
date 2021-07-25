@@ -43,7 +43,7 @@
                 </c:if>
                 <div class="content container-fluid">
                     <!-- Mỗi 1 field lớn tạo 1 row tương ứng -->
-                    <div class="row gx-4 p-3 mb-2">
+                    <div class="row gx-4 p-3">
                         <div class="header mb-4">
                             <span class="p-0 mb-5 mt-3"
                                   style="font-size: 32px; font-weight: bold; border-bottom: 2px solid #B82481;">${title} </span>
@@ -83,9 +83,9 @@
                                                 </p>
                                             </div>
                                             <div class="card-footer p-2 pt-1 pb-1">
-                                                <small><i class="fas fa-thumbs-up"></i> ${post.value[0]}</small>
-                                                <small><i class="fas fa-comment"></i> ${post.value[1]}</small>
-                                                <small><i class="far fa-eye"></i> ${post.key.viewCount}</small>
+                                                <small><i class="fas fa-thumbs-up"></i>&nbsp;${post.value[0]}</small>
+                                                <small><i class="fas fa-comment"></i>&nbsp;${post.value[1]}</small>
+                                                <small><i class="far fa-eye"></i>&nbsp;${post.key.viewCount}</small>
                                             </div>
                                         </div>
                                     </c:if>
@@ -107,9 +107,9 @@
                                                 </p>
                                             </div>
                                             <div class="card-footer p-2 pt-1 pb-1">
-                                                <small><i class="fas fa-thumbs-up"></i> ${post.value[0]}</small>
-                                                <small><i class="fas fa-comment"></i> ${post.value[1]}</small>
-                                                <small><i class="far fa-eye"></i> ${post.key.viewCount}</small>
+                                                <small><i class="fas fa-thumbs-up"></i>&nbsp;${post.value[0]}</small>
+                                                <small><i class="fas fa-comment"></i>&nbsp;${post.value[1]}</small>
+                                                <small><i class="far fa-eye"></i>&nbsp;${post.key.viewCount}</small>
                                             </div>
                                         </div>
                                     </c:if>

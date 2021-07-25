@@ -85,7 +85,7 @@
                             </div>
                         </c:forEach>
                     </div>
-                    <nav class="d-flex justify-content-center mb-4">
+                    <nav class="d-flex justify-content-center">
                         <ul class="pagination">
                             <li class="page-item">
                                 <c:if test="${param.page != null && param.page > 1}">

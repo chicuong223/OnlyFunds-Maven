@@ -40,7 +40,10 @@
                                         <a href="CreatorInfoServlet?username=${post.key.uploader.username}" class=stretched-link></a>
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username} <fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></h6>
+                                            <div class='card-subtitle text-muted' style='font-size: 16px;'>
+                                                <span>${post.key.uploader.username}</span>
+                                                <span class="float-end" style="font-size: 14px; padding-top: .2rem"><fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></span>
+                                            </div>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <p class='card-text'>
@@ -48,9 +51,9 @@
                                             </p>
                                         </div>
                                         <div class='card-footer p-2 pt-1 pb-1'>
-                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
-                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
-                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                            <small><i class='fas fa-thumbs-up'></i>&nbsp;${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>&nbsp;${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>&nbsp;${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>
@@ -59,7 +62,10 @@
                                         <a href="PostDetailServlet?id=${post.key.postId}" class=stretched-link></a>
                                         <div class='card-header p-2 pt-1'>
                                             <h4 class='card-title fw-bold'>${post.key.title}</h4>
-                                            <h6 class='card-subtitle text-muted' style='font-size: 16px;'>${post.key.uploader.username} <span> <fmt:formatDate value="${post.key.uploadDate}" pattern="dd-MM-yyyy"/></span></h6>
+                                            <div class='card-subtitle text-muted' style='font-size: 16px;'>
+                                                <span>${post.key.uploader.username}</span>
+                                                <span class="float-end" style="font-size: 14px; padding-top: .2rem"><fmt:formatDate pattern="dd-MM-yyyy" value="${post.key.uploadDate}"/></span>
+                                            </div>
                                         </div>
                                         <div class='card-body p-2 pt-1'>
                                             <a href='PostDetailServlet?id=${post.key.postId}' class='stretched-link'></a>
@@ -68,16 +74,16 @@
                                             </p>
                                         </div>
                                         <div class='card-footer p-2 pt-1 pb-1'>
-                                            <small><i class='fas fa-thumbs-up'></i>${post.value[0]}</small>
-                                            <small><i class='fas fa-comment'></i>${post.value[1]}</small>
-                                            <small><i class='far fa-eye'></i>${post.key.viewCount}</small>
+                                            <small><i class='fas fa-thumbs-up'></i>&nbsp;${post.value[0]}</small>
+                                            <small><i class='fas fa-comment'></i>&nbsp;${post.value[1]}</small>
+                                            <small><i class='far fa-eye'></i>&nbsp;${post.key.viewCount}</small>
                                         </div>
                                     </div>
                                 </c:if>
                             </div>
                         </c:forEach>
                     </div>
-                    <nav class="d-flex justify-content-center mb-4">
+                    <nav class="d-flex justify-content-center">
                         <ul class="pagination">
                             <li class="page-item">
                                 <a class="page-link" href="#">

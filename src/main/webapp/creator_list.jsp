@@ -29,7 +29,7 @@
             </c:if>
             <div class="main-content">
                 <div class='container'>
-                    <div class="row gx-4 p-3 mb-2">
+                    <div class="row gx-4 p-3 mb-3">
                         <div class="header mb-4">
                             <span class="p-0 mb-5 mt-3"
                                   style="font-size: 40px; font-weight: bold; border-bottom: 2px solid #B82481;">
@@ -37,7 +37,7 @@
                             </span>
                         </div>
                         <c:forEach var="creator" items="${creatorList}">
-                            <div class="col-lg-3 m-0 p-0">
+                            <div class="col-lg-3 m-0 p-0 mb-2">
                                 <div class="card mx-auto text-center">
                                     <a href="CreatorInfoServlet?username=${creator.key.username}" class="stretched-link"></a>
                                     <img src="images/avatars/${creator.key.avatarURL}" class="avatar" alt="avatar">
@@ -54,7 +54,7 @@
                             </div>
                         </c:forEach>
                     </div>
-                    <nav class="d-flex justify-content-center mb-4">
+                    <nav class="d-flex justify-content-center">
                         <ul class="pagination">
                             <li class="page-item">
                                 <c:if test="${param.page != null && param.page > 1}">
