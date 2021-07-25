@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import report.ReportDAO;
 
 /**
  *
@@ -57,12 +58,13 @@ public class StaffListServlet extends HttpServlet {
 
         System.err.println("full list size: "+ staffList.size());
         ArrayList<Staff> subArray = new ArrayList<Staff>(staffList.subList(startIndex, endIndex));
-        ArrayList<Integer>numSolvedReport=new ArrayList<Integer>();
+        ArrayList<Integer>numSolvedReportList=new ArrayList<Integer>();
+        ReportDAO rDAO=new ReportDAO();
         for (Staff staff : subArray) {
-            int 
-            numSolvedReport.add(violtionNum);
+            int numSolvedReport=rDAO.countReportsByStaff(staff);
+            numSolvedReportList.add(numSolvedReport);
         }
-        request.setAttribute("violationNumList", violationNumList);
+        request.setAttribute("numSolvedReportList", numSolvedReportList);
         request.setAttribute("staffList", subArray);
         request.getRequestDispatcher(StaffListPage).forward(request, response);
     }

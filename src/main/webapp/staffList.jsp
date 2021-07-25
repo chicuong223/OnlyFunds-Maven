@@ -23,8 +23,8 @@
             <c:when test="${empty search}">
                 <h3>Status</h3>
                 <a href="StaffListServlet?isBanned=all" style="${isBanned=="all"?"color: red":""}">All</a>
+                <a href="StaffListServlet?isBanned=unbanned" style="${isBanned=="unbanned"?"color: red":""}">Active</a>
                 <a href="StaffListServlet?isBanned=banned" style="${isBanned=="banned"?"color: red":""}">Banned</a>
-                <a href="StaffListServlet?isBanned=unbanned" style="${isBanned=="unbanned"?"color: red":""}">Not Banned</a>
             </c:when>
             <c:otherwise>
                 <a href="StaffListServlet">Back to list</a>
@@ -57,7 +57,7 @@
                     <div>${staff.isActive?"Active":"Banned"}</div>
                 </td>
                 <td>
-                    <a>${numSolvedReportList[staffLoop.index]}</a> <%--div>${violationNumList[userLoop.index]}</div--%>
+                    <a href="ReportListByStaffServlet?username=${staff.username}">${numSolvedReportList[staffLoop.index]} reports</a>
                 </td>
             </tr>
         </c:forEach>
