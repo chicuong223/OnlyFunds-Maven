@@ -57,22 +57,57 @@
                     <nav class="d-flex justify-content-center mb-4">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <c:forEach var="index" begin="1" end="${end}">
-                                <c:if test='${type eq "explore"}'>
-                                    <li class="page-item"><a class="page-link" href='explore?page=${index}'>${index}</a></li>
+                                <c:if test="${param.page != null && param.page > 1}">
+                                    <c:if test='${type eq "explore"}'>
+                                        <a class="page-link" href='explore?page=${param.page - 1}'><span aria-hidden="true">&laquo;</span></a>
                                     </c:if>
                                     <c:if test='${type eq "follow"}'>
-                                    <li class="page-item"><a class="page-link" href='FollowingListServlet?page=${index}'>${index}</a></li>
+                                        <a class="page-link" href='FollowingListServlet?${param.page - 1}'><span aria-hidden="true">&laquo;</span></a>
                                     </c:if>
-                                </c:forEach>
+                                </c:if>
+                                <c:if test="${param.page == null || param.page == 1}">
+                                    <a class="page-link text-muted" href="#">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </c:if>
+                            </li>
+                            <c:forEach var="index" begin="1" end="${end}">
+                                <li class='page-item <c:if test="${param.page == index}">active</c:if>'>
+                                    <c:if test='${type eq "explore"}'>
+                                        <a class="page-link" href='explore?page=${index}'>${index}</a>
+                                    </c:if>
+                                    <c:if test='${type eq "follow"}'>
+                                        <a class="page-link" href='FollowingListServlet?page=${index}'>${index}</a>
+                                    </c:if>
+                                </li>
+                            </c:forEach>
                             <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
+                                <c:choose>
+                                    <c:when test="${end <= 1}">
+                                        <a class="page-link text-muted" href="#">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:when>
+                                    <c:when test="${param.page == null}">
+                                        <c:if test='${type eq "explore"}'>
+                                            <a class="page-link" href='explore?page=2'><span aria-hidden="true">&raquo;</span></a>
+                                        </c:if>
+                                        <c:if test='${type eq "follow"}'>
+                                            <a class="page-link" href='FollowingListServlet?page=2'><span aria-hidden="true">&raquo;</span></a>
+                                        </c:if>
+                                    </c:when>
+                                    <c:when test="${param.page < end}">
+                                        <c:if test='${type eq "explore"}'>
+                                            <a class="page-link" href='explore?page=${param.page + 1}'><span aria-hidden="true">&raquo;</span></a>
+                                        </c:if>
+                                        <c:if test='${type eq "follow"}'>
+                                            <a class="page-link" href='FollowingListServlet?page=${param.page + 1}'><span aria-hidden="true">&raquo;</span></a>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </nav>

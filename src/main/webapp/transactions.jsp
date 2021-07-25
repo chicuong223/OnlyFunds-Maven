@@ -78,7 +78,7 @@
                             </c:if>
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
-                            <li class="page-item"><a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a></li>
+                            <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a></li>
                             </c:forEach>
                         <li class="page-item">
                             <c:choose>
@@ -92,12 +92,16 @@
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </c:when>
-                                <c:otherwise>
+                                <c:when test="${param.page < end}">
                                     <a class="page-link" href="ViewTransactionHistory?page=${param.page + 1}&filter=${filter}">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
                                 </c:otherwise>
                             </c:choose>
+
                         </li>
                     </ul>
                 </nav>
