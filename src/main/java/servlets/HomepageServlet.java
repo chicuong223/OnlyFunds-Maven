@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import category.Category;
+import category.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -39,6 +42,16 @@ public class HomepageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("isActive", "home");
+        if(getServletContext().getAttribute("catList") == null){
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<Category> catList = categoryDAO.getAllCategories();
+            getServletContext().setAttribute("catList", catList);
+        }
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+        }
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             response.sendRedirect("WelcomePageServlet");

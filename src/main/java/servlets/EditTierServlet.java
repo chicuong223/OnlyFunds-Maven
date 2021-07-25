@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -27,6 +28,12 @@ public class EditTierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
         String strTierID = request.getParameter("tierid");
         //check if request string is null
         if (strTierID == null) {
