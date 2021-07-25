@@ -25,6 +25,7 @@ import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -99,6 +100,14 @@ public class ManageCreatorPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("isActive", "mCreate");
+        //check session & context
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
+        
         UserCategoryMapDAO ucDao = new UserCategoryMapDAO();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");

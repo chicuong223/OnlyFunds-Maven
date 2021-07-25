@@ -20,6 +20,7 @@ import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
 import user_management.user.User;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -39,6 +40,14 @@ public class YourPostsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("isActive", "mPost");
+        //check session & context
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
+        
         PostDAO dao = new PostDAO();
         User user = (User) request.getSession().getAttribute("user");
         PostLikeDAO likeDAO = new PostLikeDAO();

@@ -21,6 +21,7 @@ import map.UserCategoryMap;
 import map.UserCategoryMapDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -36,6 +37,13 @@ public class SetUpCreatorPageServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            //check session & context
+            String url = "WelcomePageServlet";
+            boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+            if (check) {
+                response.sendRedirect(url);
+                return;
+            }
             
             String bio = request.getParameter("bio");
             String[] catList = request.getParameterValues("category");

@@ -27,6 +27,7 @@ import subscription_management.tier.TierDAO;
 import user_management.follow.FollowDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
+import utils.ContextAndSessionCheck;
 import utils.UploadFile;
 
 /**
@@ -44,6 +45,14 @@ public class WritePostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //check session & context
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
+        
         CategoryDAO cDAO = new CategoryDAO();
         TierDAO tDAO = new TierDAO();
         ArrayList<Category> catList = cDAO.getAllCategories();
