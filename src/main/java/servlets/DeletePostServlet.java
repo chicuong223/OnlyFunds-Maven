@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import post_management.post.Post;
 import post_management.post.PostDAO;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -25,6 +26,11 @@ public class DeletePostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+        }
     }
 
     @Override
