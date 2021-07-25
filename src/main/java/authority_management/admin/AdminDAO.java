@@ -5,35 +5,41 @@
  */
 package authority_management.admin;
 
+import authority_management.staff.Staff;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import utils.DBConnect;
 
 /**
  *
- * @author chiuy
+ * @author DELL
  */
 public class AdminDAO {
-
-    public Admin checkLogin(String username, String password) {
-        Admin admin = null;
-        String sql = "SELECT * FROM Admin WHERE username = ? AND password = ?";
-        try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ps.setString(2, password);
-            try (ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
-                    String firstName = rs.getString("firstname");
+    public Admin CheckLogin(String username, String password) {
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM [Admin] where username=? And password=?");
+                ps.setString(1, username);
+                ps.setString(2, password);
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
                     String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
                     String email = rs.getString("email");
-                    admin = new Admin(username, password, lastName, firstName, email);
+                    Admin admin = new Admin(username, password, lastName, firstName, email);
+                    return admin;
                 }
+                rs.close();
+                ps.close();
+                con.close();
             }
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return admin;
+        return null;
     }
 }

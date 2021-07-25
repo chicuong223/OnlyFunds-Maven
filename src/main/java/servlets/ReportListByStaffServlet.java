@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author chiuy
+ * @author DELL
  */
-@WebServlet(name = "AdminDashboardServlet", urlPatterns = {"/dashboard"})
-public class AdminDashboardServlet extends HttpServlet {
+@WebServlet(name = "ReportListByStaffServlet", urlPatterns = {"/ReportListByStaffServlet"})
+public class ReportListByStaffServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,7 +32,19 @@ public class AdminDashboardServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.sendRedirect("admin_dashboard.jsp");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ReportListByStaffServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ReportListByStaffServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Fuck this sht</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

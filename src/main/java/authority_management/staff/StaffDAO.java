@@ -19,28 +19,26 @@ import utils.HashPassword;
  * @author chiuy
  */
 public class StaffDAO {
-
-    public ArrayList<Staff> getAllStaffs(int start, int end) {
+    public ArrayList<Staff> getAllStaffs(){
         ArrayList<Staff> lst = new ArrayList<>();
-        try (Connection con = DBConnect.makeConnection()) {
-            if (con != null)
-                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM"
-                    + "(SELECT ROW_NUMBER() OVER(ORDER BY username) AS r, * FROM Staff) AS x\n"
-                    + "WHERE x.r BETWEEN ? AND ?")) {
-                ps.setInt(1, start);
-                ps.setInt(2, end);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        String username = rs.getString("username");
-                        String password = rs.getString("password");
-                        String lastName = rs.getString("lastname");
-                        String firstName = rs.getString("firstname");
-                        String email = rs.getString("email");
-                        boolean isActive = rs.getBoolean("is_active");
-                        Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
-                        lst.add(staff);
-                    }
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    lst.add(staff);
                 }
+                rs.close();
+                ps.close();
+                con.close();
             }
         }
         catch (SQLException e) {
@@ -48,13 +46,68 @@ public class StaffDAO {
         }
         return lst;
     }
-
-    public boolean addStaff(Staff staff) {
+    public ArrayList<Staff> getAllBannedStaffs(){
+        ArrayList<Staff> lst = new ArrayList<>();
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where is_active = 0");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = false;
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    lst.add(staff);
+                }
+                rs.close();
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return lst;
+    }
+    public ArrayList<Staff> getAllActiveStaffs(){
+        ArrayList<Staff> lst = new ArrayList<>();
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where is_active = 1");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = true;
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    lst.add(staff);
+                }
+                rs.close();
+                ps.close();
+                con.close();
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return lst;
+    }
+    
+    public boolean addStaff(Staff staff){
         boolean result = false;
-        try (Connection con = DBConnect.makeConnection()) {
-            if (con != null)
-                try (PreparedStatement ps = con.prepareStatement("INSERT INTO Staff\n"
-                    + "VALUES(?, ?, ?, ?, ?, ?)")) {
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("INSERT INTO Staff\n"
+                        + "VALUES(?, ?, ?, ?, ?, ?)");
                 ps.setString(1, staff.getUsername());
                 ps.setString(2, staff.getPassword());
                 ps.setString(3, staff.getFirstName());
@@ -69,66 +122,63 @@ public class StaffDAO {
         }
         return result;
     }
-
+    
+    
     //no check
     public Staff getStaffByUsername(String username) {
-        Staff staff = null;
-        try (Connection con = DBConnect.makeConnection()) {
-            if (con != null)
-                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=?")) {
-                ps.setString(1, username);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        String password = rs.getString("password");
-                        String lastName = rs.getString("lastname");
-                        String firstName = rs.getString("firstname");
-                        String email = rs.getString("email");
-                        boolean isActive = rs.getBoolean("is_active");
-                        staff = new Staff(username, password, lastName, firstName, email, isActive);
-                    }
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=?");
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
+                    String password = rs.getString("password");
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    return staff;
                 }
+                rs.close();
+                ps.close();
+                con.close();
             }
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return staff;
+        return null;
     }
-
-    public Staff checkLogin(String username, String password) {
-        Staff staff = null;
-        try (Connection con = DBConnect.makeConnection()) {
-            if (con != null)
-                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=? And password=?")) {
-                    ps.setString(1, username);
-                    ps.setString(2, password);
-                    try (ResultSet rs = ps.executeQuery()) {
-                        if (rs.next()) {
-                            String lastName = rs.getString("lastname");
-                            String firstName = rs.getString("firstname");
-                            String email = rs.getString("email");
-                            boolean isActive = rs.getBoolean("is_active");
-                            staff = new Staff(username, password, lastName, firstName, email, isActive);
-                        }
-                    }
+    public Staff CheckLogin(String username, String password) {
+        try {
+            Connection con = DBConnect.makeConnection();
+            if(con != null){
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where username=? And password=?");
+                ps.setString(1, username);
+                ps.setString(2, password);
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
+                    String lastName = rs.getString("lastname");
+                    String firstName = rs.getString("firstname");
+                    String email = rs.getString("email");
+                    boolean isActive = rs.getBoolean("is_active");
+                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
+                    return staff;
                 }
+                rs.close();
+                ps.close();
+                con.close();
+            }
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return staff;
+        return null;
     }
-    
-    public boolean deactivateStaff(Staff staff){
-        boolean result = false;
-        String sql = "UPDATE STAFF SET is_active = 0 WHERE username = ?";
-        try(Connection con  = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1, staff.getUsername());
-            result = ps.executeUpdate() > 0;
-        }
-        catch(Exception ex){
-            
-        }
-        return result;
+    public static void main(String[] args) {
+        StaffDAO dao = new StaffDAO();
+        Staff staff = new Staff("staff2", HashPassword.HashPassword("staff2"), "Tang","Chi-Cuong", "chicuong@gmail.com", true);
+        System.out.println(dao.addStaff(staff));
     }
 }

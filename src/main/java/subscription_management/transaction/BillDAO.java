@@ -146,7 +146,7 @@ public class BillDAO {
             }
         }
         catch (SQLException e) {
-           e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return lst;
     }
@@ -181,54 +181,5 @@ public class BillDAO {
 
         }
         return lst;
-    }
-    
-    public int countTransactionsByUser(User user){
-        int count = -1;
-        String sql = "SELECT COUNT(*) AS bill_count FROM [Transaction] WHERE recipient_username = ? OR sender_username = ?";
-        try(Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getUsername());
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next())
-                    count = rs.getInt("bill_count");
-            }
-        }
-        catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-        return count;
-    }
-    
-    public int countSentTransactionsByUser(User user){
-        int count = -1;
-        String sql = "SELECT COUNT(*) AS bill_count FROM [Transaction] WHERE sender_username = ?";
-        try(Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1, user.getUsername());
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next())
-                    count = rs.getInt("bill_count");
-            }
-        }
-        catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-        return count;
-    }
-    
-    public int countReceivedTransactionsByUser(User user){
-        int count = -1;
-        String sql = "SELECT COUNT(*) AS bill_count WHERE recipient_username = ?";
-        try(Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1, user.getUsername());
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next())
-                    count = rs.getInt("bill_count");
-            }
-        }
-        catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-        return count;
     }
 }

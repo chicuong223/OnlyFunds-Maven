@@ -14,7 +14,6 @@
             <link rel="stylesheet" href="styles/user_page.css">
             <link rel="stylesheet" href="styles/shared.css">
             <title>Creator's Info</title>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
         <body>
             <main class="main-container">
@@ -33,28 +32,9 @@
                         </div>
                         <div class="col-lg-8 ps-0">
                             <h3 class="fw-bold">
-                                <span  id="creator-username" class='h3'>
-                                    ${creator.username}
-                                </span>
-                                <!-- if user is not signed in, click follow button will open login modal -->
-                                <c:if test="${sessionScope.user == null}">
-                                    <button style="background-color: #ce68a8; border-color: #ce68a8"
-                                            class="btn btn-sm btn-primary ms-2" 
-                                            data-bs-toggle="modal" data-bs-target="#modal-login">Follow</button>
-                                </c:if>
-                                <!-- if user has logged in -->
-                                <c:if test="${sessionScope.user != null && sessionScope.user.username ne creator.username}">
-                                    <c:if test="${followed == false}">
-                                        <button style="background-color: #ce68a8; border-color: #ce68a8"
-                                                class="btn btn-sm btn-primary ms-2" 
-                                                id="follow">Follow</button>
-                                    </c:if>
-                                    <c:if test="${followed == true}">
-                                        <button style="background-color: #cecece; border-color: #cecece"
-                                                class="btn btn-sm btn-primary ms-2" 
-                                                id="follow">Following</button>
-                                    </c:if>
-                                </c:if>
+                                ${creator.username}
+                                <button style="background-color: #ce68a8; border-color: #ce68a8"
+                                        class="btn btn-sm btn-primary ms-2" id="follow">Follow</button>
                             </h3>
                             <div class="cat-list text-muted mb-2">
                                 <c:forEach items="${cateList}" var="cate">
@@ -76,7 +56,7 @@
                             </span>
                             <span class="text-center">
                                 <h4>Followers</h4>
-                                <h4 id='follow-count'>${followCount}</h4>
+                                <h4>${followCount}</h4>
                             </span>
                         </div>
                     </div>
@@ -86,26 +66,19 @@
                         <div class="col-12 mb-3 text-center">
                             <h2 class="fw-bold" style="text-transform: uppercase;">Subscribe to this Creator</h2>
                         </div>
-                        <c:if test="${subscribed == true}">
-                            <h3 class="fw-bold text-danger text-center">You have already subscribed to this creator</h3>
-                            <h4 class="text-center">Tier: ${subscribedTier.tierTitle}</h4>
+                        <c:if test="${subscribed != null}">
+                            <h3 class="fw-bold text-danger">You have already subscribed to this creator</h3>
                         </c:if>
-                        <c:if test="${tiers.size() <= 0}">
-                            <h3 class="fw-bold text-danger text-center">This creator does not have any subscription tier</h3>
-                        </c:if>
-                        <c:if test="${subscribed == false}">
+                        <c:if test="${subscribed == null}">
                             <c:forEach items="${tiers}" var="tier">
                                 <!-- Mỗi tier tạo 1 column -->
                                 <div class="col-lg-4 ps-0 pe-0 mx-auto">
                                     <div class="card tier mx-auto">
-                                        <c:if test="${sessionScope.user == null}">
-                                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#pleaseLogin"></a>
-                                        </c:if>
-                                        <c:if test="${sessionScope.user.username ne creator.username}">
+                                        <c:if test="${sessionScope.user != null}">
                                             <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
                                         </c:if>
-                                        <c:if test="${sessionScope.user.username eq creator.username}">
-                                            <a href="#" class="stretched-link"></a>
+                                        <c:if test="${sessionScope.user == null}">
+                                            <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#pleaseLogin"></a>
                                         </c:if>
                                         <h4 class="card-header text-center text-truncate t-name">${tier.tierTitle}</h4>
                                         <div class="card-body p-2">
@@ -126,9 +99,6 @@
                         <div class="col-12 text-center">
                             <h2 class="fw-bold" style="text-transform: uppercase;;">Recent posts</h2>
                         </div>
-                        <c:if test="${postList.size() <= 0}">
-                            <h3 class="fw-bold text-danger text-center">This creator does not have any post</h3>
-                        </c:if>
                         <c:forEach items="${postList}" var="post">
                             <div class="col-lg-4 mb-2">
                                 <!-- Nếu là premium thì thêm class premium để blur text -->
@@ -184,41 +154,17 @@
                 <nav class="d-flex justify-content-center mb-4">
                     <ul class="pagination">
                         <li class="page-item">
-                            <c:if test="${param.page != null && param.page > 1}">
-                                <a class="page-link" href="CreatorInfoServlet?username=${creator.username}&page=${param.page - 1}">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </c:if>
-                            <c:if test="${param.page == null || param.page == 1}">
-                                <a class="page-link text-muted" href="#">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </c:if>
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
-                            <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='CreatorInfoServlet?username=${creator.username}&page=${index}'>${index}</a></li>
+                            <li class="page-item"><a class="page-link" href='CreatorInfoServlet?username=${creator.username}&page=${index}'>${index}</a></li>
                             </c:forEach>
                         <li class="page-item">
-                            <c:choose>
-                                <c:when test="${end <= 1}">
-                                    <a class="page-link text-muted" href="#">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </c:when>
-                                <c:when test="${param.page == null}">
-                                    <a class="page-link" href="CreatorInfoServlet?username=${creator.username}&page=2">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </c:when>
-                                <c:when test="${param.page < end}>">
-                                    <a class="page-link" href="CreatorInfoServlet?username=${creator.username}&page=${param.page + 1}">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
-                                </c:otherwise>
-                            </c:choose>
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -265,6 +211,5 @@
                 </div>
             </div>
         </div>
-        <script src='scripts/creator_info_script.js'></script>
     </body>
 </html>
