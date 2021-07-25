@@ -1,5 +1,7 @@
 .main-content {
     background-color: #f1f1f1;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #bio {
@@ -60,6 +62,7 @@
 }
 
 .cat label {
+    width: 100%;
     cursor: pointer;
     padding: 5px 10px 5px 10px;
 }

@@ -39,6 +39,8 @@ public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String category = request.getParameter("id");
+        request.setAttribute("isActive", category);
         String action = request.getParameter("a");
         String title = "";
         String type = request.getParameter("type");
@@ -57,7 +59,6 @@ public class SearchServlet extends HttpServlet {
                 return;
             }
             else {
-                String category = request.getParameter("id");
                 request.setAttribute("isActive", category);
                 int categoryID = Integer.parseInt(request.getParameter("id"));
                 CategoryDAO catDAO = new CategoryDAO();

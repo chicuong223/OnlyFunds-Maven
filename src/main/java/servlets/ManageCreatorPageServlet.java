@@ -98,6 +98,7 @@ public class ManageCreatorPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("isActive", "mCreate");
         UserCategoryMapDAO ucDao = new UserCategoryMapDAO();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");

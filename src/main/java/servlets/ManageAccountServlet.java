@@ -42,7 +42,6 @@ public class ManageAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-             request.setAttribute("isActive", "mAcc");
             String action = request.getParameter("action");
             String[] errorList = new String[6];
             UserDAO uDao = new UserDAO();
@@ -84,12 +83,14 @@ public class ManageAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect(accountInfoPage);
+        request.setAttribute("isActive", "mAcc");
+        request.getRequestDispatcher(accountInfoPage).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         request.setAttribute("isActive", "mAcc");
         processRequest(request, response);
     }
 
