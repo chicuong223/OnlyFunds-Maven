@@ -4,11 +4,18 @@
  * and open the template in the editor.
  */
 package authority_management.admin;
+
+import authority_management.staff.Staff;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import utils.DBConnect;
 
+/**
+ *
+ * @author DELL
+ */
 public class AdminDAO {
     public Admin CheckLogin(String username, String password) {
         try {

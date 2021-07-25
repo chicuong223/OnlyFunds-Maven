@@ -5,8 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="navbar.jsp"></c:import>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,68 +13,28 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
               crossorigin="anonymous">
-        <<link rel="stylesheet" href="styles/receipt.css"/>
     </head>
     <body>
-        <main class="main-container">
-            <c:if test="${sessionScope.user == null}">
-                <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
-            </c:if>
-            <c:if test="${sessionScope.user != null}">
-                <c:import url="vertical_navbar_post.jsp"></c:import>
-            </c:if>
+        <header>
+            <h1 class="text-center">Payment Done</h1>
+        </header>
+        <main>
             <c:set var="user" value="${sessionScope.user}"></c:set>
-            <div class="main-content" id="main-content">
-                <div class="container-fluid">
-                    <div class="alert alert-success mt-3 mb-3 text-center" role="alert">
-                        Payment successful!
-                    </div>
-                    <div class="row receipt">
-                        <h4 class="header text-center p-3">Receipt</h4>
-                        <div class="col-lg-6 pb-3">
-                            <h5 class="fw-bold">From: </h5>
-                            <h6>${user.firstName} ${user.lastName}</h6>
-                            <h6>${user.email}</h6>
-                        </div>
-                        <div class="col-lg-6 pb-3">
-                            <h5 class="fw-bold">To:</h5>
-                            <h6>${tier.creator.firstName} ${tier.creator.lastName}</h6>
-                            <h6>${tier.creator.email} </h6>
-                        </div>
-                        <div class="col-12">
-                            <table class="table text-center align-middle">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" style="width: 5%;">#</th>
-                                        <th scope="col" style="width: 30%;">Tilte</th>
-                                        <th scope="col" style="width: 50%;">Description</th>
-                                        <th scope="col" style="width: 15%;">Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>${tier.tierTitle}</td>
-                                        <td class="tier-desc">
-                                            ${tier.description}
-                                        </td>
-                                        <td class="text-break">${transaction.amount.total}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="navigation">
-                        <a href="homepage" class="btn btn-sm left">
-                            <i class="fas fa-arrow-left me-2"></i>
-                            <span>Homepage</span>
-                        </a>
-                        <a href="CreatorInfoServlet?username=${tier.creator.username}" 
-                        class="btn btn-sm float-end right">
-                            <span>Creator's page</span>
-                            <i class="fas fa-arrow-right ms-2"></i>
-                        </a>
-                    </div>
+            <div class="w-75 shadow mx-auto">
+                <h2>Receipt Details: </h2>
+                <div>
+                    <h3>Subscriber</h3>
+                    <p>Name: ${user.firstName} ${user.lastName}</p>
+                    <p>Email: ${user.email}</p>
+                </div>
+                <div>
+                    <h3>Content</h3>
+                    <p>Creator: ${tier.creator.firstName} ${tier.creator.lastName}</p>
+                    <p>Tier title: ${tier.tierTitle}</p>
+                    <p>Price: ${transaction.amount.total}</p>
+                </div>
+                <div>
+                    <a href="CreatorInfoServlet?username=${tier.creator.username}" class="link-primary">Click here to go back</a>
                 </div>
             </div>
         </main>

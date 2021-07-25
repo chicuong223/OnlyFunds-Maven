@@ -15,10 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.HashPassword;
 
+/**
+ *
+ * @author DELL
+ */
 @WebServlet(name = "AdminLoginServlet", urlPatterns = {"/admin"})
 public class AdminLoginServlet extends HttpServlet {
+
     final String adminLoginPage = "adminLogin.jsp";
     final String staffListPage = "StaffListServlet";
 
@@ -36,17 +40,29 @@ public class AdminLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        AdminDAO sDAO = new AdminDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        AdminDAO dao = new AdminDAO();
-        Admin admin = dao.checkLogin(username, HashPassword.HashPassword(password));
-        if(admin == null){
-            request.setAttribute("LOGINERROR", "Incorrect username or Password");
-            request.getRequestDispatcher("admin_login.jsp").forward(request, response);
-            return;
+        if (username == null || password == null) {
+            request.setAttribute("LOGINERROR", "Enter username and password");
+            request.getRequestDispatcher(adminLoginPage).forward(request, response);
+        } else {
+            Admin currentAdmin = sDAO.CheckLogin(username, password);
+            if (currentAdmin == null) {
+                request.setAttribute("LOGINERROR", "Username or password is incorrect");
+                request.getRequestDispatcher(adminLoginPage).forward(request, response);
+            } else {
+                HttpSession session = request.getSession();
+                session.setAttribute("staff", currentAdmin);
+                System.err.println("current staff is null?");
+                System.err.println(session.getAttribute("staff")==null);
+                request.getRequestDispatcher(staffListPage).forward(request, response);
+            }
         }
-        request.getSession().setAttribute("admin", admin);
-        response.sendRedirect("dashboard");
     }
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 
 }

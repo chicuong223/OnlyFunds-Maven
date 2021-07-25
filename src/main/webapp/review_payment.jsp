@@ -24,7 +24,7 @@
             </div>
             <div>
                 <h4>Subscriber Description</h4>
-                <p>Username: ${sessionScope.user.username}</p>
+                <p>Username: ${sessionScope.user.username}}</p>
                 <p>Email: ${payer.email}</p>
             </div>
             <div>

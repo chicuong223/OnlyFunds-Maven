@@ -32,12 +32,6 @@
     border-radius: 100px;
 }
 
-#navbar-container {
-    position: sticky;
-    top: 0;
-    z-index: 3000;
-}
-
 .col-sm-4.nav-link.m-0.p-0.text-center.text-dark a {
     text-decoration: none;
     color: black;

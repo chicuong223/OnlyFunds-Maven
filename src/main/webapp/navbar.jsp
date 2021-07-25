@@ -27,9 +27,10 @@
         <link rel="icon" href="images/logo_head.png" type="image/icon type">
         <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
     </head>
+
     <body>
         <!-- Navigation bar -->
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 border-bottom" id="navbar-container">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 " style="position: sticky; top: 0;z-index: 100;">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <c:choose>
@@ -111,7 +112,7 @@
                                         <a href="ManageAccount" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage account</a>
                                         <a href="ManageCreatorPage" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage creator page</a>
                                         <a href="ManageSubscriptions" class="col-12 nav-link m-0 p-0 text-center border-bottom">Manage subscription</a>
-                                        <a href="ViewTransactionHistory" class="col-12 nav-link m-0 p-0 text-center border-bottom">Billing history</a>
+                                        <a href="ViewTransactionHistory" class="col-12 nav-link m-0 p-0 text-center border-bottom">Billing History</a>
                                         <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
                                     </div>
                                 </div>

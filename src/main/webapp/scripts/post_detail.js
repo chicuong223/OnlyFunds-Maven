@@ -180,6 +180,7 @@ function clickLikeComment(username, cmtId) {
 }
 
 function openFormReport(objectId, type) {
+    alert("openFormReport called");
     document.querySelector('#reportForm-objectId').value = objectId;
     document.querySelector('#reportForm-type').value = type;
 }
@@ -203,29 +204,6 @@ function submitReport() {
         success: function () {
             alert("ajax success");
             $('#reportForm').modal('hide');
-            if (type === 'post') {
-                $('#report-post-btn').replaceWith("\
-            <span id='report-post-btn'\n\
-                    data-bs-toggle='tooltip' \n\
-                    data-bs-placement='top'\n\
-                    title='You have already reported this post!'\n\
-                    style='float:right' class='ms-4'>\n\
-                <i class='fas fa-exclamation-triangle' style='cursor:default'></i>\n\
-            </span>");
-
-            }
-            if (type === 'comment') {
-                console.log('report-cmt-btn-' + objectId);
-                $('#report-cmt-btn-' + objectId).replaceWith(`\
-                <span id='report-cmt-btn-${$('#report-cmt-btn-' + objectId)}'\n\
-                        data-bs-toggle='tooltip' \n\
-                        data-bs-placement='top'\n\
-                        title='You have already reported this comment!'\n\
-                        class='ms-2'>\n\
-                    <i class='fas fa-exclamation-triangle'></i>\n\
-                </span>`)
-            }
-            tooltipFunct();
         }
     });
 }
@@ -233,22 +211,3 @@ function submitReport() {
 function scaleUp(element) {
     document.getElementById(element).classList.add('scaleUp');
 }
-
-function tooltipFunct() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-}
-
-//check if report title is empty
-const reportForm = document.getElementById("reportForm");
-const reportTitle = document.getElementById('reportForm-title');
-reportForm.addEventListener('submit', event => {
-    if (!reportTitle.value.trim()) {
-        event.preventDefault();
-        document.getElementById('report-error').textContent = 'Title is required!';
-    }
-    else
-        submitReport();
-});
