@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Righteous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+              crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow p-0 " style="position: sticky; top: 0;z-index: 100;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="dashboard" class="nav-link d-flex align-items-center">
+                        <img src="images/Logo.png" height="30" width='90'/>
+                    </a>
+                    <!-- Button when navbar is collapsed -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!--collapse when screen is smaller than 1200px-->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Right nav -->
+                    <nav class="navbar-nav ms-auto" id="right-nav">
+                        <!-- User management -->
+                        <div class="nav-item" id="user-dropdown">
+                            <img class="rounded-pill nav-link"
+                                 src="images/avatars/Admin_Ava" 
+                                 width='40' height='40' alt="Avatar">
+                            <div class="dropdown-menu m-0 p-0" style="width: 200px; position: absolute; left: 85vw;">
+                                <a href="logout" class="col-12 nav-link m-0 p-0 text-center">Logout</a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </nav>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    </body>
+</html>

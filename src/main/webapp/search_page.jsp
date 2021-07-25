@@ -56,7 +56,6 @@
                                         <img src="images/avatars/${user.avatarURL}" class="avatar" alt="avatar">
                                         <div class="card-body p-0">
                                             <h5 class="card-title">${user.username}</h5>
-                                            <h6 class="card-subtitle text-muted">1234 subscribers</h6>
                                             <hr style="margin: .2rem 0;">
                                             <div class="cat-tags">
                                                 <c:forEach var="cate" items="${cateListList[userLoop.index]}">
@@ -118,7 +117,6 @@
                             </c:forEach>
                         </c:if>
                     </div>
-
                 </div>
             </div>
         </main>
