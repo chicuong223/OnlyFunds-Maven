@@ -42,6 +42,7 @@ public class ManageAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+             request.setAttribute("isActive", "mAcc");
             String action = request.getParameter("action");
             String[] errorList = new String[6];
             UserDAO uDao = new UserDAO();

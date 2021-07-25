@@ -37,6 +37,7 @@ public class YourPostsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("isActive", "mPost");
         PostDAO dao = new PostDAO();
         User user = (User) request.getSession().getAttribute("user");
         PostLikeDAO likeDAO = new PostLikeDAO();

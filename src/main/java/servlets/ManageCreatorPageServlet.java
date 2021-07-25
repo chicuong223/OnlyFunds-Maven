@@ -39,7 +39,7 @@ public class ManageCreatorPageServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+             request.setAttribute("isActive", "mCreate");
             String action = request.getParameter("action");
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");

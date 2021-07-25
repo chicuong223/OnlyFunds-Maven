@@ -30,6 +30,7 @@ public class ManageSubscriptionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         request.setAttribute("isActive", "mSub");
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return;

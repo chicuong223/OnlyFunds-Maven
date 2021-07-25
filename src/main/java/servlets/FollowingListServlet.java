@@ -30,6 +30,7 @@ public class FollowingListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("isActive", "follow");
         HttpSession session = request.getSession();
         UserDAO userDAO = new UserDAO();
         UserCategoryMapDAO userCateMap = new UserCategoryMapDAO();

@@ -63,6 +63,7 @@ public class PostListServlet extends HttpServlet {
             actionTitle = "Most Viewed Posts";
         }
         else if (action.equals("free")) {
+            request.setAttribute("isActive", "free");
             count = postDAO.countFreePosts();
             postList = postDAO.getFreePosts(start, end);
             actionTitle = "Free Posts";
@@ -74,18 +75,22 @@ public class PostListServlet extends HttpServlet {
         }
         else if (action.equals("saved")) {
             if (user == null) {
+                request.setAttribute("isActive", "home");
                 response.sendRedirect("WelcomePageServlet");
                 return;
             }
+            request.setAttribute("isActive", "saved");
             postList = postDAO.getBookmarkedPost(user, start, end);
             count = postDAO.countBookmarkedPosts(user);
             actionTitle = "Saved Posts";
         }
         else if (action.equals("liked")) {
             if (user == null) {
+                 request.setAttribute("isActive", "home");
                 response.sendRedirect("WelcomePageServlet");
                 return;
             }
+             request.setAttribute("isActive", "liked");
             postList = postDAO.getLikedPost(user, start, end);
             count = postDAO.countLikedPosts(user);
             actionTitle = "Liked Posts";

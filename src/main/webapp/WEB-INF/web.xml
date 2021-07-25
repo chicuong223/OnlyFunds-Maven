@@ -12,4 +12,8 @@
     <welcome-file-list>
         <welcome-file>WelcomePageServlet</welcome-file>
     </welcome-file-list>
+    <context-param>
+        <param-name>isActive</param-name>
+        <param-value>Home</param-value>
+    </context-param>
 </web-app>

@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,6 +57,8 @@ public class SearchServlet extends HttpServlet {
                 return;
             }
             else {
+                String category = request.getParameter("id");
+                request.setAttribute("isActive", category);
                 int categoryID = Integer.parseInt(request.getParameter("id"));
                 CategoryDAO catDAO = new CategoryDAO();
                 Category searchedCat = catDAO.getCategoryByID(categoryID);

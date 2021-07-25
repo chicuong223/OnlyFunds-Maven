@@ -30,6 +30,7 @@ public class ExploreServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("isActive", "explore");
         UserDAO userDAO = new UserDAO();
         UserCategoryMapDAO userCateMap = new UserCategoryMapDAO();
         int page = 0;

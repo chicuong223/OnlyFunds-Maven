@@ -39,6 +39,7 @@ public class ViewTransactionHistory extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         request.setAttribute("isActive", "mBill");
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             request.setAttribute("usererror", "User not found");

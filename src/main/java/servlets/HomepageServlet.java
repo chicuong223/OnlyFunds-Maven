@@ -38,6 +38,7 @@ public class HomepageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("isActive", "home");
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             response.sendRedirect("WelcomePageServlet");
