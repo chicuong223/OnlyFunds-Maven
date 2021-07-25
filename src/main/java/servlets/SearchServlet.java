@@ -142,7 +142,7 @@ public class SearchServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null)
             return 0;
-        List<Tier> userTiers = tierDAO.getTiersByUser(user);
+        List<Tier> userTiers = tierDAO.getTiersBySubscription(user);
         for (Tier userTier : userTiers)
             for (Tier postTier : tiers)
                 if (userTier.getTierId() == postTier.getTierId())

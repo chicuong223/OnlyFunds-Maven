@@ -264,7 +264,7 @@ public class TierDAO {
                         + "(\n"
                         + "	SELECT tier_id \n"
                         + "	FROM subscription \n"
-                        + "	WHERE subscriber_username = ?\n"
+                        + "	WHERE subscriber_username = ? AND is_active = 1\n"
                         + ")");
                 ps.setString(1, subscriber.getUsername());
                 try (ResultSet rs = ps.executeQuery()) {

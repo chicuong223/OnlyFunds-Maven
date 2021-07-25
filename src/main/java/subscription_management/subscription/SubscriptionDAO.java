@@ -50,7 +50,7 @@ public class SubscriptionDAO {
     public List<Subscription> getSubscriptionsByUser(User user, int start, int end) {
         List<Subscription> lst = new ArrayList<>();
         String sql = "SELECT * FROM (\n"
-                + "SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r, * FROM Subscription\n"
+                + "SELECT ROW_NUMBER() OVER (ORDER BY is_active DESC) as r, * FROM Subscription\n"
                 + "WHERE subscriber_username = ?) as s\n"
                 + "WHERE s.r BETWEEN ? AND ?";
         try (Connection con = DBConnect.makeConnection()) {
@@ -79,5 +79,54 @@ public class SubscriptionDAO {
         }
         return lst;
     }
-
+    
+    public int countSubscriptions(User user){
+        int count = -1;
+        String sql = "SELECT COUNT(*) AS sub_count FROM Subscription WHERE subscriber_username = ?";
+        try(Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, user.getUsername());
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next())
+                    count = rs.getInt("sub_count");
+            }
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return count;
+    }
+    
+    public Subscription getSubscriptionById(int id){
+        Subscription sub = null;
+        String sql = "SELECT id FROM Subscription WHERE id = ?";
+        try(Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1, id);
+            try(ResultSet rs= ps.executeQuery()){
+                if(rs.next()){
+                    sub = new Subscription();
+                    sub.setSubscriptionId(rs.getInt("id"));
+                }
+            }
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return sub;
+    }
+    
+    public boolean cancelSub(Subscription sub){
+        boolean result = false;
+        String sql = "UPDATE Subscription SET is_active = 0, end_date = ? WHERE id = ?";
+        try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(2, sub.getSubscriptionId());
+            Long millis = System.currentTimeMillis();
+            Date endDate = new Date(millis);
+            ps.setDate(1, endDate);
+            result = ps.executeUpdate() > 0;
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
 }

@@ -76,6 +76,11 @@
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </c:if>
+                            <c:if test="${param.page == null || param.page <= 1}">
+                                <a class="page-link text-muted" href="#">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </c:if>
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
                             <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a></li>
@@ -88,7 +93,7 @@
                                     </a>
                                 </c:when>
                                 <c:when test="${param.page == null}">
-                                    <a class="page-link" href="ViewTransactionHistory?page=${param.page + 1}&filter=${filter}">
+                                    <a class="page-link" href="ViewTransactionHistory?page=2&filter=${filter}">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </c:when>
@@ -101,7 +106,6 @@
                                     <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
                                 </c:otherwise>
                             </c:choose>
-
                         </li>
                     </ul>
                 </nav>
