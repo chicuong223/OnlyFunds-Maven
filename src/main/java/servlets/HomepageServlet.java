@@ -82,25 +82,6 @@ public class HomepageServlet extends HttpServlet {
             int[] value = {likeCount, cmtCount, allowed};
             postMap.put(post, value);
         });
-//        for (Post post : postList) {
-//            ArrayList<Tier> postTiers = tierDAO.getTiersByPost(post);
-//            if (post.getUploader().getUsername().equalsIgnoreCase(currUser.getUsername()))
-//                postMap.put(post, Boolean.TRUE);
-//            else if (postTiers.size() <= 0)
-//                postMap.put(post, Boolean.TRUE);
-//            else if (postTiers.size() > 0) {
-//                ArrayList<Tier> userTiers = tierDAO.getTiersBySubscription(currUser);
-//                for (Tier postTier : postTiers) {
-//                    boolean view = false;
-//                    for (Tier userTier : userTiers)
-//                        if (userTier.getTierId() == postTier.getTierId()) {
-//                            view = true;
-//                            break;
-//                        }
-//                    postMap.put(post, view);
-//                }
-//            }
-//        }
         return postMap;
     }
 

@@ -40,7 +40,6 @@
                                     <img src="images/avatars/${creator.key.avatarURL}" class="avatar" alt="avatar">
                                     <div class="card-body p-0">
                                         <h5 class="card-title text-truncate">${creator.key.username}</h5>
-                                        <h6 class="card-subtitle text-muted">1234 subscribers</h6>
                                         <hr style="margin: .2rem 0;">
                                         <div class="cat-tags">
                                             <c:forEach items="${creator.value}" var="cat">

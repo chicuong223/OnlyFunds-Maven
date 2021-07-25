@@ -34,12 +34,6 @@
                 <span class="title" id="mBill">Billing History</span>
             </a>
         </li>
-        <li class='list'>
-            <a href='MyReport'>
-                <span class="icon"><i class="far fa-clipboard"></i></span>
-                <span class='title'>My Reports</span>
-            </a>
-        </li>
         <li class='list mb-2' id="logout">
             <a href='logout'>
                 <span class="icon ps-1"><i class="fas fa-sign-out-alt"></i></span>

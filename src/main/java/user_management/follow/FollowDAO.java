@@ -50,4 +50,48 @@ public class FollowDAO {
         }
         return lst;
     }
+    
+    public boolean addFollow(User user, User creator) {
+        boolean result = false;
+        String sql = "INSERT INTO Follow(follower_username, followed_username)\n"
+                + "VALUES(?, ?)";
+        try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, creator.getUsername());
+            result = ps.executeUpdate() > 0;
+        }
+        catch (Exception e) {
+        }
+        return result;
+    }
+
+    public boolean deleteFollow(User user, User creator) {
+        boolean result = false;
+        String sql = "DELETE FROM Follow WHERE follower_username = ? AND followed_username = ?";
+        try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, creator.getUsername());
+            result = ps.executeUpdate() > 0;
+        }
+        catch (Exception e) {
+        }
+        return result;
+    }
+    
+    public Follow getFollow(User user, User creator){
+        Follow follow = null;
+        String sql = "SELECT * FROM Follow WHERE follower_username = ? AND followed_username = ?";
+        try (Connection con = DBConnect.makeConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, user.getUsername());
+            ps.setString(2, creator.getUsername());
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    follow = new Follow(user, creator);
+                }
+            }
+        }
+        catch (Exception e) {
+        }
+        return follow;
+    }
 }

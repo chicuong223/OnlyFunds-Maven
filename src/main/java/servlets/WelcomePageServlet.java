@@ -51,49 +51,51 @@ public class WelcomePageServlet extends HttpServlet {
             CommentDAO cmtDAO = new CommentDAO();
             UserDAO userDAO = new UserDAO();
             PostDAO postDAO = new PostDAO();
-            //load page on startup
-            if (a == null) {
-                //pass data for creator list
-                //category list
-                ArrayList<Category> catList = cDao.getAllCategories();
-                ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
-                HashMap<User, ArrayList<Category>> userCatMap = new HashMap<>();
-                getServletContext().setAttribute("catList", catList);
-                popularCreators.forEach(popularCreator -> {
-                    ArrayList<Category> lst = uDao.getCategoriesByUser(popularCreator);
-                    userCatMap.put(popularCreator, lst);
-                });
-                //get Posts
-                int pageIndex = 0;
-                String strPage = request.getParameter("page");
-                if (strPage == null)
-                    pageIndex = 1;
-                else
-                    pageIndex = Integer.parseInt(strPage);
-                int start = pageIndex * 4 - (4 - 1);
-                int end = pageIndex * 4;
-                List<Post> postList = postDAO.getPosts(start, end);
-                LinkedHashMap<Post, int[]> postMap = new LinkedHashMap<>();
-                TierDAO tierDAO = new TierDAO();
-                postList.forEach(post -> {
-                    int allowed = 0;
-                    List<Tier> tiers = tierDAO.getTiersByPost(post);
-                    int likeCount = likeDAO.countPostLikeByPost(post);
-                    int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
-                    if(tiers.size() <= 0)
-                        allowed = 1;
-                    else
-                        allowed = 0;
-                    int[] arr = {likeCount, cmtCount, allowed};
-                    postMap.put(post, arr);
-                });
-                request.setAttribute("postList", postMap);
-                request.setAttribute("userList", userCatMap);
-//                System.out.println(postMap.size());
-                rd.forward(request, response);
+            
+            if (getServletContext().getAttribute("postViewed") == null) {
+                ArrayList<Integer> postViewed = new ArrayList(); //get viewed post for view counter
+                getServletContext().setAttribute("postViewed", postViewed);
             }
+            
+            //pass data for creator list
+            //category list
+            ArrayList<Category> catList = cDao.getAllCategories();
+            ArrayList<User> popularCreators = userDAO.getUsersMostSubscriber();
+            HashMap<User, ArrayList<Category>> userCatMap = new HashMap<>();
+            getServletContext().setAttribute("catList", catList);
+            popularCreators.forEach(popularCreator -> {
+                ArrayList<Category> lst = uDao.getCategoriesByUser(popularCreator);
+                userCatMap.put(popularCreator, lst);
+            });
+            //get Posts
+            int pageIndex = 0;
+            String strPage = request.getParameter("page");
+            if (strPage == null)
+                pageIndex = 1;
+            else
+                pageIndex = Integer.parseInt(strPage);
+            int start = pageIndex * 4 - (4 - 1);
+            int end = pageIndex * 4;
+            List<Post> postList = postDAO.getPosts(start, end);
+            LinkedHashMap<Post, int[]> postMap = new LinkedHashMap<>();
+            TierDAO tierDAO = new TierDAO();
+            postList.forEach(post -> {
+                int allowed = 0;
+                List<Tier> tiers = tierDAO.getTiersByPost(post);
+                int likeCount = likeDAO.countPostLikeByPost(post);
+                int cmtCount = cmtDAO.countCommentsByPost(post.getPostId());
+                if(tiers.size() <= 0)
+                    allowed = 1;
+                else
+                    allowed = 0;
+                int[] arr = {likeCount, cmtCount, allowed};
+                postMap.put(post, arr);
+            });
+            request.setAttribute("postList", postMap);
+            request.setAttribute("userList", userCatMap);
+//                System.out.println(postMap.size());
+            rd.forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

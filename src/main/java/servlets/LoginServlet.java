@@ -75,10 +75,10 @@ public class LoginServlet extends HttpServlet {
             response.addCookie(cookie);
         }
         ArrayList<Category> userCatList = ucDao.getCategoriesByUser(user);
-        List<Notification> unreadNotiList = ntDAO.getNotificationsByRecipient(user).stream().limit(10).collect(Collectors.toList());
+        List<Notification> notiList = ntDAO.getNotificationsByRecipient(user).stream().limit(10).collect(Collectors.toList());
         session.setAttribute("user", user);
         session.setAttribute("userCatList", userCatList);
-        session.setAttribute("notiList", unreadNotiList);
+        session.setAttribute("notiList", notiList);
         response.sendRedirect((String) session.getAttribute("dest"));
         session.removeAttribute("dest");
     }
