@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import map.UserCategoryMapDAO;
 import user_management.user.User;
 import user_management.user.UserDAO;
+import utils.ContextAndSessionCheck;
 import utils.HashPassword;
 import utils.UploadFile;
 
@@ -48,6 +49,7 @@ public class ManageAccountServlet extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             RequestDispatcher rd = request.getRequestDispatcher(accountInfoPage);
+            
             //change password
             if (action.equals("password")) {
                 String curPassword = HashPassword.HashPassword(request.getParameter("currentPassword"));
@@ -83,6 +85,16 @@ public class ManageAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //check session & context
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
+            
+        
         response.sendRedirect(accountInfoPage);
     }
 
