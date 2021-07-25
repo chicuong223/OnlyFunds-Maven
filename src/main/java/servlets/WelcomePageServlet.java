@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import map.UserCategoryMapDAO;
 import post_management.comment.CommentDAO;
 import post_management.like.PostLikeDAO;
@@ -51,11 +52,6 @@ public class WelcomePageServlet extends HttpServlet {
             CommentDAO cmtDAO = new CommentDAO();
             UserDAO userDAO = new UserDAO();
             PostDAO postDAO = new PostDAO();
-            
-            if (getServletContext().getAttribute("postViewed") == null) {
-                ArrayList<Integer> postViewed = new ArrayList(); //get viewed post for view counter
-                getServletContext().setAttribute("postViewed", postViewed);
-            }
             
             //pass data for creator list
             //category list
