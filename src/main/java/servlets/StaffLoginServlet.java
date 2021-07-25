@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.HashPassword;
 
 @WebServlet(name = "StaffLoginServlet", urlPatterns = {"/staff"})
 public class StaffLoginServlet extends HttpServlet {

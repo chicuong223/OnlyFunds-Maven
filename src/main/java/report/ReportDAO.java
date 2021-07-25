@@ -522,6 +522,47 @@ public class ReportDAO {
         }
         return lst;
     }
+    public int countReportsByStaff(String username) {
+        Staff solveStaff = null;
+        if (username != null && username.isEmpty()) {
+            StaffDAO sDAO = new StaffDAO();
+            solveStaff = sDAO.getStaffByUsername(username);
+            return countReportsByStaff(solveStaff);
+        }
+        else return 0;
+    }
+    public int countReportsByStaff(Staff solveStaff) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("SELECT count(id) as num FROM Report Where solved_by_staff=?");
+                ps.setString(1, solveStaff.getUsername());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    int num = rs.getInt("num");
+                    return num;
+                }
+            }
+        } catch (SQLException e) {
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return 0;
+    }
 //    //notcheck
 //    public boolean pendReports(String objectId, String type, Staff staff) {
 //        Connection con = null;
