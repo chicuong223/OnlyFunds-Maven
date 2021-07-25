@@ -22,6 +22,8 @@ import post_management.comment.CommentDAO;
 import post_management.like.PostLikeDAO;
 import post_management.post.Post;
 import post_management.post.PostDAO;
+import subscription_management.subscription.Subscription;
+import subscription_management.subscription.SubscriptionDAO;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.follow.Follow;
@@ -47,7 +49,7 @@ public class CreatorInfoServlet extends HttpServlet {
         PostDAO dao = new PostDAO();
         boolean subscribed = false;
         if (currentUser != null)
-            subscribed = checkSubscribed(creator, currentUser);
+            subscribed = checkSubscribed(creator, currentUser, request);
         //get Posts
         int page = 0;
         String strPage = request.getParameter("page");
@@ -77,7 +79,6 @@ public class CreatorInfoServlet extends HttpServlet {
         int followerCount = userDAO.countFollowers(creator);
         int subCount = userDAO.countSubscribers(creator);
         getCategories(request, creator);
-
         //get Tiers
         List<Tier> tiers = new TierDAO().getTiersByUser(creator);
         System.out.println(tiers.size());
@@ -100,7 +101,7 @@ public class CreatorInfoServlet extends HttpServlet {
             doGet(request, response);
     }
 
-    private boolean checkSubscribed(User creator, User current) {
+    private boolean checkSubscribed(User creator, User current, HttpServletRequest request) {
         TierDAO tierDAO = new TierDAO();
         ArrayList<Tier> creatorList = tierDAO.getTiersByUser(creator);
         //if user is logged in
@@ -112,6 +113,7 @@ public class CreatorInfoServlet extends HttpServlet {
             for (Tier tier : currentList)
                 if (creatorTier.getTierId() == tier.getTierId()) {
                     result = true;
+                    request.setAttribute("subscribedTier", tier);
                     break outerLoop;
                 }
         return result;
@@ -119,7 +121,7 @@ public class CreatorInfoServlet extends HttpServlet {
 
     private TreeMap<Post, int[]> getPosts(User creator, User user, int page) {
         PostDAO dao = new PostDAO();
-        List<Post> postList = dao.getPostsByUserPage(creator, page);
+        List<Post> postList = dao.getPostsByUser(creator, page);
         TreeMap<Post, int[]> postMap = new TreeMap<>();
         PostLikeDAO likeDAO = new PostLikeDAO();
         CommentDAO cmtDAO = new CommentDAO();
@@ -144,7 +146,7 @@ public class CreatorInfoServlet extends HttpServlet {
 //            pageIndex = 1;
 //        else
 //            pageIndex = Integer.parseInt(pageStr);
-//        ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
+//        ArrayList<Post> postList = dao.getPostsByUser(creator, pageIndex);
 ////        System.out.println(postList.size());
 //        TreeMap<Post, int[]> postMap = new TreeMap<>();
 //        postList.forEach(post -> {
@@ -183,7 +185,7 @@ public class CreatorInfoServlet extends HttpServlet {
 //            pageIndex = 1;
 //        else
 //            pageIndex = Integer.parseInt(pageStr);
-//        ArrayList<Post> postList = dao.getPostsByUserPage(creator, pageIndex);
+//        ArrayList<Post> postList = dao.getPostsByUser(creator, pageIndex);
 //        TreeMap<Post, int[]> map = new TreeMap<>();
 //        for (Post post : postList) {
 //            int likeCount = likeDAO.countPostLikeByPost(post);

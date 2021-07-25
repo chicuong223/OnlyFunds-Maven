@@ -30,6 +30,7 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <!--JS for transaction list load-->
             <script src="scripts/transaction.js"></script>
+            <title>Billing History</title>
         </head>
 
         <body>  
@@ -38,7 +39,7 @@
             <c:import url="creator_vertical_navbar.jsp"></c:import>
                 <!-- Main content of the page -->
                 <div class="main-content" id="main-content">
-                    <h1>Transactions History</h1>
+                    <h1>Billing History</h1>
                     <div class="input-group">
                         <input type="input" name="searchText" id="creatorName"/>
                         <button class="btn btn-secondary fas fa-search" id="btnSearchTrans"></button>

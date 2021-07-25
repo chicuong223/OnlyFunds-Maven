@@ -87,7 +87,11 @@
                             <h2 class="fw-bold" style="text-transform: uppercase;">Subscribe to this Creator</h2>
                         </div>
                         <c:if test="${subscribed == true}">
-                            <h3 class="fw-bold text-danger">You have already subscribed to this creator</h3>
+                            <h3 class="fw-bold text-danger text-center">You have already subscribed to this creator</h3>
+                            <h4 class="text-center">Tier: ${subscribedTier.tierTitle}</h4>
+                        </c:if>
+                        <c:if test="${tiers.size() <= 0}">
+                            <h3 class="fw-bold text-danger text-center">This creator does not have any subscription tier</h3>
                         </c:if>
                         <c:if test="${subscribed == false}">
                             <c:forEach items="${tiers}" var="tier">
@@ -122,6 +126,9 @@
                         <div class="col-12 text-center">
                             <h2 class="fw-bold" style="text-transform: uppercase;;">Recent posts</h2>
                         </div>
+                        <c:if test="${postList.size() <= 0}">
+                            <h3 class="fw-bold text-danger text-center">This creator does not have any post</h3>
+                        </c:if>
                         <c:forEach items="${postList}" var="post">
                             <div class="col-lg-4 mb-2">
                                 <!-- Nếu là premium thì thêm class premium để blur text -->
