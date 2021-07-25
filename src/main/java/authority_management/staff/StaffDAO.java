@@ -48,62 +48,8 @@ public class StaffDAO {
         }
         return lst;
     }
-    public ArrayList<Staff> getAllBannedStaffs(){
-        ArrayList<Staff> lst = new ArrayList<>();
-        try {
-            Connection con = DBConnect.makeConnection();
-            if(con != null){
-                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where is_active = 0");
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    String username = rs.getString("username");
-                    String password = rs.getString("password");
-                    String lastName = rs.getString("lastname");
-                    String firstName = rs.getString("firstname");
-                    String email = rs.getString("email");
-                    boolean isActive = false;
-                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
-                    lst.add(staff);
-                }
-                rs.close();
-                ps.close();
-                con.close();
-            }
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return lst;
-    }
-    public ArrayList<Staff> getAllActiveStaffs(){
-        ArrayList<Staff> lst = new ArrayList<>();
-        try {
-            Connection con = DBConnect.makeConnection();
-            if(con != null){
-                PreparedStatement ps = con.prepareStatement("SELECT * FROM Staff where is_active = 1");
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    String username = rs.getString("username");
-                    String password = rs.getString("password");
-                    String lastName = rs.getString("lastname");
-                    String firstName = rs.getString("firstname");
-                    String email = rs.getString("email");
-                    boolean isActive = true;
-                    Staff staff = new Staff(username, password, lastName, firstName, email, isActive);
-                    lst.add(staff);
-                }
-                rs.close();
-                ps.close();
-                con.close();
-            }
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return lst;
-    }
-    
-    public boolean addStaff(Staff staff){
+
+    public boolean addStaff(Staff staff) {
         boolean result = false;
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
