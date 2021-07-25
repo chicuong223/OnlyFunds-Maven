@@ -26,6 +26,7 @@ import post_management.post.PostDAO;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.user.User;
+import utils.ContextAndSessionCheck;
 import utils.UploadFile;
 
 /**
@@ -47,6 +48,12 @@ public class EditPostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
         if (user == null) {
             response.sendRedirect("WelcomePageServlet");
             return;

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import subscription_management.tier.Tier;
 import subscription_management.tier.TierDAO;
 import user_management.user.User;
+import utils.ContextAndSessionCheck;
 
 /**
  *
@@ -27,6 +28,12 @@ public class AddTierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String url = "WelcomePageServlet";
+        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
+        if (check) {
+            response.sendRedirect(url);
+            return;
+        }
         TierDAO tierDAO = new TierDAO();
         User currentUser = (User) request.getSession().getAttribute("user");
         ArrayList<Tier> tierList = tierDAO.getTiersByUser(currentUser);
