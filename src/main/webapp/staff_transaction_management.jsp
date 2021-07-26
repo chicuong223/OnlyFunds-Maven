@@ -69,7 +69,7 @@
                     <ul class="pagination">
                         <li class="page-item">
                             <c:if test="${param.page != null && param.page > 1}">
-                                <a class="page-link" href="ViewTransactionHistory?page=${param.page - 1}&filter=${filter}">
+                                <a class="page-link" href="StaffBillListServlet?page=${param.page - 1}">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </c:if>
@@ -81,7 +81,7 @@
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
                             <li class="page-item ${param.page == index?"active":""}">
-                                <a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a>
+                                <a class="page-link" href='StaffBillListServlet?page=${index}'>${index}</a>
                             </li>
                             </c:forEach>
                         <li class="page-item">
@@ -92,12 +92,12 @@
                                     </a>
                                 </c:when>
                                 <c:when test="${param.page == null}">
-                                    <a class="page-link" href="ViewTransactionHistory?page=2&filter=${filter}">
+                                    <a class="page-link" href="StaffBillListServlet?page=2">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </c:when>
                                 <c:when test="${param.page < end}">
-                                    <a class="page-link" href="ViewTransactionHistory?page=${param.page + 1}&filter=${filter}">
+                                    <a class="page-link" href="StaffBillListServlet?page=${param.page + 1}">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </c:when>

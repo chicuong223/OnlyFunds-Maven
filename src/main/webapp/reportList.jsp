@@ -4,14 +4,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Report List</title>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html;">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <!-- Logo -->
+        <link rel="icon" href="images/logo_head.png" type="image/icon type">
+        <!-- Navbar and shared css -->
+        <link type="text/css" rel="stylesheet" href="styles/navbar.css">
+        <link type="text/css" rel="stylesheet" href="styles/vertical_nav.css">
+        <link rel="stylesheet" href="styles/shared.css">
+        <!-- Main css -->
+        <link type="text/css" rel="stylesheet" href="styles/bill_page.css">
+        <!-- Icon -->
+        <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
+        <title>User Management</title>
     </head>
     <body>
         <main class="main-container">
             <!-- Vertical navbar -->
-            <!-- if session is staff, use staff navbar -->
-            <!-- if session is admin, use admin navbar -->
             <c:if test="${sessionScope.staff != null}">
                 <c:import url="staff_navbar.jsp"></c:import>
             </c:if>
