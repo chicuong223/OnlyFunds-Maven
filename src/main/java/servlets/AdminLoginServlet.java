@@ -60,7 +60,7 @@ public class AdminLoginServlet extends HttpServlet {
                 session.setAttribute("admin", currentAdmin);
                 System.err.println("current staff is null?");
                 System.err.println(session.getAttribute("admin") == null);
-                request.getRequestDispatcher(staffListPage).forward(request, response);
+                response.sendRedirect(staffListPage);
             }
         }
     }
