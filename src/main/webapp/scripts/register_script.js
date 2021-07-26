@@ -39,25 +39,25 @@ function validateInput(input, regex) {
     let valid = regex.test(input);
     return valid;
 }
-if (firstname) {
-    firstname.addEventListener('blur', validateName);
-}
-//
-if (firstname) {
-    firstname.addEventListener('focus', function () {
-        this.style.background = "white";
-    });
-}
-//
-if (lastname) {
-    lastname.addEventListener('blur', validateName);
-}
-//
-if (lastname) {
-    lastname.addEventListener('focus', function () {
-        this.style.background = "white";
-    });
-}
+//if (firstname) {
+//    firstname.addEventListener('blur', validateName);
+//}
+////
+//if (firstname) {
+//    firstname.addEventListener('focus', function () {
+//        this.style.background = "white";
+//    });
+//}
+////
+//if (lastname) {
+//    lastname.addEventListener('blur', validateName);
+//}
+////
+//if (lastname) {
+//    lastname.addEventListener('focus', function () {
+//        this.style.background = "white";
+//    });
+//}
 
 document.getElementById('register-form').addEventListener('submit', event => {
     const usernameRegex = /^([a-z0-9A-Z]+){8,32}$/;
@@ -101,9 +101,12 @@ document.getElementById('register-form').addEventListener('submit', event => {
     } else {
         document.getElementById('confPassError').textContent = "";
     }
-    if(!validateInput(firstname.value, nameRegex) || !validationInput(lastname.value, nameRegex)){
+    if (!firstname.value.trim() || !lastname.value.trim()) {
         console.log("name error");
         event.preventDefault();
+        document.getElementById('nameError').textContent = "Invalid first name or last name";
+    } else {
+        document.getElementById('nameError').textContent = "";
     }
 });
 

@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Staff List</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
               crossorigin="anonymous">
@@ -130,7 +130,14 @@
                     <button class="btn btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="AddStaffServlet" method="POST" id="form-add">
+                    <div id="errors" class="text-danger">
+                        <span id="usernameError"></span>
+                        <span id="passwordError"></span>
+                        <span id="emailError"></span>
+                        <span id="confPassError"></span>
+                        <span id="nameError"></span>
+                    </div>
+                    <form action="AddStaffServlet" method="POST" id="register-form">
                         <div class="row my-2">
                             <div class="col">
                                 <label class="col-form-label" for="firstname">First Name: </label>
@@ -171,14 +178,24 @@
                                 <input type="password" id="password" name="password" class="form-control"/>
                             </div>
                         </div>
+                        <div class="row my-2">
+                            <div class="col">
+                                <label class="col-form-label" for="confPass">Confirm Password: </label>
+                            </div>
+                            <div class="col">
+                                <input type="password" id="confPass" name="confPassword" class="form-control"/>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" form="form-add">Add</button>
+                    <button type="submit" class="btn btn-success" form="register-form">Add</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+    <script src="scripts/register_script.js" defer></script>
+    <script></script>
 </body>
 </html>
