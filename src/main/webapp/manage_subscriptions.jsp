@@ -26,7 +26,7 @@
             <link type="text/css" rel="stylesheet" href="styles/vertical_nav.css">
             <link rel="stylesheet" href="styles/shared.css">
             <!-- Main css -->
-            <link type="text/css" rel="stylesheet" href="styles/main_page.css">
+            <link type="text/css" rel="stylesheet" href="styles/manage_subscription_page.css">
             <!-- Icon -->
             <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
         </head>
@@ -39,39 +39,62 @@
                 </div>
                 <!-- Main content of the page -->
                 <div class="main-content" id="main-content">
-                    <h1>Manage Subscriptions</h1>
-                    <table class="table table-bordered" id="subscriptionsList">
-                    <c:forEach items="${subList}" var="sub">
+                    <h1 class="fw-bold text-center mb-3 mt-3">Manage Subscriptions</h1>
+                    <table class="table align-middle table-striped table-hover" id="subscriptionsList">
                         <tr>
-                            <td>
-                                <img src="images/avatars/${sub.tier.creator.avatarURL}" width=50 height=50/>
-                                <p><a href="CreatorInfoServlet?username=${sub.tier.creator.username}">${sub.tier.creator.username}</a></p>
-                            </td>
-                            <td>
-                                <p>Tier: ${sub.tier.tierTitle}</p>
-                                <p>Price: ${sub.tier.price}</p>
-                                <p>Start date: <fmt:formatDate pattern="dd-MM-yyyy" value="${sub.startDate}"/></p>
-                                <p>End date: <fmt:formatDate pattern="dd-MM-yyyy" value="${sub.endDate}"/></p>
-                            </td>
-                            <td>Status: 
-                                <c:if test="${sub.isActive == true}">Active</c:if>
-                                <c:if test="${sub.isActive == false}">Inactive</c:if>
-                                </td>
-                                <td>
-                                <c:if test="${sub.isActive == true}">
-                                    <form action="ManageSubscriptions" method="POST">
-                                        <input type="hidden" value="${sub.subscriptionId}" name="id"/>
-                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure?')">Cancel</button>
-                                    </form>
-                                </c:if>
-                                <c:if test="${sub.isActive == false}">
-                                    <button class="btn btn-warning" onclick="location.href = 'CreatorInfoServlet?username=${sub.tier.creator.username}'">Subscribe</button>
-                                </c:if>
-                            </td>
+                            <th scope="col">Creator</th>
+                            <th scope="col">Tier</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Start date</th>
+                            <th scope="col">End date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
                         </tr>
-                    </c:forEach>
+                            <c:forEach items="${subList}" var="sub">
+                                <tr>
+                                    <td class="creator">
+                                        <a href="CreatorInfoServlet?username=${sub.tier.creator.username}">
+                                            <img src="images/avatars/${sub.tier.creator.avatarURL}" width=50 height=50/>
+                                            <span>${sub.tier.creator.username}</span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        ${sub.tier.tierTitle}
+                                    </td>
+                                    <td>
+                                        $${sub.tier.price} 
+                                    </td>
+                                    <td>
+                                        <fmt:formatDate pattern="dd-MM-yyyy" value="${sub.startDate}"/>
+                                    </td>
+                                    <td>
+                                        <fmt:formatDate pattern="dd-MM-yyyy" value="${sub.endDate}"/>
+                                    </td>
+                                    <c:if test="${sub.isActive == true}">
+                                        <td class="text-success">
+                                            <i class="fas fa-dot-circle"></i> <span>Active</span>
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${sub.isActive == false}">
+                                        <td class="text-danger">
+                                            <i class="fas fa-dot-circle"></i> <span>Inactive</span>
+                                        </td>
+                                    </c:if>
+                                    <td>
+                                        <c:if test="${sub.isActive == true}">
+                                            <form action="ManageSubscriptions" method="POST">
+                                                <input type="hidden" value="${sub.subscriptionId}" name="id"/>
+                                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Are you sure?')">Cancel</button>
+                                            </form>
+                                        </c:if>
+                                        <c:if test="${sub.isActive == false}">
+                                            <button class="btn btn-sm btn-warning" onclick="location.href = 'CreatorInfoServlet?username=${sub.tier.creator.username}'">Subscribe</button>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                 </table>
-                <nav class="d-flex justify-content-center mb-4">
+                <nav class="d-flex justify-content-center mt-3">
                     <ul class="pagination">
                         <li class="page-item">
                             <c:if test="${param.page != null && param.page > 1}">

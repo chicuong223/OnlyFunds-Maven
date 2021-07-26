@@ -42,7 +42,7 @@
                 <div class="main-content" id="main-content">
                     <div class="content container-fluid">
                         <div id="row" class="row gx-4 p-3">
-                            <h1 class="mb-1 text-center fw-bold">${sessionScope.user.username} (${count})</h1>
+                            <h1 class="mb-1 text-center fw-bold">${sessionScope.user.username}'s post(s) (${count})</h1>
                         <div class="mt-2">
                             <a href="WritePostServlet" class="btn create mb-4">
                                 <span>Write a new post</span>

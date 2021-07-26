@@ -35,6 +35,7 @@
                 </div>
                 <!-- Main content of the page -->
                 <div class="main-content" id="main-content">
+                    <input type="hidden" name="oldPass" id="oldPass" value="${sessionScope.user.password}"/>
                     <div class="alert alert-success text-center alert-dismissible fade show mb-0" role="alert">
                         Hello, <strong>${user.username}</strong> .
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -53,18 +54,18 @@
                             </div>
                             <div class="col-6 p-0">
                                 <div class="mb-3 row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label "><strong>Username</strong>
+                                    <label for="staticUsername" class="col-sm-2 col-form-label "><strong>Username</strong>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="text" readonly class="form-control disabled" id="staticEmail"
+                                        <input type="text" readonly class="form-control disabled" id="staticUsername"
                                             value="${user.username}">
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label for="staticEmail" class="col-sm-2 col-form-label "><strong>Full
+                                    <label for="staticName" class="col-sm-2 col-form-label "><strong>Full
                                             name</strong></label>
                                     <div class="col-sm-8">
-                                        <input type="text" readonly class="form-control disabled" id="staticEmail"
+                                        <input type="text" readonly class="form-control disabled" id="staticName"
                                             value="${user.firstName} ${user.lastName}">
                                     </div>
                                 </div>
@@ -99,22 +100,19 @@
                                                             <label for="currPassword">Current password: </label>
                                                             <input class="form-control mt-2" type="password"
                                                                 name="currentPassword" id="currPassword" />
-                                                            <p class="text-danger" id="passwordError">
-                                                                ${requestScope.ERROR_LIST[0]}</p>
+                                                            <p class="text-danger" id="passwordError" class="error"></p>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="newPassword">New password: </label>
                                                             <input class="form-control mt-2" type="password"
                                                                 name="newPassword" id="newPassword" />
-                                                            <p class="text-danger" id="newPasswordError">
-                                                                ${requestScope.ERROR_LIST[1]}</p>
+                                                            <p class="text-danger" id="newPasswordError" class="error"></p>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="confPassword">Confirm new password: </label>
                                                             <input class="form-control mt-2" type="password"
                                                                 name="confNewPassword" id="confPassword" />
-                                                            <p class="text-danger mb-0" id="confPasswordError">
-                                                                ${requestScope.ERROR_LIST[2]}</p>
+                                                            <p class="text-danger mb-0" id="confPasswordError" class="error"></p>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer d-flex justify-content-center">

@@ -1,0 +1,15 @@
+#subscriptionsList {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 1rem;
+}
+
+td.creator img {
+    border-radius: 50%;
+}
+
+td.creator a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold
+}

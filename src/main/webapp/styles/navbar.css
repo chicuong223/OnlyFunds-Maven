@@ -35,7 +35,7 @@
 #navbar-container {
     position: sticky;
     top: 0;
-    z-index: 3000;
+    z-index: 1000;
 }
 
 .col-sm-4.nav-link.m-0.p-0.text-center.text-dark a {

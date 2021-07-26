@@ -13,6 +13,9 @@ var change_password_btn = document.querySelector("#change-password-btn");
 //    }
 //});
 
+console.log(document.getElementById('oldPass'));
+digestMessage("123456789");
+
 change_password_form.addEventListener("submit", event => {
     const PASSWORD_LENGTH_MIN = 8;
     const PASSWORD_LENGTH_MAX = 32;
@@ -59,3 +62,14 @@ new_ava.onchange = evt => {
     }
     document.getElementById('update').classList.remove('disabled');
 }
+
+async function digestMessage(message) {             
+    const msgUint8 = new TextEncoder().encode(message);     
+    const hashBuffer = await crypto.subtle.digest('SHA-256', message);           // hash the message
+    const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+    return hashHex;
+}
+
+digestMessage()
+    .then(digestHex => console.log(digestHex));
