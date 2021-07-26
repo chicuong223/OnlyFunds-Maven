@@ -45,11 +45,11 @@
                         <div class="row">
                             <div class="col">
                                 <label class="label-form" for="start-date">From: </label>
-                                <input type="date" name="start" id="start-date"/>
+                                <input type="date" name="start" id="start-date" value="${param.start}"/>
                             </div>
                             <div class="col">
                                 <label class="label-form" for="end-date">To: </label>
-                                <input type="date" name="end" id="end-date"/>
+                                <input type="date" name="end" id="end-date" value="${param.end}"/>
                             </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-primary">Search</button>
