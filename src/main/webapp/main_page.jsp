@@ -86,17 +86,41 @@
                     <nav class="d-flex justify-content-center">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
+                                <c:if test="${param.page != null && param.page > 1}">
+                                    <a class="page-link" href="homepage?page=${param.page - 1}">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </c:if>
+                                <c:if test="${param.page == null || param.page == 1}">
+                                    <a class="page-link text-muted" href="#">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </c:if>
                             </li>
                             <c:forEach var="index" begin="1" end="${end}">
-                                <li class="page-item"><a class="page-link" href='homepage?page=${index}'>${index}</a></li>
+                                <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='homepage?page=${index}'>${index}</a></li>
                                 </c:forEach>
                             <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
+                                <c:choose>
+                                    <c:when test="${end <= 1}">
+                                        <a class="page-link text-muted" href="#">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:when>
+                                    <c:when test="${param.page == null}">
+                                        <a class="page-link" href="homepaget?page=2">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:when>
+                                    <c:when test="${param.page < end}">
+                                        <a class="page-link" href="homepage?page=${param.page + 1}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
+                                    </c:otherwise>
+                                </c:choose>
                             </li>
                         </ul>
                     </nav>
