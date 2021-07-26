@@ -60,7 +60,6 @@ public class PostDetailServlet extends HttpServlet {
         PostDAO dao = new PostDAO();
         Post post = dao.getPostByID(postID);
         if (post == null) {
-            request.setAttribute("posterror", "POST NOT FOUND");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

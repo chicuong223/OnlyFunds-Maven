@@ -47,7 +47,6 @@ public class SearchServlet extends HttpServlet {
         if (type == null)
             type = "post";
         if (action == null || action.trim().isEmpty()) {
-            System.out.println(action);
             //write code for action==null
             return;
         }

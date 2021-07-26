@@ -38,13 +38,10 @@ public class SetUpCreatorPageServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             //check session & context
-            String url = "WelcomePageServlet";
-            boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-            if (check) {
-                response.sendRedirect(url);
+            if(request.getSession().getAttribute("user") == null || getServletContext().getAttribute("catList") == null){
+                response.sendRedirect("WelcomePageServlet");
                 return;
             }
-            
             String bio = request.getParameter("bio");
             String[] catList = request.getParameterValues("category");
             HttpSession session = request.getSession();

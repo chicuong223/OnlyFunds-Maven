@@ -84,7 +84,6 @@ public class ViewTransactionHistory extends HttpServlet {
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-        System.out.println(billList.size());
         //get end page
         int endPage = count / pageSize;
         if (count % pageSize != 0)

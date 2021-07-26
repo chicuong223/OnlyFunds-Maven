@@ -53,13 +53,14 @@ public class EditPostServlet extends HttpServlet {
         }
         User user = (User) request.getSession().getAttribute("user");
         int postID = Integer.parseInt(request.getParameter("id"));
-        System.out.println(postID);
         PostDAO dao = new PostDAO();
         Post post = dao.getPostByID(postID);
+        if(post == null){
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         CategoryDAO catDAO = new CategoryDAO();
-        PostCategoryMapDAO postCatMap = new PostCategoryMapDAO();
         TierDAO tierDAO = new TierDAO();
-        TierMapDAO tierMapDAO = new TierMapDAO();
         List<Category> postCatList = catDAO.getCategoriesByPost(post);
         ArrayList<Category> catList = catDAO.getAllCategories();
 
@@ -91,7 +92,6 @@ public class EditPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
         String cancel = request.getParameter("cancel");
         if (cancel != null) {
             response.sendRedirect("PostDetailServlet?id=" + cancel);
