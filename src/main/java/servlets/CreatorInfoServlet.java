@@ -46,6 +46,10 @@ public class CreatorInfoServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
         User creator = userDAO.getUserByUsername(username);
+        if(creator == null){
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         PostDAO dao = new PostDAO();
         boolean subscribed = false;
         if (currentUser != null)
@@ -81,7 +85,6 @@ public class CreatorInfoServlet extends HttpServlet {
         getCategories(request, creator);
         //get Tiers
         List<Tier> tiers = new TierDAO().getTiersByUser(creator);
-        System.out.println(tiers.size());
         request.setAttribute("count", count);
         request.setAttribute("tiers", tiers);
         request.setAttribute("subscribed", subscribed);

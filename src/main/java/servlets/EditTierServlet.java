@@ -35,14 +35,16 @@ public class EditTierServlet extends HttpServlet {
         String strTierID = request.getParameter("tierid");
         //check if request string is null
         if (strTierID == null) {
-            request.setAttribute("tiererror", "Tier not found");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         TierDAO dao = new TierDAO();
         int tierID = Integer.parseInt(strTierID);
         tier = dao.getTierById(tierID);
-
+        if (tier == null) {
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         //check if tier ID exists in the database
         if (tier == null) {
             request.setAttribute("tiererror", "Tier not found");

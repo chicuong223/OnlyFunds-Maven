@@ -6,7 +6,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,21 +31,16 @@ public class LikeOrUnlikeCommentServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.err.println("LikeOrUnlikeCommnetServlet called");
         String action = request.getParameter("action");
         int commentId = Integer.parseInt(request.getParameter("commentId"));
         String username = request.getParameter("username");
         if (action.equals("like")) {
             CommentLikeDAO plDAO = new CommentLikeDAO();
             plDAO.AddCommentLike(username, commentId);
-            System.err.println("Like");
         } else {
             CommentLikeDAO plDAO = new CommentLikeDAO();
             plDAO.DeleteCommentLike(username, commentId);
-            System.err.println("UnLike");
         }
-        System.out.print("LikeOrUnlikeCommnetServlet called\n username: " + username + ", postId: " + commentId);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

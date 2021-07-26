@@ -29,8 +29,7 @@ public class CreatorListServlet extends HttpServlet {
         String action = request.getParameter("action");
         User user = (User) request.getSession().getAttribute("user");
         if(user == null){
-            request.setAttribute("usererror", "User not logged in");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
         if(action.equals("sub")){

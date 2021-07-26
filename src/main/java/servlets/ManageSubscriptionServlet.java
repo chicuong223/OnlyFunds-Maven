@@ -37,10 +37,7 @@ public class ManageSubscriptionServlet extends HttpServlet {
             response.sendRedirect("WelcomePageServlet");
             return;
         }
-
         User user = (User) request.getSession().getAttribute("user");
-        if (user == null)
-            return;
         String strPage = request.getParameter("page");
         int page = 0;
         if (strPage == null)

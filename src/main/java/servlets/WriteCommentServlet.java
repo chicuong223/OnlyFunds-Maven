@@ -35,12 +35,15 @@ public class WriteCommentServlet extends HttpServlet {
             throws ServletException, IOException {
         String strPostId = request.getParameter("postId");
         if(strPostId == null){
-            request.setAttribute("posterror", "Post not found");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
         int postID = Integer.parseInt(strPostId);
         Post post = new PostDAO().getPostByID(postID);
+        if(post == null){
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         String content = request.getParameter("content");
         Date commentDate = new Date(System.currentTimeMillis());
         User currentUser = (User) request.getSession().getAttribute("user");
