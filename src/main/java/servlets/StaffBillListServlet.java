@@ -61,7 +61,7 @@ public class StaffBillListServlet extends HttpServlet {
             if (action != null) {
                 Date startDate = Date.valueOf(request.getParameter("start"));
                 Date endDate = Date.valueOf(request.getParameter("end"));
-                billList = billDAO.getTransactionsFromDateToDate(startDate, endDate);
+                billList = billDAO.getTransactionsFromDateToDate(startDate, endDate, start, end);
                 count = billDAO.countTransactionFromDateToDate(startDate, endDate);
                 request.setAttribute("start", startDate);
                 request.setAttribute("end", endDate);

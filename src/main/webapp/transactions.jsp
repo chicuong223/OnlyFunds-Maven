@@ -37,12 +37,28 @@
         <body>  
             <main class="main-container">
                 <!-- Vertical navbar -->
-                <c:import url="creator_vertical_navbar.jsp"></c:import>
+            <c:import url="creator_vertical_navbar.jsp"></c:import>
                 <!-- Main content of the page -->
                 <div class="main-content" id="main-content">
                     <input type="hidden" value="${active_tab}" id="active-tab">
-                    <h1 class="text-center fw-bold mt-3 mb-5">Billing History</h1>
-                    <c:set var="user" value="${sessionScope.user}"></c:set>
+                <h1 class="text-center fw-bold mt-3 mb-5">Billing History</h1>
+                <c:set var="user" value="${sessionScope.user}"></c:set>
+                    <form action="ViewTransactionHistory" method="GET">
+                        <input type="hidden" name="filter" value="date"/>
+                        <div class="row">
+                            <div class="col">
+                                <label class="label-form" for="start">From: </label>
+                                <input type="date" name="start" id="start" value="${param.start}"/>
+                            </div>
+                            <div class="col">
+                                <label class="label-form" for="end">To: </label>
+                                <input type="date" name="end" id="end" value="${param.end}"/>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="button-group border-bottom mb-5">
                         <button id="all" class="btn sort" onclick="location.href = 'ViewTransactionHistory?filter=all'">All</button>
                         <button id="sent" class="btn sort"onclick="location.href = 'ViewTransactionHistory?filter=sent'">Sent</button>
@@ -75,9 +91,16 @@
                     <ul class="pagination">
                         <li class="page-item">
                             <c:if test="${param.page != null && param.page > 1}">
-                                <a class="page-link" href="ViewTransactionHistory?page=${param.page - 1}&filter=${filter}">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
+                                <c:if test='${filter ne "date"}'>
+                                    <a class="page-link" href="ViewTransactionHistory?page=${param.page - 1}&filter=${filter}">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </c:if>
+                                <c:if test='${filter eq "date"}'>
+                                    <a class="page-link" href="ViewTransactionHistory?page=${param.page - 1}&filter=${filter}&start=${param.start}&end=${param.end}">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </c:if>
                             </c:if>
                             <c:if test="${param.page == null || param.page <= 1}">
                                 <a class="page-link text-muted" href="#">
@@ -86,8 +109,15 @@
                             </c:if>
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
-                            <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a></li>
-                            </c:forEach>
+                            <li class="page-item <c:if test="${param.page == index}">active</c:if>">
+                                <c:if test='${filter ne "date"}'>
+                                    <a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a>
+                                </c:if>
+                                <c:if test='${filter eq "date"}'>
+                                    <a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}&start=${param.start}&end=${param.end}'>${index}</a>
+                                </c:if>
+                            </li>
+                        </c:forEach>
                         <li class="page-item">
                             <c:choose>
                                 <c:when test="${end <= 1}">
@@ -96,14 +126,29 @@
                                     </a>
                                 </c:when>
                                 <c:when test="${param.page == null}">
-                                    <a class="page-link" href="ViewTransactionHistory?page=2&filter=${filter}">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
+                                    <c:if test='${filter eq "date"}'>
+                                        <a class="page-link" href="ViewTransactionHistory?page=2&filter=${filter}&start=${param.start}&end=${param.end}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:if>
+                                    <c:if test='${filter ne "date"}'>
+                                        <a class="page-link" href="ViewTransactionHistory?page=2&filter=${filter}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:if>
+
                                 </c:when>
                                 <c:when test="${param.page < end}">
-                                    <a class="page-link" href="ViewTransactionHistory?page=${param.page + 1}&filter=${filter}">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
+                                    <c:if test='${filter ne "date"}'>
+                                        <a class="page-link" href="ViewTransactionHistory?page=${param.page + 1}&filter=${filter}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:if>
+                                    <c:if test='${filter eq "date"}'>
+                                        <a class="page-link" href="ViewTransactionHistory?page=${param.page + 1}&filter=${filter}&start=${param.start}&end=${param.end}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </c:if>
                                 </c:when>
                                 <c:otherwise>
                                     <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
@@ -117,13 +162,13 @@
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script type="text/javascript" defer>
-            let activeTab = document.getElementById("active-tab");
-            let arr = document.querySelectorAll(".sort");
-            arr.forEach(element => {
-                if(element.id === activeTab.value) {
-                    element.classList.add('active');
-                }
-            });
+                            let activeTab = document.getElementById("active-tab");
+                            let arr = document.querySelectorAll(".sort");
+                            arr.forEach(element => {
+                                if (element.id === activeTab.value) {
+                                    element.classList.add('active');
+                                }
+                            });
         </script>
     </body>
 </html>

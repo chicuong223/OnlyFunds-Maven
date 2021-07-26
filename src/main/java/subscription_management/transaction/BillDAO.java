@@ -334,14 +334,18 @@ public class BillDAO {
          return count;
      }
      
-     public List<Bill> getTransactionsFromDateToDate(Date start, Date end){
+     public List<Bill> getTransactionsFromDateToDate(Date startDate, Date endDate, int start, int end){
          List<Bill> lst = new ArrayList<>();
-        String sql = "SELECT * FROM [Transaction] WHERE transaction_date BETWEEN ? AND ? ORDER BY id DESC";
+        String sql = "SELECT * FROM \n"
+                + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS r, * FROM [Transaction] WHERE transaction_date BETWEEN ? AND ?) AS x\n"
+                + "WHERE x.r BETWEEN ? AND ?";
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setDate(1, start);
-                    ps.setDate(2, end);
+                    ps.setDate(1, startDate);
+                    ps.setDate(2, endDate);
+                    ps.setInt(3, start);
+                    ps.setInt(4, end);
                     UserDAO userDAO = new UserDAO();
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
@@ -363,5 +367,59 @@ public class BillDAO {
         return lst;
      }
      
+     public List<Bill> getTransactionsFromDateToDateUser(Date startDate, Date endDate, int start, int end, User user){
+         List<Bill> lst = new ArrayList<>();
+        String sql = "SELECT * FROM \n"
+                + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS r, * FROM [Transaction]\n "
+                + "WHERE transaction_date BETWEEN ? AND ? AND (recipient_username = ? OR sender_username = ?)) AS x\n"
+                + "WHERE x.r BETWEEN ? AND ?";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setDate(1, startDate);
+                    ps.setDate(2, endDate);
+                    ps.setString(3, user.getUsername());
+                    ps.setString(4, user.getUsername());
+                    ps.setInt(5, start);
+                    ps.setInt(6, end);
+                    UserDAO userDAO = new UserDAO();
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            int id = rs.getInt("id");
+                            String content = rs.getString("content");
+                            int price = rs.getInt("price");
+                            Date transactionDate = rs.getDate("transaction_date");
+                            User receiver = userDAO.getUserByUsername(rs.getString("recipient_username"));
+                            User sender = userDAO.getUserByUsername(rs.getString("sender_username"));
+                            Bill bill = new Bill(id, sender, receiver, content, price, transactionDate);
+                            lst.add(bill);
+                        }
+                    }
+                }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lst;
+     }
      
+     public int countTransactionsFromDateToDateUser(Date start, Date end, User user){
+         int count = -1;
+         String sql = "SELECT COUNT(id) AS bill_count FROM [Transaction] WHERE transaction_date BETWEEN ? AND ? AND (recipient_username = ? OR sender_username = ?)";
+         try(Connection con = DBConnect.makeConnection(); 
+                 PreparedStatement ps = con.prepareStatement(sql)){
+             ps.setDate(1, start);
+             ps.setDate(2, end);
+             ps.setString(3, user.getUsername());
+             ps.setString(4, user.getUsername());
+             try(ResultSet rs = ps.executeQuery()){
+                 if(rs.next())
+                     count = rs.getInt("bill_count");
+             }
+         }
+         catch(Exception e){
+             System.out.println(e.getMessage());
+         }
+         return count;
+     }
 }

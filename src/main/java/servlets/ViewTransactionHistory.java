@@ -6,8 +6,10 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,7 +65,7 @@ public class ViewTransactionHistory extends HttpServlet {
         int count = 0;
         int start = page * pageSize - (pageSize - 1);
         int end = page * pageSize;
-        ArrayList<Bill> billList = new ArrayList<>();
+        List<Bill> billList = new ArrayList<>();
         if (filter.equalsIgnoreCase("All")) {
             billList = billDAO.getTransactionsByUser(user, start, end);
             count = billDAO.countTransactionsByUser(user);
@@ -75,6 +77,14 @@ public class ViewTransactionHistory extends HttpServlet {
         else if (filter.equalsIgnoreCase("Sent")) {
             billList = billDAO.getSendTransactions(user, start, end);
             count = billDAO.countSentTransactionsByUser(user);
+        }
+        else if (filter.equalsIgnoreCase("date")){
+            Date startDate = Date.valueOf(request.getParameter("start"));
+            Date endDate = Date.valueOf(request.getParameter("end"));
+            billList = billDAO.getTransactionsFromDateToDate(startDate, endDate, start, end);
+            count = billDAO.countTransactionsFromDateToDateUser(startDate, endDate, user);
+            request.setAttribute("start", startDate.toString());
+            request.setAttribute("end", endDate.toString());
         }
         else {
             request.setAttribute("actionerror", "Invalid parameter");
