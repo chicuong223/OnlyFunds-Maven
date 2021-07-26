@@ -10,11 +10,18 @@
     <body>
         <main class="main-container">
             <!-- Vertical navbar -->
-            <c:import url="staff_navbar.jsp"></c:import>
-                <!-- Main content of the page -->
-                <div class="main-content" id="main-content">
-                    <h3>Type</h3>
-                    <a href="ReportListServlet?type=all" style="${type=="all"?"color: red":""}">All</a>
+            <!-- if session is staff, use staff navbar -->
+            <!-- if session is admin, use admin navbar -->
+            <c:if test="${sessionScope.staff != null}">
+                <c:import url="staff_navbar.jsp"></c:import>
+            </c:if>
+            <c:if test="${sessionScope.admin != null}">
+                
+            </c:if>
+            <!-- Main content of the page -->
+            <div class="main-content" id="main-content">
+                <h3>Type</h3>
+                <a href="ReportListServlet?type=all" style="${type=="all"?"color: red":""}">All</a>
                 <a href="ReportListServlet?type=post" style="${type=="post"?"color: red":""}">Post</a>
                 <a href="ReportListServlet?type=comment" style="${type=="comment"?"color: red":""}">Comment</a>
                 <a href="ReportListServlet?type=user" style="${type=="user"?"color: red":""}">User</a>
