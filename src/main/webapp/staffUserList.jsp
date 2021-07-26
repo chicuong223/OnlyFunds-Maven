@@ -4,12 +4,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Report</title>
     </head>
     <body>
         <a href="ReportListServlet">Report List</a>
         <a href="StaffUserListServlet">User List</a>
-        <a href="">Transaction List</a>
+        <a href="StaffBillListServlet">Transaction List</a>
         <form method="get" action="StaffSearchUserServlet">
             <input type="hidden" value="searchstring" name="a"/>
             <div class="input-group input-group-sm" id="search-input">

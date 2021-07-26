@@ -7,7 +7,9 @@
         <title>Report List</title>
     </head>
     <body>
-        <h1>Report List</h1>
+        <a href="ReportListServlet?type=all&status=all">Report List</a>
+        <a href="StaffUserListServlet">User List</a>
+        <a href="StaffBillListServlet?type=all&status=all">Billing List</a>
         <h3>Type</h3>
         <a href="ReportListServlet?type=all" style="${type=="all"?"color: red":""}">All</a>
         <a href="ReportListServlet?type=post" style="${type=="post"?"color: red":""}">Post</a>
