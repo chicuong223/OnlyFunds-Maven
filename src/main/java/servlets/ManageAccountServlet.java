@@ -90,13 +90,6 @@ public class ManageAccountServlet extends HttpServlet {
             return;
         }
         request.setAttribute("isActive", "mAcc");
-        //check session & context
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
-            return;
-        }
         request.getRequestDispatcher(accountInfoPage).forward(request, response);
     }
 
