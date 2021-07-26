@@ -100,7 +100,7 @@
                                 </c:if>
                             </li>
                             <c:forEach var="index" begin="1" end="${end}">
-                                <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='PostListServlet?page=${index}&action=${action}'>${index}</a></li>
+                                <li id="${index}-page" class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='PostListServlet?page=${index}&action=${action}'>${index}</a></li>
                                 </c:forEach>
                             <li class="page-item">
                                 <c:choose>
@@ -129,5 +129,12 @@
                 </div>
             </div>
         </main>
+        <input type="hidden" value="${param.page}" id="currPage"/>
+        <script defer>
+            let currPage = document.getElementById("currPage");
+            if(currPage.value < 2) {
+                document.getElementById("1-page").classList.add('active');
+            }
+        </script>
     </body>
 </html>

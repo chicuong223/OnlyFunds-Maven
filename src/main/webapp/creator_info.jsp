@@ -196,7 +196,7 @@
                             </c:if>
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
-                            <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='CreatorInfoServlet?username=${creator.username}&page=${index}'>${index}</a></li>
+                            <li id="${index}-page" class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='CreatorInfoServlet?username=${creator.username}&page=${index}'>${index}</a></li>
                             </c:forEach>
                         <li class="page-item">
                             <c:choose>
@@ -265,6 +265,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" value="${param.page}" id="currPage"/>
         <script src='scripts/creator_info_script.js'></script>
     </body>
 </html>

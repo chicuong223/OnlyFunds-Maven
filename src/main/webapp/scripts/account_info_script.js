@@ -4,7 +4,7 @@ const PASSWORD_LENGTH_MIN = 8;
 const PASSWORD_LENGTH_MAX = 32;
 
 change_password_form.addEventListener("submit", event => {
-    
+
     var curPassword = change_password_form.querySelector('input[name="currentPassword"]');
     var newPassword = change_password_form.querySelector('input[name="newPassword"]');
     var confNewPassword = change_password_form.querySelector('input[name="confNewPassword"]');
@@ -48,3 +48,4 @@ new_ava.onchange = evt => {
     }
     document.getElementById('update').classList.remove('disabled');
 }
+

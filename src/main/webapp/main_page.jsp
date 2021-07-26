@@ -20,6 +20,12 @@
                 <div class="main-content">
                 <c:import url="category-bar.html"></c:import>
                     <div class="content container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 p-3 pb-1 my-auto text-center">
+                                <span style="font-size: 50px; color:#B82481; font-family: Righteous;">ONLY FUNDS</span>
+                                <p style="font-size: 36px; color:#69336D;">Create your own work and earn money!</p>
+                            </div>
+                        </div>
                         <div id="row" class="row gx-4 p-3">
                             <div class="title mb-4">
                                 <a href="#View all">
@@ -88,37 +94,39 @@
                             <li class="page-item">
                                 <c:if test="${param.page != null && param.page > 1}">
                                     <a class="page-link" href="homepage?page=${param.page - 1}">
-                                        <span aria-hidden="true">&laquo;</span>
+                                        &laquo;
                                     </a>
                                 </c:if>
                                 <c:if test="${param.page == null || param.page == 1}">
                                     <a class="page-link text-muted" href="#">
-                                        <span aria-hidden="true">&laquo;</span>
+                                        &laquo;
                                     </a>
                                 </c:if>
                             </li>
                             <c:forEach var="index" begin="1" end="${end}">
-                                <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='homepage?page=${index}'>${index}</a></li>
-                                </c:forEach>
+                                <li id='${index}-page' class='page-item <c:if test="${param.page == index}">active</c:if>'>
+                                    <a class="page-link" href='homepage?page=${index}'>${index}</a>
+                                </li>
+                            </c:forEach>
                             <li class="page-item">
                                 <c:choose>
                                     <c:when test="${end <= 1}">
                                         <a class="page-link text-muted" href="#">
-                                            <span aria-hidden="true">&raquo;</span>
+                                            &raquo;
                                         </a>
                                     </c:when>
                                     <c:when test="${param.page == null}">
                                         <a class="page-link" href="homepaget?page=2">
-                                            <span aria-hidden="true">&raquo;</span>
+                                            &raquo;
                                         </a>
                                     </c:when>
                                     <c:when test="${param.page < end}">
                                         <a class="page-link" href="homepage?page=${param.page + 1}">
-                                            <span aria-hidden="true">&raquo;</span>
+                                            &raquo;
                                         </a>
                                     </c:when>
                                     <c:otherwise>
-                                        <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
+                                        <a class="page-link text-muted" href='#'>&raquo;</a>
                                     </c:otherwise>
                                 </c:choose>
                             </li>
@@ -127,6 +135,13 @@
                 </div>
             </div>
         </main>
+        <input type="hidden" value="${param.page}" id="currPage"/>
+        <script defer>
+            let currPage = document.getElementById("currPage");
+            if(currPage.value < 2) {
+                document.getElementById("1-page").classList.add('active');
+            }
+        </script>
     </body>
 
 </html>

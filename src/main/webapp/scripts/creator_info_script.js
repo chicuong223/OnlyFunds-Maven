@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     function addFollow(creator) {
         var followCount = parseInt($('#follow-count').html());
-        $.post("follow_manage", {creator: creator, action: "add"}, function () {
+        $.post("follow_manage", { creator: creator, action: "add" }, function () {
             $('#follow').text("Following");
             $('#follow').css('background-color', '#cecece');
             $('#follow').css('border-color', '#cecece');
@@ -19,7 +19,7 @@ $(document).ready(function () {
     }
     function deleteFollow(creator) {
         var followCount = parseInt($('#follow-count').html());
-        $.post("follow_manage", {creator: creator, action: "delete"}, function () {
+        $.post("follow_manage", { creator: creator, action: "delete" }, function () {
             $('#follow').text("Follow");
             $('#follow').css('background-color', '#ce68a8');
             $('#follow').css('border-color', '#ce68a8');
@@ -28,4 +28,9 @@ $(document).ready(function () {
         });
     }
 });
+
+let currPage = document.getElementById("currPage");
+if (currPage.value < 2) {
+    document.getElementById("1-page").classList.add('active');
+}
 

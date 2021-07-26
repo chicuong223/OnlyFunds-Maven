@@ -59,7 +59,7 @@
                             <div class="col-lg-3 mb-2" id="post-${post.key.postId}">
                                 <c:if test="${post.key.isActive == true}">
                                     <a href="#" class="btn btn-thin state" onclick="enableOrDisable('${action}', ${post.key.postId})">
-                                        <i class="fas fa-minus"></i>
+                                        <i class="fas fa-plus"></i>
                                         <span id="disable-or-enable-btn-${post.key.postId}">Disable</span>
                                     </a>
                                 </c:if>
@@ -96,7 +96,7 @@
                         </c:forEach>
                     </div>
                     <footer class="card-footer">
-                        <ul class="pagination">
+                        <ul class="pagination mx-auto">
                             <c:forEach begin="1" end="${end}" var="index">
                                 <c:if test="${param.page == index}">
                                     <c:set var="active" value="active" />
@@ -104,40 +104,18 @@
                                 <c:if test="${param.page != index}">
                                     <c:set var="active" value="" />
                                 </c:if>
-                                <li class="page-item ${active}"><a href="YourPostsServlet?page=${index}&action=${action}"
-                                                                   class="page-link">${index}</a></li>
-                                </c:forEach>
+                                <li id="${index}-page" class="page-item ${active}"><a href="YourPostsServlet?page=${index}&action=${action}"
+                                    class="page-link">${index}</a></li>
+                            </c:forEach>
                         </ul>
                     </footer>
                 </div>  
             </div>
         </main>
+        <input type="hidden" value="${param.page}" id="currPage"/>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-        <script src="scripts/account_info_script.js"></script>
-        <script>
-            function enableOrDisable(action, postID){
-                console.log(postID);
-                var btn = $('#disable-or-enable-btn-' + postID).text();
-                console.log(btn);
-                if(btn === 'Disable'){
-                    $.post('enable_or_disable', {action:"deactivate", postID:postID}, function(){
-                        if(action === 'all')
-                            $('#disable-or-enable-btn-' + postID).text('Enable');
-                        else if(action === 'active' || action === 'disabled')
-                            location.reload();
-                    });
-                }
-                else if(btn === 'Enable'){
-                    $.post('enable_or_disable', {action:"activate", postID:postID}, function(){
-                        if(action === 'all')
-                            $('#disable-or-enable-btn-' + postID).text('Disable');
-                        else if(action === 'active' || action === 'disabled')
-                            location.reload();
-                    });
-                }
-            }
-        </script>
+        <script src="scripts/your_post.js" defer></script>
     </body>
 
 </html>

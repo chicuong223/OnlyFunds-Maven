@@ -65,14 +65,17 @@ public class ViewTransactionHistory extends HttpServlet {
         int end = page * pageSize;
         ArrayList<Bill> billList = new ArrayList<>();
         if (filter.equalsIgnoreCase("All")) {
+            request.setAttribute("active_tab", "all");
             billList = billDAO.getTransactionsByUser(user, start, end);
             count = billDAO.countTransactionsByUser(user);
         }
         else if (filter.equalsIgnoreCase("Received")) {
+            request.setAttribute("active_tab", "received");
             billList = billDAO.getReceiveTransactions(user, start, end);
             count = billDAO.countReceivedTransactionsByUser(user);
         }
         else if (filter.equalsIgnoreCase("Sent")) {
+            request.setAttribute("active_tab", "sent");
             billList = billDAO.getSendTransactions(user, start, end);
             count = billDAO.countSentTransactionsByUser(user);
         }

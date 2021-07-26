@@ -86,8 +86,8 @@
                             </c:if>
                         </li>
                         <c:forEach var="index" begin="1" end="${end}">
-                            <li class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a></li>
-                            </c:forEach>
+                            <li id="${index}-page" class="page-item <c:if test="${param.page == index}">active</c:if>"><a class="page-link" href='ViewTransactionHistory?page=${index}&filter=${filter}'>${index}</a></li>
+                        </c:forEach>
                         <li class="page-item">
                             <c:choose>
                                 <c:when test="${end <= 1}">
@@ -114,6 +114,7 @@
                 </nav>
             </div>
         </main>
+        <input type="hidden" value="${param.page}" id="currPage"/>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script type="text/javascript" defer>
@@ -124,6 +125,10 @@
                     element.classList.add('active');
                 }
             });
+            let currPage = document.getElementById("currPage");
+            if(currPage.value < 2) {
+                document.getElementById("1-page").classList.add('active');
+            }
         </script>
     </body>
 </html>
