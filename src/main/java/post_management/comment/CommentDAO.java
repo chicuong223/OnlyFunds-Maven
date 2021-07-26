@@ -278,6 +278,38 @@ public class CommentDAO {
         return 0;
     }
 
+    public boolean hideComment(int commentID) {
+        boolean result = false;
+        String sql = "UPDATE Comment SET is_active=0 WHERE id = ?";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, commentID);
+                    result = ps.executeUpdate() > 0;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+    
+    public boolean unhideComment(int commentID) {
+        boolean result = false;
+        String sql = "UPDATE Comment SET is_active=1 WHERE id = ?";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null) {
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, commentID);
+                    result = ps.executeUpdate() > 0;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+    
     public static void main(String[] args) {
         CommentDAO dao = new CommentDAO();
 //        dao.getCommentsByPost(3).forEach(com -> {

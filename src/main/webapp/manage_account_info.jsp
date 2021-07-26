@@ -47,7 +47,7 @@
                             <div class="col-6 text-center p-0" id="left-panel">
                                 <form action="ManageAccount" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="action" value="avatar" />
-                                    <img src="images/avatars/defaultAvatar.png" class="img-avatar" id="img-avatar" alt="avatar"/>
+                                    <img src="images/avatars/${user.avatarURL}" class="img-avatar" id="img-avatar" alt="avatar"/>
                                     <input accept="image/*" type="file" name="avatar" class="form-control new-ava"
                                         id="new-avatar" />
                                     <button class="btn action disabled" type="submit" id="update">Update</button>

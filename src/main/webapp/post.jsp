@@ -343,7 +343,43 @@
                                                                     </div>
                                                                 </c:if>
                                                                 <%-- Nếu user là tác giả của post, cho phép ẩn comment --%>
-
+                                                                <c:if test="${sessionScope.user.username == post.uploader.username}">    
+                                                                    <a id="delete-cmt-btn" href="#" 
+                                                                        data-bs-toggle="modal" 
+                                                                        data-bs-target="#delete-modal-${cmt.key.commentID}">
+                                                                        Hide
+                                                                    </a>
+                                                                    <div class="modal" id="delete-modal-${cmt.key.commentID}">
+                                                                        <div class="modal-dialog modal-dialog-centered">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title">Delete comment</h5>
+                                                                                    <button type="button" class="btn-close"
+                                                                                            data-bs-dismiss="modal"
+                                                                                            aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form action="DeleteCommentServlet"
+                                                                                            method="post"
+                                                                                            id="delete-form-${cmt.key.commentID}">
+                                                                                        <input type="hidden" name="cmtID"
+                                                                                                value="${cmt.key.commentID}" />
+                                                                                        <p>You and other users will not be able to
+                                                                                            see this comment anymore</p>
+                                                                                        <p class="text-danger">Are you sure ?</p>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary"
+                                                                                            data-bs-dismiss="modal">Close</button>
+                                                                                    <button class="btn btn-danger"
+                                                                                            onclick="deleteCmt(${cmt.key.commentID})"
+                                                                                            data-bs-dismiss="modal">Hide</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </c:if>
                                                             </c:when>
                                                             <%-- Nếu user chưa login hiện form login --%>
                                                             <c:otherwise>
