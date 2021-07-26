@@ -21,7 +21,7 @@ import report.ReportDAO;
  */
 @WebServlet(name = "StaffListServlet", urlPatterns = {"/StaffListServlet"})
 public class StaffListServlet extends HttpServlet {
-    final int numReportInPage = 5;
+    final int numStaffInPage = 5;
     final String StaffListPage = "staffList.jsp";
     String isBanned = "all";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -44,11 +44,11 @@ public class StaffListServlet extends HttpServlet {
         } else {
             staffList = sDAO.getAllActiveStaffs();
         }
-        int numPage = staffList.size() / numReportInPage
-                + (staffList.size() % numReportInPage == 0 ? 0 : 1);
+        int numPage = staffList.size() / numStaffInPage
+                + (staffList.size() % numStaffInPage == 0 ? 0 : 1);
         request.setAttribute("numPage", numPage);
-        int startIndex = (pageNum - 1) * numReportInPage;
-        int endIndex = pageNum * numReportInPage;
+        int startIndex = (pageNum - 1) * numStaffInPage;
+        int endIndex = pageNum * numStaffInPage;
         endIndex = (endIndex > staffList.size() ? staffList.size() : endIndex);
         System.err.println("full list size: "+ staffList.size());
         ArrayList<Staff> subArray = new ArrayList<Staff>(staffList.subList(startIndex, endIndex));

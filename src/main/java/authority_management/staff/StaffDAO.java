@@ -101,6 +101,54 @@ public class StaffDAO {
         }
         return lst;
     }
+    public ArrayList<Staff> searchStaff(String search) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Staff> lst = new ArrayList<>();
+        String sql = "SELECT *\n"
+                + "FROM Staff u\n"
+                + "WHERE u.username LIKE ?\n"
+                + " Or u.email Like ?\n"
+                + " Or u.firstname Like ?\n"
+                + " Or u.lastname Like ?\n";
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement(sql);
+                search = "%" + search + "%";
+                ps.setString(1, search);
+                ps.setString(2, search);
+                ps.setString(3, search);
+                ps.setString(4, search);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    Staff staff = new Staff();
+                    staff.setUsername(rs.getString("username"));
+                    staff.setFirstName(rs.getString("firstname"));
+                    staff.setLastName(rs.getString("lastname"));
+                    staff.setEmail(rs.getString("email"));
+                    staff.setIsActive(rs.getBoolean("is_active"));
+                    lst.add(staff);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return lst;
+    }
 
     public boolean addStaff(Staff staff) {
         boolean result = false;

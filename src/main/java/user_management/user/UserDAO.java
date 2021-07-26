@@ -477,7 +477,7 @@ public class UserDAO {
                     user.setFirstName(rs.getString("firstname"));
                     user.setLastName(rs.getString("lastname"));
                     user.setEmail(rs.getString("email"));
-                    user.setIsBanned(false);
+                    user.setIsBanned(rs.getBoolean("is_banned"));
                     lst.add(user);
                 }
             }
