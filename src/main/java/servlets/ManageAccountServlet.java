@@ -49,7 +49,7 @@ public class ManageAccountServlet extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             RequestDispatcher rd = request.getRequestDispatcher(accountInfoPage);
-            
+
             //change password
             if (action.equals("password")) {
                 String curPassword = HashPassword.HashPassword(request.getParameter("currentPassword"));
@@ -85,9 +85,11 @@ public class ManageAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         request.setAttribute("isActive", "mAcc");
-        request.getRequestDispatcher(accountInfoPage).forward(request, response);
-        
         //check session & context
         String url = "WelcomePageServlet";
         boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
@@ -95,13 +97,13 @@ public class ManageAccountServlet extends HttpServlet {
             response.sendRedirect(url);
             return;
         }
-        response.sendRedirect(accountInfoPage);
+        request.getRequestDispatcher(accountInfoPage).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         request.setAttribute("isActive", "mAcc");
+        request.setAttribute("isActive", "mAcc");
         processRequest(request, response);
     }
 

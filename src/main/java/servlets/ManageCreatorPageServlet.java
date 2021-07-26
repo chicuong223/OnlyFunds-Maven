@@ -101,10 +101,8 @@ public class ManageCreatorPageServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setAttribute("isActive", "mCreate");
         //check session & context
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
+       if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
         

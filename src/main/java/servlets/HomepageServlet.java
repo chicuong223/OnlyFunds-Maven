@@ -47,11 +47,6 @@ public class HomepageServlet extends HttpServlet {
             List<Category> catList = categoryDAO.getAllCategories();
             getServletContext().setAttribute("catList", catList);
         }
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
-        }
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             response.sendRedirect("WelcomePageServlet");

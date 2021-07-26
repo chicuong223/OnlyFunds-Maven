@@ -41,13 +41,11 @@ public class YourPostsServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setAttribute("isActive", "mPost");
         //check session & context
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
-        
+
         PostDAO dao = new PostDAO();
         User user = (User) request.getSession().getAttribute("user");
         PostLikeDAO likeDAO = new PostLikeDAO();
@@ -66,11 +64,11 @@ public class YourPostsServlet extends HttpServlet {
             postList = dao.getPostsByUser(user, pageIndex);
             count = dao.countPostsByUser(user);
         }
-        else if(action.equalsIgnoreCase("active")){
+        else if (action.equalsIgnoreCase("active")) {
             postList = dao.getActivePostsByUser(user, pageIndex);
             count = dao.countActivePostsByUser(user);
         }
-        else if(action.equalsIgnoreCase("disabled")){
+        else if (action.equalsIgnoreCase("disabled")) {
             count = dao.countInactivePostsByUser(user);
             postList = dao.getInactivePostsByUser(user, pageIndex);
         }

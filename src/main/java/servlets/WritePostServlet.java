@@ -46,13 +46,11 @@ public class WritePostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //check session & context
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
-        
+
         CategoryDAO cDAO = new CategoryDAO();
         TierDAO tDAO = new TierDAO();
         ArrayList<Category> catList = cDAO.getAllCategories();
@@ -81,10 +79,10 @@ public class WritePostServlet extends HttpServlet {
         Date date = new java.sql.Date(millis);
         PostCategoryMapDAO categoryMapDAO = new map.PostCategoryMapDAO();
         Post post = new Post(0, user, title, desc, filename, date, 0, true);
-        
+
         //add post
         dao.addPost(post);
-        
+
         //Reason: Because we use identity for post ID in database,
         //we can only get the correct post id of the added post after it has been inserted into the database
         //Steps:
@@ -93,7 +91,7 @@ public class WritePostServlet extends HttpServlet {
         //3. change file name to the post id and upload it to the server
         //4. change the in-memory post's attachment URL
         //5. Update the post in the database
-        if(!filename.trim().equals("")){
+        if (!filename.trim().equals("")) {
             int postId = dao.getLatestPostIdByUser(user);
 //            Post post = dao.getLatestPostByUser(user)
             post.setPostId(postId);
@@ -107,19 +105,17 @@ public class WritePostServlet extends HttpServlet {
             Category cat = categoryDAO.getCategoryByID(6);
             categoryMapDAO.addPostCatMap(user, cat);
         }
-        else {
+        else
             for (String catID : cats) {
                 Category cat = categoryDAO.getCategoryByID(Integer.parseInt(catID));
                 categoryMapDAO.addPostCatMap(user, cat);
             }
-        }
         //if user chose any tier, add a tier map
-        if (tiers != null) {
+        if (tiers != null)
             for (String tierID : tiers) {
                 Tier tier = tierDAO.getTierById(Integer.parseInt(tierID));
                 tierMapDAO.addTierMap(tier, user);
             }
-        }
         sendNotifications(post, user);
         response.sendRedirect("YourPostsServlet");
     }
@@ -131,26 +127,24 @@ public class WritePostServlet extends HttpServlet {
         ArrayList<User> subscribers = userDAO.getSubscribers(user);
         ArrayList<User> recipients = new ArrayList<>();
         NotificationDAO ntDAO = new NotificationDAO();
-        
+
         //add followers to recipients
         followers.forEach(follower -> {
             recipients.add(follower);
         });
-        
+
         //add subscribers to recipients
         subscribers.forEach(subscriber -> {
             recipients.add(subscriber);
         });
-        
+
         //remove duplicated users in recipients
-        for (int i = 0; i < recipients.size(); i++) {
-            for (int j = i + 1; j < recipients.size(); j++) {
+        for (int i = 0; i < recipients.size(); i++)
+            for (int j = i + 1; j < recipients.size(); j++)
                 if (recipients.get(i).getUsername().equalsIgnoreCase(recipients.get(j).getUsername())) {
                     recipients.remove(j);
                     break;
                 }
-            }
-        }
         recipients.forEach(recipient -> {
             ntDAO.generateNotification(post, recipient);
         });

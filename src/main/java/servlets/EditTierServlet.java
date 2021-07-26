@@ -28,10 +28,8 @@ public class EditTierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
         String strTierID = request.getParameter("tierid");

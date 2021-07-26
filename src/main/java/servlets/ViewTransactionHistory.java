@@ -32,10 +32,8 @@ public class ViewTransactionHistory extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //check session & context
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
         doPost(request, response);
@@ -45,7 +43,7 @@ public class ViewTransactionHistory extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         request.setAttribute("isActive", "mBill");
+        request.setAttribute("isActive", "mBill");
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             request.setAttribute("usererror", "User not found");
@@ -86,7 +84,7 @@ public class ViewTransactionHistory extends HttpServlet {
         System.out.println(billList.size());
         //get end page
         int endPage = count / pageSize;
-        if(count % pageSize != 0)
+        if (count % pageSize != 0)
             endPage++;
         request.setAttribute("bills", billList);
         request.setAttribute("end", endPage);

@@ -30,6 +30,10 @@ public class FollowingListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         request.setAttribute("isActive", "follow");
         HttpSession session = request.getSession();
         UserDAO userDAO = new UserDAO();
@@ -37,15 +41,15 @@ public class FollowingListServlet extends HttpServlet {
         User userSession = (User) session.getAttribute("user");
         int page = 0;
         String strPage = request.getParameter("page");
-        if(strPage == null)
+        if (strPage == null)
             page = 1;
         else
             page = Integer.parseInt(strPage);
         int count = userDAO.countFollowing(userSession);
         int endPage;
         endPage = count / 8;
-        if(count % 8 != 0)
-            endPage ++;
+        if (count % 8 != 0)
+            endPage++;
         int start = page * 8 - (8 - 1);
         int end = page * 8;
         List<User> userList = userDAO.getFollowingUsers(userSession, start, end);
@@ -61,11 +65,11 @@ public class FollowingListServlet extends HttpServlet {
         request.getRequestDispatcher("creator_list.jsp").forward(request, response);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
+
     @Override
     public String getServletInfo() {
         return "Short description";

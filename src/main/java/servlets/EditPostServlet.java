@@ -47,17 +47,11 @@ public class EditPostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
-            return;
-        }
-        if (user == null) {
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
             response.sendRedirect("WelcomePageServlet");
             return;
         }
+        User user = (User) request.getSession().getAttribute("user");
         int postID = Integer.parseInt(request.getParameter("id"));
         System.out.println(postID);
         PostDAO dao = new PostDAO();

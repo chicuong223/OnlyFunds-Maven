@@ -31,22 +31,19 @@ public class ManageSubscriptionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         request.setAttribute("isActive", "mSub");
+        request.setAttribute("isActive", "mSub");
         //check session & context
-        String url = "WelcomePageServlet";
-        boolean check = new ContextAndSessionCheck().checkContextAndSession(request);
-        if (check) {
-            response.sendRedirect(url);
+        if (getServletContext().getAttribute("catList") == null || request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("WelcomePageServlet");
             return;
         }
-        
+
         User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+        if (user == null)
             return;
-        }
         String strPage = request.getParameter("page");
         int page = 0;
-        if(strPage == null)
+        if (strPage == null)
             page = 1;
         else
             page = Integer.parseInt(strPage);
@@ -55,8 +52,8 @@ public class ManageSubscriptionServlet extends HttpServlet {
         int start = page * pageSize - (pageSize - 1);
         int end = page * pageSize;
         int endPage = count / pageSize;
-        if(count % pageSize != 0)
-            endPage ++;
+        if (count % pageSize != 0)
+            endPage++;
         List<Subscription> subList = subDAO.getSubscriptionsByUser(user, start, end);
         request.setAttribute("subList", subList);
         request.setAttribute("end", endPage);
@@ -67,7 +64,7 @@ public class ManageSubscriptionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String strID = request.getParameter("id");
-        if(strID == null){
+        if (strID == null) {
             request.setAttribute("suberror", "Subscription not found");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
@@ -75,12 +72,12 @@ public class ManageSubscriptionServlet extends HttpServlet {
         int subID = Integer.parseInt(strID);
         SubscriptionDAO subDAO = new SubscriptionDAO();
         Subscription sub = subDAO.getSubscriptionById(subID);
-        if(sub == null){
+        if (sub == null) {
             request.setAttribute("suberror", "Subscription not found");
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-        
+
         System.out.println(subDAO.cancelSub(sub));
         doGet(request, response);
     }
