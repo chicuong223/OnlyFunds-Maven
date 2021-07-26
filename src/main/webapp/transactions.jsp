@@ -24,7 +24,7 @@
             <link type="text/css" rel="stylesheet" href="styles/vertical_nav.css">
             <link rel="stylesheet" href="styles/shared.css">
             <!-- Main css -->
-            <link type="text/css" rel="stylesheet" href="styles/main_page.css">
+            <link type="text/css" rel="stylesheet" href="styles/bill_page.css">
             <!-- Icon -->
             <script src="https://kit.fontawesome.com/30877617bb.js" crossorigin="anonymous"></script>
             <!--Ajax-->
@@ -37,14 +37,17 @@
         <body>  
             <main class="main-container">
                 <!-- Vertical navbar -->
-            <c:import url="creator_vertical_navbar.jsp"></c:import>
+                <c:import url="creator_vertical_navbar.jsp"></c:import>
                 <!-- Main content of the page -->
                 <div class="main-content" id="main-content">
-                    <h1>Billing History</h1>
-                <c:set var="user" value="${sessionScope.user}"></c:set>
-                    <button class="btn btn-primary" onclick="location.href = 'ViewTransactionHistory?filter=all'">All</button>
-                    <button class="btn btn-danger"onclick="location.href = 'ViewTransactionHistory?filter=sent'">Sent</button>
-                    <button class="btn btn-success" onclick="location.href = 'ViewTransactionHistory?filter=received'">Received</button>
+                    <input type="hidden" value="${active_tab}" id="active-tab">
+                    <h1 class="text-center fw-bold mt-3 mb-5">Billing History</h1>
+                    <c:set var="user" value="${sessionScope.user}"></c:set>
+                    <div class="button-group border-bottom mb-5">
+                        <button id="all" class="btn sort" onclick="location.href = 'ViewTransactionHistory?filter=all'">All</button>
+                        <button id="sent" class="btn sort"onclick="location.href = 'ViewTransactionHistory?filter=sent'">Sent</button>
+                        <button id="received" class="btn sort" onclick="location.href = 'ViewTransactionHistory?filter=received'">Received</button>
+                    </div>
                     <table class="table table-bordered table-hover w-75 mx-auto">
                         <thead class="table-primary">
                             <tr>
@@ -113,5 +116,14 @@
         </main>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script type="text/javascript" defer>
+            let activeTab = document.getElementById("active-tab");
+            let arr = document.querySelectorAll(".sort");
+            arr.forEach(element => {
+                if(element.id === activeTab.value) {
+                    element.classList.add('active');
+                }
+            });
+        </script>
     </body>
 </html>

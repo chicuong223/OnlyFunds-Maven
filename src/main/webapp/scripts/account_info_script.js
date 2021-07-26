@@ -1,24 +1,10 @@
 var change_password_form = document.querySelector("#change-password-form");
 var change_password_btn = document.querySelector("#change-password-btn");
-//var change_interest_form = document.querySelector("#change-interest-form");
-//var change_interest_btn = document.querySelector("#change-interest-btn");
-
-//toggle form
-//change_interest_btn.addEventListener("click", function(){
-//    if (change_interest_form.hidden === true){
-//        change_interest_form.hidden = false;
-//    }
-//    else {
-//        change_interest_form.hidden = true;
-//    }
-//});
-
-console.log(document.getElementById('oldPass'));
-digestMessage("123456789");
+const PASSWORD_LENGTH_MIN = 8;
+const PASSWORD_LENGTH_MAX = 32;
 
 change_password_form.addEventListener("submit", event => {
-    const PASSWORD_LENGTH_MIN = 8;
-    const PASSWORD_LENGTH_MAX = 32;
+    
     var curPassword = change_password_form.querySelector('input[name="currentPassword"]');
     var newPassword = change_password_form.querySelector('input[name="newPassword"]');
     var confNewPassword = change_password_form.querySelector('input[name="confNewPassword"]');
@@ -62,14 +48,3 @@ new_ava.onchange = evt => {
     }
     document.getElementById('update').classList.remove('disabled');
 }
-
-async function digestMessage(message) {             
-    const msgUint8 = new TextEncoder().encode(message);     
-    const hashBuffer = await crypto.subtle.digest('SHA-256', message);           // hash the message
-    const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
-    return hashHex;
-}
-
-digestMessage()
-    .then(digestHex => console.log(digestHex));

@@ -141,7 +141,7 @@
                                                                 <c:set var="check" value="${true}"/>
                                                                 <span class="cat selected disabled">
                                                                     <label class="cat-label-old"
-                                                                        for="${ucat.key.categoryName}">${ucat.key.categoryName}</label>
+                                                                        for="${ucat.key.categoryName}" style="cursor: default;">${ucat.key.categoryName}</label>
                                                                     <input disabled type="checkbox" class="cat-name"
                                                                         name="${ucat.key.categoryName}" value="${ucat.key.categoryName}"
                                                                         id="${ucat.key.categoryName}">

@@ -1,0 +1,15 @@
+.button-group {
+    width: 22rem;
+    margin: 0 auto;
+}
+
+button.sort {
+    min-width: 7rem;
+}
+
+button.sort.active {
+    border-radius: 0;
+    border-bottom: 1px solid black;
+    color: #ce68a8;
+    background-color: #dddddd;
+}
