@@ -122,6 +122,11 @@ public class Report implements Serializable {
     public void setSolveDate(Date solveDate) {
         this.solveDate = solveDate;
     }
+
+    @Override
+    public String toString() {
+        return "Report{" + "id=" + id + ", reportUser=" + reportUser + ", reportedObjectId=" + reportedObjectId + ", type=" + type + ", solveStaff=" + solveStaff + ", title=" + title + ", description=" + description + ", reportDate=" + reportDate + ", status=" + status + ", solveDate=" + solveDate + '}';
+    }
     
     
 }

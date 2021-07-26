@@ -30,7 +30,6 @@ public class ReportListServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.err.println("ReportListServlet");
         int pageNum = 1;
         if (request.getParameter("page") != null) {
             pageNum = Integer.parseInt(request.getParameter("page"));
@@ -45,7 +44,7 @@ public class ReportListServlet extends HttpServlet {
         request.setAttribute("type", currentType);
         request.setAttribute("page", pageNum);
         
-        ArrayList<Report> reportList=new ArrayList<Report>();
+        ArrayList<Report> reportList=new ArrayList<>();
         ReportDAO rDAO=new ReportDAO();
         if(currentType.equalsIgnoreCase("all")&&currentStatus.equalsIgnoreCase("all"))
             reportList =rDAO.getReports();
@@ -64,7 +63,6 @@ public class ReportListServlet extends HttpServlet {
         endIndex=(endIndex>reportList.size()?reportList.size():endIndex);
         ArrayList<Report> subArray = new ArrayList<Report>(reportList.subList(startIndex, endIndex));
         request.setAttribute("reportList", subArray);
-       
         request.getRequestDispatcher(reportListPage).forward(request, response);
     }
 

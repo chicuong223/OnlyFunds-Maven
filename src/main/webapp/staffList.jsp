@@ -20,6 +20,7 @@
         </form>
         <h1>Staff List</h1>
         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-add">Add Staff</a>
+        <a href="ReportListServlet">Reports</a>
         <c:choose>
             <c:when test="${empty search}">
                 <h3>Status</h3>

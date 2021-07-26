@@ -30,7 +30,7 @@ public class ReportDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
+        ArrayList<Report> reportList = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -44,10 +44,12 @@ public class ReportDAO {
                     String type = rs.getString("type");
                     String staffUsername = rs.getString("solved_by_staff");
                     Staff solveStaff = null;
-                    if (staffUsername != null && staffUsername.isEmpty()) {
-                        StaffDAO sDAO = new StaffDAO();
-                        solveStaff = sDAO.getStaffByUsername(staffUsername);
+                    if (staffUsername == null) {
+                        solveStaff = new Staff();
+                        solveStaff.setUsername("");
                     }
+                    else
+                        solveStaff = new StaffDAO().getStaffByUsername(staffUsername);
                     String title = rs.getString("title");
                     String description = rs.getString("description");
                     Date reportDate = rs.getDate("report_date");
@@ -82,7 +84,7 @@ public class ReportDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
+        ArrayList<Report> reportList = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -96,10 +98,12 @@ public class ReportDAO {
                     String reportedObjectId = rs.getString("reported_id");
                     String staffUsername = rs.getString("solved_by_staff");
                     Staff solveStaff = null;
-                    if (staffUsername != null && staffUsername.isEmpty()) {
-                        StaffDAO sDAO = new StaffDAO();
-                        solveStaff = sDAO.getStaffByUsername(staffUsername);
+                    if (staffUsername == null) {
+                        solveStaff = new Staff();
+                        solveStaff.setUsername("");
                     }
+                    else
+                        solveStaff = new StaffDAO().getStaffByUsername(staffUsername);
                     String title = rs.getString("title");
                     String description = rs.getString("description");
                     Date reportDate = rs.getDate("report_date");
@@ -134,7 +138,7 @@ public class ReportDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
+        ArrayList<Report> reportList = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -149,10 +153,12 @@ public class ReportDAO {
                     String reportedObjectId = rs.getString("reported_id");
                     String staffUsername = rs.getString("solved_by_staff");
                     Staff solveStaff = null;
-                    if (staffUsername != null && staffUsername.isEmpty()) {
-                        StaffDAO sDAO = new StaffDAO();
-                        solveStaff = sDAO.getStaffByUsername(staffUsername);
+                    if (staffUsername == null) {
+                        solveStaff = new Staff();
+                        solveStaff.setUsername("");
                     }
+                    else
+                        solveStaff = new StaffDAO().getStaffByUsername(staffUsername);
                     String title = rs.getString("title");
                     String description = rs.getString("description");
                     Date reportDate = rs.getDate("report_date");
@@ -186,7 +192,7 @@ public class ReportDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
+        ArrayList<Report> reportList = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -238,7 +244,7 @@ public class ReportDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
+        ArrayList<Report> reportList = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -285,11 +291,12 @@ public class ReportDAO {
         }
         return reportList;
     }
+
     public ArrayList<Report> getReportsByStaff(Staff solveStaff) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<Report> reportList = new ArrayList<Report>();
+        ArrayList<Report> reportList = new ArrayList<>();
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
@@ -563,10 +570,11 @@ public class ReportDAO {
         }
         catch (Exception e) {
 //            System.out.println(e.getStackTrace());
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return lst;
     }
+
     public int countReportsByStaff(String username) {
         Staff solveStaff = null;
         if (username != null && username.isEmpty()) {
@@ -574,8 +582,10 @@ public class ReportDAO {
             solveStaff = sDAO.getStaffByUsername(username);
             return countReportsByStaff(solveStaff);
         }
-        else return 0;
+        else
+            return 0;
     }
+
     public int countReportsByStaff(Staff solveStaff) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -591,19 +601,19 @@ public class ReportDAO {
                     return num;
                 }
             }
-        } catch (SQLException e) {
-        } finally {
+        }
+        catch (SQLException e) {
+        }
+        finally {
             try {
-                if (rs != null) {
+                if (rs != null)
                     rs.close();
-                }
-                if (ps != null) {
+                if (ps != null)
                     ps.close();
-                }
-                if (con != null) {
+                if (con != null)
                     con.close();
-                }
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
             }
         }
         return 0;

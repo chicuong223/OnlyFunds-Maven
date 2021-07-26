@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -29,6 +30,8 @@
                     <th>Type</th>
                     <th>Status</th>
                     <th>Detail</th>
+                    <th>Solved by</th>
+                    <th>Solve Date</th>
                     </thead>
                     <c:forEach var="report" items="${reportList}">
                         <tr class="report type-${report.type} solved-${status}">
@@ -45,6 +48,10 @@
                                 <div>${report.status}</div>
                             </td>
                             <td><a href="ReportDetailServlet?id=${report.id}">Report-${report.id}</a></td>
+                            <td>
+                                <p>${report.solveStaff.username}</p>
+                            </td>
+                            <td><fmt:formatDate pattern="dd-MMM-yyyy" value="${report.solveDate}"/></td>
                         </tr>
                     </c:forEach>
                 </table>
