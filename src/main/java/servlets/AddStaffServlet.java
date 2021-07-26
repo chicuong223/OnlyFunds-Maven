@@ -33,9 +33,9 @@ public class AddStaffServlet extends HttpServlet {
             throws ServletException, IOException {
         StaffDAO dao = new StaffDAO();
         String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("firstname");
-        String userName = request.getParameter("firstname");
-        String emailName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        String userName = request.getParameter("username");
+        String emailName = request.getParameter("email");
         String password = request.getParameter("password");
         String hashedPassword = HashPassword.HashPassword(password);
         Staff newStaff = new Staff(userName, hashedPassword, lastName, firstName, emailName, true);
