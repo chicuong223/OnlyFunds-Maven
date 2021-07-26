@@ -39,6 +39,24 @@
                 </form>
                 <input type="hidden" value="${active_tab}" id="active-tab">
                 <h1 class="text-center fw-bold mt-3 mb-5">Billing History</h1>
+                <form action="StaffBillListServlet" method="GET">
+                    <input type="hidden" name="action" value="date"/>
+                    <div class="container">
+                        <div class="row">
+                            <div>
+                                <label class="label-form" for="start-date">From: </label>
+                                <input type="date" name="start" id="start-date"/>
+                            </div>
+                            <div>
+                                <label class="label-form" for="end-date">To: </label>
+                                <input type="date" name="end" id="start-date"/>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <c:set var="user" value="${sessionScope.user}"></c:set>
                     <div class="button-group border-bottom mb-5">
                     </div>
