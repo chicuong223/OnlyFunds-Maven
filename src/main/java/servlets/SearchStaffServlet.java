@@ -1,26 +1,33 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package servlets;
 
+import authority_management.staff.Staff;
+import authority_management.staff.StaffDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import post_management.comment.CommentDAO;
-import post_management.post.PostDAO;
-import user_management.user.User;
-import user_management.user.UserDAO;
+import report.ReportDAO;
 
-@WebServlet(name = "StaffSearchUserServlet", urlPatterns = {"/StaffSearchUserServlet"})
-public class StaffSearchUserServlet extends HttpServlet {
-    
-    final int numUserInPage = 5;
-    final String noSearchPage = "StaffUserListServlet";
-    final String searchPage = "staffUserList.jsp";
-    
+/**
+ *
+ * @author DELL
+ */
+@WebServlet(name = "SearchStaffServlet", urlPatterns = {"/SearchStaffServlet"})
+public class SearchStaffServlet extends HttpServlet {
+
+    final int numStaffInPage = 5;
+    final String StaffListPage = "staffList.jsp";
+    final String noSearchPage = "StaffListServlet";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String searchedString = request.getParameter("search");
@@ -28,41 +35,33 @@ public class StaffSearchUserServlet extends HttpServlet {
             request.getRequestDispatcher(noSearchPage).forward(request, response);
             return;
         } else {
-            UserDAO uDAO = new UserDAO();
+            StaffDAO sDAO = new StaffDAO();
             int pageNum = 1;
             if (request.getParameter("page") != null) {
                 pageNum = Integer.parseInt(request.getParameter("page"));
             }
             request.setAttribute("page", pageNum);
             request.setAttribute("isBanned", "all");
-            ArrayList<User> userList = uDAO.getStaffSearchUser(searchedString);
-            System.err.println("full list size: "+userList.size());
-            int numPage = userList.size() / numUserInPage
-                    + (userList.size() % numUserInPage == 0 ? 0 : 1);
+            ArrayList<Staff> userList = sDAO.searchStaff(searchedString);
+            System.err.println("full list size: " + userList.size());
+            int numPage = userList.size() / numStaffInPage
+                    + (userList.size() % numStaffInPage == 0 ? 0 : 1);
             request.setAttribute("numPage", numPage);
-            
-            int startIndex = (pageNum - 1) * numUserInPage;
-            int endIndex = pageNum * numUserInPage;
+
+            int startIndex = (pageNum - 1) * numStaffInPage;
+            int endIndex = pageNum * numStaffInPage;
             endIndex = (endIndex > userList.size() ? userList.size() : endIndex);
-            ArrayList<User> subArray = new ArrayList<User>(userList.subList(startIndex, endIndex));
-            PostDAO pDAO = new PostDAO();
-            CommentDAO cDAO = new CommentDAO();
-            ArrayList<Integer> violationNumList = new ArrayList<>();
-            for (User user : subArray) {
-                System.err.println("user: "+user);
-                int PostViolationNum = pDAO.CountReportedPostsByUser(user);
-                int CommentViolationNum = cDAO.CountReportedCommentsByUser(user);
-                int UserViolationNum = uDAO.CountReportedUserByUser(user);
-                int violtionNum = CommentViolationNum + PostViolationNum + UserViolationNum;
-                violationNumList.add(violtionNum);
+            ArrayList<Staff> subArray = new ArrayList<Staff>(userList.subList(startIndex, endIndex));
+            ArrayList<Integer> numSolvedReportList = new ArrayList<Integer>();
+            ReportDAO rDAO = new ReportDAO();
+            for (Staff staff : subArray) {
+                int numSolvedReport = rDAO.countReportsByStaff(staff);
+                numSolvedReportList.add(numSolvedReport);
             }
-            request.setAttribute("violationNumList", violationNumList);
-            request.setAttribute("userList", subArray);
-            request.setAttribute("search", searchedString);
-            request.getRequestDispatcher(searchPage).forward(request, response);
-            return;
+            request.setAttribute("numSolvedReportList", numSolvedReportList);
+            request.setAttribute("staffList", subArray);
+            request.getRequestDispatcher(StaffListPage).forward(request, response);
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

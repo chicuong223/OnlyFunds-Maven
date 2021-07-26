@@ -54,7 +54,7 @@
                     <div>${staff.isActive?"Active":"Banned"}</div>
                 </td>
                 <td>
-                    <a href="ReportListByStaffServlet?username=${staff.username}">
+                    <a href="ReportListByStaffServlet?staffUsername=${staff.username}">
                         ${numSolvedReportList[staffLoop.index]} reports
                     </a>
                 </td>

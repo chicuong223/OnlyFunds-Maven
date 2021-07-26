@@ -285,6 +285,51 @@ public class ReportDAO {
         }
         return reportList;
     }
+    public ArrayList<Report> getReportsByStaff(Staff solveStaff) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Report> reportList = new ArrayList<Report>();
+        try {
+            con = DBConnect.makeConnection();
+            if (con != null) {
+                ps = con.prepareStatement("SELECT * FROM Report where solved_by_staff=?");
+                ps.setString(1, solveStaff.getUsername());
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    UserDAO uDAO = new UserDAO();
+                    User reportUser = uDAO.getUserByUsername(rs.getString("report_username"));
+                    String reportedObjectId = rs.getString("reported_id");
+                    String type = rs.getString("type");
+                    String title = rs.getString("title");
+                    String description = rs.getString("description");
+                    Date reportDate = rs.getDate("report_date");
+                    String status = rs.getString("status");
+                    Date solveDate = rs.getDate("solve_date");
+                    Report report = new Report(id, reportUser, reportedObjectId, type,
+                            solveStaff, title, description, reportDate,
+                            status, solveDate);
+                    reportList.add(report);
+                }
+            }
+        }
+        catch (SQLException e) {
+        }
+        finally {
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null)
+                    con.close();
+            }
+            catch (SQLException e) {
+            }
+        }
+        return reportList;
+    }
 //no check
 
     public Report getReportById(String id) {
