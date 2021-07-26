@@ -43,15 +43,15 @@
                     <input type="hidden" name="action" value="date"/>
                     <div class="container">
                         <div class="row">
-                            <div>
+                            <div class="col">
                                 <label class="label-form" for="start-date">From: </label>
                                 <input type="date" name="start" id="start-date"/>
                             </div>
-                            <div>
+                            <div class="col">
                                 <label class="label-form" for="end-date">To: </label>
-                                <input type="date" name="end" id="start-date"/>
+                                <input type="date" name="end" id="end-date"/>
                             </div>
-                            <div>
+                            <div class="col">
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </div>
                         </div>
@@ -85,23 +85,16 @@
                 </table>
                 <nav class="d-flex justify-content-center mb-4">
                     <ul class="pagination">
-                        <li class="page-item">
-                            <c:if test="${param.page != null && param.page > 1}">
-                                <a class="page-link" href="StaffBillListServlet?page=${param.page - 1}">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </c:if>
-                            <c:if test="${param.page == null || param.page <= 1}">
-                                <a class="page-link text-muted" href="#">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </c:if>
-                        </li>
                         <c:forEach var="index" begin="1" end="${end}">
                             <c:choose>
-                                <c:when test="${empty search}">
+                                <c:when test="${empty search && action == null}">
                                     <li class="page-item ${param.page == index?"active":""}">
                                         <a class="page-link" href='StaffBillListServlet?page=${index}'>${index}</a>
+                                    </li>
+                                </c:when>
+                                <c:when test="${action != null}">
+                                    <li class="page-item ${param.page == index?"active":""}">
+                                        <a class="page-link" href='StaffBillListServlet?page=${index}&start=${start}&end=${end}'>${index}</a>
                                     </li>
                                 </c:when>
                                 <c:otherwise>
@@ -111,28 +104,6 @@
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
-                        <li class="page-item">
-                            <c:choose>
-                                <c:when test="${end <= 1}">
-                                    <a class="page-link text-muted" href="#">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </c:when>
-                                <c:when test="${param.page == null}">
-                                    <a class="page-link" href="StaffBillListServlet?page=2">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </c:when>
-                                <c:when test="${param.page < end}">
-                                    <a class="page-link" href="StaffBillListServlet?page=${param.page + 1}">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
-                                </c:otherwise>
-                            </c:choose>
-                        </li>
                     </ul>
                 </nav>
             </div>
