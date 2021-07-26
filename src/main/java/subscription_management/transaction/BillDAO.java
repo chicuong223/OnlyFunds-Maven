@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import subscription_management.tier.Tier;
 import user_management.user.User;
 import user_management.user.UserDAO;
@@ -299,4 +300,68 @@ public class BillDAO {
         }
         return lst;
     }
+     
+     public int countAllTransactions(){
+         int count = -1;
+         String sql = "SELECT COUNT(id) AS bill_count FROM [Transaction]";
+         try(Connection con = DBConnect.makeConnection(); 
+                 PreparedStatement ps = con.prepareStatement(sql); 
+                 ResultSet rs = ps.executeQuery()){
+             if(rs.next())
+                 count = rs.getInt("bill_count");
+         }
+         catch(Exception e){
+             System.out.println(e.getMessage());
+         }
+         return count;
+     }
+     
+     public int countTransactionFromDateToDate(Date start, Date end){
+         int count = -1;
+         String sql = "SELECT COUNT(id) AS bill_count FROM [Transaction] WHERE transaction_date BETWEEN ? AND ?";
+         try(Connection con = DBConnect.makeConnection(); 
+                 PreparedStatement ps = con.prepareStatement(sql)){
+             ps.setDate(1, start);
+             ps.setDate(2, end);
+             try(ResultSet rs = ps.executeQuery()){
+                 if(rs.next())
+                     count = rs.getInt("bill_count");
+             }
+         }
+         catch(Exception e){
+             System.out.println(e.getMessage());
+         }
+         return count;
+     }
+     
+     public List<Bill> getTransactionsFromDateToDate(Date start, Date end){
+         List<Bill> lst = new ArrayList<>();
+        String sql = "SELECT * FROM [Transaction] WHERE transaction_date BETWEEN ? AND ? ORDER BY id DESC";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setDate(1, start);
+                    ps.setDate(2, end);
+                    UserDAO userDAO = new UserDAO();
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            int id = rs.getInt("id");
+                            String content = rs.getString("content");
+                            int price = rs.getInt("price");
+                            Date transactionDate = rs.getDate("transaction_date");
+                            User receiver = userDAO.getUserByUsername(rs.getString("recipient_username"));
+                            User sender = userDAO.getUserByUsername(rs.getString("sender_username"));
+                            Bill bill = new Bill(id, sender, receiver, content, price, transactionDate);
+                            lst.add(bill);
+                        }
+                    }
+                }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return lst;
+     }
+     
+     
 }

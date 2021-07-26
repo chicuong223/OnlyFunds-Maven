@@ -7,7 +7,13 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,8 +30,8 @@ import user_management.user.User;
 @WebServlet(name = "StaffBillListServlet", urlPatterns = {"/StaffBillListServlet"})
 public class StaffBillListServlet extends HttpServlet {
 
-     private final int pageSize = 9;
-     
+    private final int pageSize = 9;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,12 +42,10 @@ public class StaffBillListServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                
+            throws ServletException, IOException, ParseException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
             request.setAttribute("isActive", "mBill");
-            
             int page = 0;
             String strPage = request.getParameter("page");
             if (strPage == null)
@@ -49,11 +53,24 @@ public class StaffBillListServlet extends HttpServlet {
             else
                 page = Integer.parseInt(strPage);
             BillDAO billDAO = new BillDAO();
-            int count = 0;
             int start = page * pageSize - (pageSize - 1);
             int end = page * pageSize;
-            ArrayList<Bill> billList = new ArrayList<>();
-            billList = billDAO.getAllTransactions(start, end);
+            List<Bill> billList = new ArrayList<>();
+            int count = 0;
+            String action = request.getParameter("action");
+            if (action != null) {
+                Date startDate = Date.valueOf(request.getParameter("start"));
+                Date endDate = Date.valueOf(request.getParameter("end"));
+                billList = billDAO.getTransactionsFromDateToDate(startDate, endDate);
+                count = billDAO.countTransactionFromDateToDate(startDate, endDate);
+                request.setAttribute("start", startDate);
+                request.setAttribute("end", endDate);
+                request.setAttribute("action", action);
+            }
+            else {
+                billList = billDAO.getAllTransactions(start, end);
+                count = billDAO.countAllTransactions();
+            }
             //get end page
             int endPage = count / pageSize;
             if (count % pageSize != 0)
@@ -76,7 +93,12 @@ public class StaffBillListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        }
+        catch (ParseException ex) {
+            Logger.getLogger(StaffBillListServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -90,7 +112,12 @@ public class StaffBillListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        }
+        catch (ParseException ex) {
+            Logger.getLogger(StaffBillListServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -34,6 +34,7 @@ public class SearchBillServlet extends HttpServlet {
             request.getRequestDispatcher(noSearchPage).forward(request, response);
             return;
         }
+        request.setAttribute("search", searchedString);
         int page = 1;
         String strPage = request.getParameter("page");
         if (strPage != null) {
