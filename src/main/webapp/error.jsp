@@ -1,27 +1,33 @@
-<%-- 
-    Document   : error
-    Created on : Jul 1, 2021, 2:32:30 PM
-    Author     : chiuy
---%>
+<%-- Document : error Created on : Jul 1, 2021, 2:32:30 PM Author : chiuy --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>${posterror}</h1>
-        <h1>Post</h1>
-        <c:forEach var="tier" items="${postTiers}">
-            <p>${tier.tierId}</p>
-        </c:forEach>
-        <h1>User</h1>
-        <c:forEach var="tier" items="${userTiers}">
-            <p>${tier.tierId}</p>
-        </c:forEach>
-        <h1>${cmp}</h1>
-    </body>
-</html>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%@page contentType="text/html" pageEncoding="UTF-8" %>
+            <!DOCTYPE html>
+            <html>
+
+            <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                <title>(っ °Д °;)っ</title>
+                <link rel="stylesheet" href="styles/error.css">
+                <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@700;900&display=swap"
+                    rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap" rel="stylesheet">
+            </head>
+
+            <body>
+                <div class="error-content">
+                    <div class="notfound">
+                        <div class="notfound-bg">
+                            <h1>500</h1>
+                        </div>
+                        <h2>Oops, the website crashed! 〒▽〒</h2>
+                        <p>
+                            Don't worry, it's not your fault, this is probably because our developers
+                            are sleeping now and can't process your request.
+                        </p>
+                        <a href="homepage">Back to homepage</a>
+                    </div>
+                </div>
+            </body>
+
+            </html>
