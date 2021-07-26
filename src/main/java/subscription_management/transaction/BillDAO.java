@@ -263,4 +263,40 @@ public class BillDAO {
         }
         return lst;
     }
+     public ArrayList<Bill> searchTransactions(int start, int end, String search) {
+        ArrayList<Bill> lst = new ArrayList<>();
+        String sql = "SELECT * FROM\n"
+                + "(SELECT ROW_NUMBER() OVER (ORDER BY transaction_date DESC) as r,"
+                + " * FROM [Transaction]) as x\n"
+                + "WHERE (x.r BETWEEN ? AND ?)\n"
+                + "     AND (recipient_username LIKE ?\n"
+                + "         OR sender_username LIKE ?)";
+        try (Connection con = DBConnect.makeConnection()) {
+            if (con != null)
+                try (PreparedStatement ps = con.prepareStatement(sql)) {
+                    ps.setInt(1, start);
+                    ps.setInt(2, end);
+                    search="%"+search+"%";
+                    ps.setString(3, search);
+                    ps.setString(4, search);
+                    UserDAO userDAO = new UserDAO();
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            int id = rs.getInt("id");
+                            String content = rs.getString("content");
+                            int price = rs.getInt("price");
+                            Date transactionDate = rs.getDate("transaction_date");
+                            User receiver = userDAO.getUserByUsername(rs.getString("recipient_username"));
+                            User sender = userDAO.getUserByUsername(rs.getString("sender_username"));
+                            Bill bill = new Bill(id, sender, receiver, content, price, transactionDate);
+                            lst.add(bill);
+                        }
+                    }
+                }
+        }
+        catch (Exception e) {
+
+        }
+        return lst;
+    }
 }

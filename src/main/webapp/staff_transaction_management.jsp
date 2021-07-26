@@ -29,6 +29,14 @@
                 <c:import url="staff_navbar.jsp"></c:import>
                 <!-- Main content of the page -->
                 <div class="main-content" id="main-content">
+                    <form method="get" action="SearchBillServlet">
+                        <input type="hidden" value="searchstring" name="a"/>
+                        <div class="input-group input-group-sm" id="search-input">
+                            <input type="text" class="form-control" name="search" placeholder="Search..." value="${search}">
+                        <button class="input-group-text" id="basic-addon2" type="submit"><i
+                                class="fas fa-search"></i></button>
+                    </div>
+                </form>
                     <input type="hidden" value="${active_tab}" id="active-tab">
                     <h1 class="text-center fw-bold mt-3 mb-5">Billing History</h1>
                     <c:set var="user" value="${sessionScope.user}"></c:set>
