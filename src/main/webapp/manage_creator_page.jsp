@@ -71,7 +71,6 @@
                                                 </p>
                                             </div>
                                             <div class="card-footer d-flex justify-content-center">
-                                                <a href="EditTierServlet?tierid=${tier.tierId}" class="btn action me-2">Edit</a>
                                                 <a href="#" class="btn action ms-2" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}">Delete</a>
                                             </div>
                                         </div>
