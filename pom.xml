@@ -110,6 +110,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>OnlyFunds</finalName>
     </build>
 
 </project>
