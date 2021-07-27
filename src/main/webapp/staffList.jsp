@@ -15,33 +15,33 @@
     <body>
         <main class="main-container">
             <c:import url="admin_vertical_navbar.jsp"></c:import>
-                <div class="main-content" id="main-content">
-                    <form class="d-flex w-50 mx-auto mt-4">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search...</button>
-                    </form>
-                    <div class="table-wrapper mt-5 w-75 mx-auto border shadow" id="wrapper">
-                        <div class="table-header bg-primary p-3">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <h4 class="fw-bold text-white mb-0">Staff management</h4>
-                                </div>
-                                <div class="col-sm-7 left-header">
-                                    <button data-bs-toggle="modal" data-bs-target="#modal-add" class="btn btn-sm btn-danger float-end" id="add-btn">
-                                        <ion-icon class="me-3" name="add-circle-outline"></ion-icon>
-                                        <span>Add staff</span>
-                                    </button>
-                                    <div class="dropdown ms-3">
-                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fas fa-filter"></i>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="StaffListServlet?isBanned=all">All</a></li>
-                                            <li><a class="dropdown-item" href="StaffListServlet?isBanned=unbanned">Active</a></li>
-                                            <li><a class="dropdown-item" href="StaffListServlet?isBanned=banned">Inactive</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+            <div class="main-content" id="main-content">
+                <form class="d-flex w-50 mx-auto mt-4" method="get" action="SearchStaffServlet">
+                    <input type="hidden" name="a" value="searchstring">
+                    <input class="form-control me-2" type="text" name="search" placeholder="Search" >
+                    <button class="btn btn-outline-success" type="submit">Search...</button>
+                </form>
+                <div class="table-wrapper mt-5 w-75 mx-auto border shadow" id="wrapper">
+                    <div class="table-header bg-primary p-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <h4 class="fw-bold text-white mb-0">User management</h4>
+                            </div>
+                            <div class="col-sm-7 left-header">
+                                <button data-bs-toggle="modal" data-bs-target="#modal-add" class="btn btn-sm btn-danger float-end" id="add-btn">
+                                    <ion-icon class="me-3" name="add-circle-outline"></ion-icon>
+                                    <span>Add staff</span>
+                                </button>
+                                <div class="dropdown ms-3">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-filter"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                      <li><a class="dropdown-item" href="StaffListServlet?isBanned=all">All</a></li>
+                                      <li><a class="dropdown-item" href="StaffListServlet?isBanned=unbanned">Active</a></li>
+                                      <li><a class="dropdown-item" href="StaffListServlet?isBanned=banned">Inactive</a></li>
+                                    </ul>
+                                  </div>
                             </div>
                         </div>
                         <div class="table-contain p-3">
@@ -160,6 +160,79 @@
                     </div>
                 </div>
             </c:forEach>
+            <div class="modal fade" id="modal-add">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add a staff</h5>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="errors" class="text-danger">
+                                <span id="usernameError"></span>
+                                <span id="passwordError"></span>
+                                <span id="emailError"></span>
+                                <span id="confPassError"></span>
+                                <span id="nameError"></span>
+                            </div>
+                            <form action="AddStaffServlet" method="POST" id="register-form">
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <label class="col-form-label" for="firstname">First Name: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" id="firstname" name="firstname" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <label class="col-form-label" for="lastname">Last Name: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" id="lastname" name="lastname" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <label class="col-form-label" for="username">Username: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" id="username" name="username" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <label class="col-form-label" for="email">Email: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="email" id="email" name="email" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <label class="col-form-label" for="password">Password: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="password" name="password" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <label class="col-form-label" for="confPass">Confirm Password: </label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="password" id="confPass" name="confPassword" class="form-control"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" form="register-form">Add</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
         <!-- JavaScript Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
@@ -167,13 +240,3 @@
         crossorigin="anonymous"></script>
     </body>
 </html>
-
-<c:choose>
-    <c:when test="${empty search}">
-        <h3>Status</h3>
-
-    </c:when>
-    <c:otherwise>
-        <a href="StaffListServlet">Back to list</a>
-    </c:otherwise>
-</c:choose>
