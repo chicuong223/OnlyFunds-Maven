@@ -10,7 +10,8 @@
     <input type="hidden" value="${isActive}" id="isActive">
     <div class="logo border-bottom">
         <img src="images/Admin_Ava.jpg" alt="logo">
-        <span class="hello">Hello staff's name</span>
+        <c:set var="staff" value="${sessionScope.staff}"></c:set>
+        <span class="hello">Hello ${staff.firstName} ${staff.lastName}</span>
     </div>
     <ul class="first-list">
         <li class="list">

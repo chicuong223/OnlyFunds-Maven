@@ -15,49 +15,49 @@
     <body>
         <main class="main-container">
             <c:import url="admin_vertical_navbar.jsp"></c:import>
-            <div class="main-content" id="main-content">
-                <form class="d-flex w-50 mx-auto mt-4">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search...</button>
-                </form>
-                <div class="table-wrapper mt-5 w-75 mx-auto border shadow" id="wrapper">
-                    <div class="table-header bg-primary p-3">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <h4 class="fw-bold text-white mb-0">User management</h4>
-                            </div>
-                            <div class="col-sm-7 left-header">
-                                <button data-bs-toggle="modal" data-bs-target="#modal-add" class="btn btn-sm btn-danger float-end" id="add-btn">
-                                    <ion-icon class="me-3" name="add-circle-outline"></ion-icon>
-                                    <span>Add staff</span>
-                                </button>
-                                <div class="dropdown ms-3">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-filter"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                      <li><a class="dropdown-item" href="StaffListServlet?isBanned=all">All</a></li>
-                                      <li><a class="dropdown-item" href="StaffListServlet?isBanned=unbanned">Active</a></li>
-                                      <li><a class="dropdown-item" href="StaffListServlet?isBanned=banned">Inactive</a></li>
-                                    </ul>
-                                  </div>
+                <div class="main-content" id="main-content">
+                    <form class="d-flex w-50 mx-auto mt-4">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search...</button>
+                    </form>
+                    <div class="table-wrapper mt-5 w-75 mx-auto border shadow" id="wrapper">
+                        <div class="table-header bg-primary p-3">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h4 class="fw-bold text-white mb-0">Staff management</h4>
+                                </div>
+                                <div class="col-sm-7 left-header">
+                                    <button data-bs-toggle="modal" data-bs-target="#modal-add" class="btn btn-sm btn-danger float-end" id="add-btn">
+                                        <ion-icon class="me-3" name="add-circle-outline"></ion-icon>
+                                        <span>Add staff</span>
+                                    </button>
+                                    <div class="dropdown ms-3">
+                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-filter"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="StaffListServlet?isBanned=all">All</a></li>
+                                            <li><a class="dropdown-item" href="StaffListServlet?isBanned=unbanned">Active</a></li>
+                                            <li><a class="dropdown-item" href="StaffListServlet?isBanned=banned">Inactive</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="table-contain p-3">
-                        <table class="table table-striped table-hover align-middle">
-                            <thead>
-                              <tr>
-                                <th scope="col">Username</th>
-                                <th scope="col">First name</th>
-                                <th scope="col">Last name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">No. Reports</th>
-                                <th scope="col">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                        <div class="table-contain p-3">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">First name</th>
+                                        <th scope="col">Last name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">No. Reports</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 <c:forEach var="staff" items="${staffList}" varStatus="staffLoop">
                                     <tr class="user status-${user.isBanned?"Banned":"Not banned"}">
                                         <td>
@@ -105,57 +105,23 @@
                                                 </a>
                                             </c:if>
                                         </td>
-                                </c:forEach>
+                                    </c:forEach>
                             </tbody>
                         </table>
                         <nav class="navigation">
                             <ul class="pagination">
-                                <li class="page-item">
-                                    <c:if test="${param.page != null && param.page > 1}">
-                                        <a class="page-link" href="StaffListServlet?page=${param.page - 1}">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </c:if>
-                                    <c:if test="${param.page == null || param.page == 1}">
-                                        <a class="page-link text-muted" href="#">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </c:if>
-                                </li>
-                                <c:forEach var="index" begin="1" end="${end}">
-                                    <li class="page-item">
+                                <c:forEach begin="1" end="${numPage}" var="pageNum">
+                                    <li class="page-item <c:if test="${param.page == numpage}">active</c:if>">
                                         <c:choose>
                                             <c:when test="${empty search}">
-                                                <a href="StaffListServlet?page=${pageNum}" style="${pageNum==page?"color: red":""}">${pageNum}</a>
+                                                <a href="StaffListServlet?page=${pageNum}" class="page-link">${pageNum}</a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="StaffListServlet?search=${search}&page=${pageNum}" style="${pageNum==page?"color: red":""}">${pageNum}</a>
+                                                <a href="StaffListServlet?search=${search}&page=${pageNum}" class="page-link">${pageNum}</a>
                                             </c:otherwise>
                                         </c:choose>
                                     </li>
                                 </c:forEach>
-                                <li class="page-item">
-                                    <c:choose>
-                                        <c:when test="${end <= 1}">
-                                            <a class="page-link text-muted" href="#">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </c:when>
-                                        <c:when test="${param.page == null}">
-                                            <a class="page-link" href="homepaget?page=2">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </c:when>
-                                        <c:when test="${param.page < end}">
-                                            <a class="page-link" href="homepage?page=${param.page + 1}">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a class="page-link text-muted" href='#'><span aria-hidden="true">&raquo;</span></a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </li>
                             </ul>
                         </nav>
                     </div>
@@ -197,15 +163,15 @@
         </main>
         <!-- JavaScript Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
+                integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
     </body>
 </html>
 
 <c:choose>
     <c:when test="${empty search}">
         <h3>Status</h3>
-        
+
     </c:when>
     <c:otherwise>
         <a href="StaffListServlet">Back to list</a>
