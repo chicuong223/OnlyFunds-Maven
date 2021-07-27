@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:import url="navbar.jsp"></c:import>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,16 +14,10 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
               crossorigin="anonymous">
-        <<link rel="stylesheet" href="styles/receipt.css"/>
+        <link rel="stylesheet" href="styles/receipt.css"/>
     </head>
     <body>
         <main class="main-container">
-            <c:if test="${sessionScope.user == null}">
-                <c:import url="unauthorized_vertical_navbar.jsp"></c:import>
-            </c:if>
-            <c:if test="${sessionScope.user != null}">
-                <c:import url="vertical_navbar_post.jsp"></c:import>
-            </c:if>
             <c:set var="user" value="${sessionScope.user}"></c:set>
             <div class="main-content" id="main-content">
                 <div class="container-fluid">
