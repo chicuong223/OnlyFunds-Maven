@@ -30,6 +30,10 @@ public class ReportListServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         int pageNum = 1;
         if (request.getParameter("page") != null) {
             pageNum = Integer.parseInt(request.getParameter("page"));

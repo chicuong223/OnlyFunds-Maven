@@ -55,7 +55,7 @@ public class StaffLoginServlet extends HttpServlet {
                 session.setAttribute("staff", currentStaff);
                 System.err.println("current staff is null?");
                 System.err.println(session.getAttribute("staff")==null);
-                request.getRequestDispatcher(reportListPage).forward(request, response);
+                response.sendRedirect(reportListPage);
             }
         }
     }

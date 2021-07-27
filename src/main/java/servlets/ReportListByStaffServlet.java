@@ -23,6 +23,10 @@ public class ReportListByStaffServlet extends HttpServlet {
     final String noStaff="StaffListServlet";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         int pageNum = 1;
         if(request.getParameter("staffUsername")==null){
             request.getRequestDispatcher(noStaff).forward(request, response);
@@ -30,6 +34,10 @@ public class ReportListByStaffServlet extends HttpServlet {
         }
         StaffDAO sDAO=new  StaffDAO();
         Staff staff=sDAO.getStaffByUsername(request.getParameter("staffUsername"));
+        if(staff == null){
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
         request.setAttribute("ofStaff", staff);
         if (request.getParameter("page") != null) {
             pageNum = Integer.parseInt(request.getParameter("page"));

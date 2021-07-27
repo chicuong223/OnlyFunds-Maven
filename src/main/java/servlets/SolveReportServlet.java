@@ -34,6 +34,10 @@ public class SolveReportServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         HttpSession session = request.getSession();
         Staff staff = (Staff) session.getAttribute("staff");
         System.err.println("current staff is null?");

@@ -30,6 +30,10 @@ public class SearchStaffServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         String searchedString = request.getParameter("search");
         if (searchedString == null || searchedString.trim().isEmpty()) {
             request.getRequestDispatcher(noSearchPage).forward(request, response);

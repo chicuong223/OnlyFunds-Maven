@@ -34,6 +34,10 @@ public class ReportDetailServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         System.err.println("Call ReportDetailServlet");
         String id = request.getParameter("id");
         if (id == null) {

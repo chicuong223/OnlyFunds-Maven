@@ -31,24 +31,25 @@ public class StaffUserListServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         int pageNum = 1;
-        if (request.getParameter("page") != null) {
+        if (request.getParameter("page") != null)
             pageNum = Integer.parseInt(request.getParameter("page"));
-        }
         request.setAttribute("page", pageNum);
-        if (request.getParameter("isBanned") != null) {
+        if (request.getParameter("isBanned") != null)
             isBanned = request.getParameter("isBanned");
-        }
         request.setAttribute("isBanned", isBanned);
         ArrayList<User> userList = new ArrayList<User>();
         UserDAO uDAO = new UserDAO();
-        if (isBanned.equals("all")) {
+        if (isBanned.equals("all"))
             userList = uDAO.getAllUser();
-        } else if (isBanned.equals("banned")) {
+        else if (isBanned.equals("banned"))
             userList = uDAO.getAllBannedUser();
-        } else {
+        else
             userList = uDAO.getAllUnbannedUser();
-        }
         int numPage = userList.size() / numReportInPage
                 + (userList.size() % numReportInPage == 0 ? 0 : 1);
         request.setAttribute("numPage", numPage);
@@ -57,11 +58,11 @@ public class StaffUserListServlet extends HttpServlet {
         int endIndex = pageNum * numReportInPage;
         endIndex = (endIndex > userList.size() ? userList.size() : endIndex);
 
-        System.err.println("full list size: "+ userList.size());
+        System.err.println("full list size: " + userList.size());
         ArrayList<User> subArray = new ArrayList<User>(userList.subList(startIndex, endIndex));
         PostDAO pDAO = new PostDAO();
         CommentDAO cDAO = new CommentDAO();
-        ArrayList<Integer> violationNumList=new ArrayList<>();
+        ArrayList<Integer> violationNumList = new ArrayList<>();
         for (User user : subArray) {
             int PostViolationNum = pDAO.CountReportedPostsByUser(user);
             int CommentViolationNum = cDAO.CountReportedCommentsByUser(user);

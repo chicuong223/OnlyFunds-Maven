@@ -21,11 +21,16 @@ import report.ReportDAO;
  */
 @WebServlet(name = "StaffListServlet", urlPatterns = {"/StaffListServlet"})
 public class StaffListServlet extends HttpServlet {
+    
     final int numStaffInPage = 8;
     final String StaffListPage = "staffList.jsp";
     String isBanned = "all";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         int pageNum = 1;
         if (request.getParameter("page") != null) {
             pageNum = Integer.parseInt(request.getParameter("page"));

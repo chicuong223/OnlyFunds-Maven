@@ -23,10 +23,13 @@ public class StaffSearchUserServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("staff") == null && request.getSession().getAttribute("admin") == null) {
+            response.sendRedirect("WelcomePageServlet");
+            return;
+        }
         String searchedString = request.getParameter("search");
         if (searchedString == null || searchedString.trim().isEmpty()) {
             request.getRequestDispatcher(noSearchPage).forward(request, response);
-            return;
         } else {
             UserDAO uDAO = new UserDAO();
             int pageNum = 1;
@@ -60,7 +63,6 @@ public class StaffSearchUserServlet extends HttpServlet {
             request.setAttribute("userList", subArray);
             request.setAttribute("search", searchedString);
             request.getRequestDispatcher(searchPage).forward(request, response);
-            return;
         }
         
     }
