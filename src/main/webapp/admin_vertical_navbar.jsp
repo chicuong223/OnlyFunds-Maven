@@ -11,7 +11,7 @@
     <input type="hidden" value="${isActive}" id="isActive">
     <div class="logo border-bottom">
         <img src="images/Admin_Ava.jpg" alt="logo">
-        <span class="hello">Hello admin</span>
+        <span class="hello text-center">Hello<br>admin</span>
     </div>
     <ul class="first-list">
         <li class="list">

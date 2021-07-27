@@ -11,7 +11,8 @@
     <div class="logo border-bottom">
         <img src="images/Admin_Ava.jpg" alt="logo">
         <c:set var="staff" value="${sessionScope.staff}"></c:set>
-        <span class="hello">Hello ${staff.firstName} ${staff.lastName}</span>
+        <span class="hello text-center">Hello <br>
+             ${staff.firstName} ${staff.lastName}</span>
     </div>
     <ul class="first-list">
         <li class="list">
