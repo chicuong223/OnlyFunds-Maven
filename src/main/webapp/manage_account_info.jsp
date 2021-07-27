@@ -100,19 +100,19 @@
                                                         <div class="form-group">
                                                             <label for="currPassword">Current password: </label>
                                                             <input class="form-control mt-2" type="password"
-                                                                name="currentPassword" id="currPassword" />
+                                                                   name="currentPassword" id="currPassword" onchange="validate('oldPass')"/>
                                                             <p class="text-danger" id="passwordError" class="error"></p>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="newPassword">New password: </label>
                                                             <input class="form-control mt-2" type="password"
-                                                                name="newPassword" id="newPassword" />
+                                                                   name="newPassword" id="newPassword" onchange="validate('newPass')"/>
                                                             <p class="text-danger" id="newPasswordError" class="error"></p>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="confPassword">Confirm new password: </label>
                                                             <input class="form-control mt-2" type="password"
-                                                                name="confNewPassword" id="confPassword" />
+                                                                   name="confNewPassword" id="confPassword" onchange="validate('confPass')"/>
                                                             <p class="text-danger mb-0" id="confPasswordError" class="error"></p>
                                                         </div>
                                                     </div>

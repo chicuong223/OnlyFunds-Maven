@@ -166,7 +166,7 @@
                                             <c:if test='${report.status=="pending"}'>
                                                 <div class="col-5 fw-bold">Choose action:</div>
                                                 <div class="col-7">
-                                                    <select class="form-select form-select-sm" name="action"
+                                                    <select class="form-select form-select-sm" name="status"
                                                         id="action">
                                                         <option value="approved" selected>Approve</option>
                                                         <option value="declined">Decline</option>

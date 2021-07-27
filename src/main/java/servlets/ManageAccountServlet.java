@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -44,7 +45,7 @@ public class ManageAccountServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String action = request.getParameter("action");
-            String[] errorList = new String[6];
+            List<String> errorList = new ArrayList<>();
             UserDAO uDao = new UserDAO();
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
@@ -56,16 +57,18 @@ public class ManageAccountServlet extends HttpServlet {
                 String newPassword = HashPassword.HashPassword(request.getParameter("newPassword"));
                 String confNewPassword = HashPassword.HashPassword(request.getParameter("confNewPassword"));
                 if (!curPassword.equals(user.getPassword())) //check match current password
-                    errorList[0] = "Password does not match";
-                if (!newPassword.equals(confNewPassword)) //check if new and conf equals
-                    errorList[1] = "New password does not match";
-                if (errorList.length == 0) {
+                    errorList.add("Password does not match");
+                else if (!newPassword.equals(confNewPassword)) //check if new and conf equals
+                    errorList.add("New password does not match");
+                else if (errorList.isEmpty()) {
                     uDao.changePassword(user.getEmail(), newPassword);
                     user.setPassword(newPassword);
                     session.setAttribute("user", user);
                 }
                 else
                     request.setAttribute("ERROR_LIST", errorList);
+                System.out.println(errorList.size());
+
             }
             else if (action.equals("avatar")) {
                 UploadFile upload = new UploadFile();
