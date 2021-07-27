@@ -95,6 +95,7 @@
                                                             </a>
                                                         </div>
                                                         <c:if test="${!empty comment}">
+                                                            <hr>
                                                             <div class="comment-list">
                                                                 <div class="comment mb-3">
                                                                     <div class="comment-ava">
@@ -102,8 +103,7 @@
                                                                             alt="avatar">
                                                                     </div>
                                                                     <div class="comment-body">
-                                                                        <div
-                                                                            class="main-content border rounded p-2 pt-1">
+                                                                        <div class="cmt-content rounded p-2 pt-1" style="border: 1px solid black;">
                                                                             <!-- Comment's author -->
                                                                             <div class="comment-name">
                                                                                 <span href="#author-page"
@@ -159,6 +159,8 @@
                             </div>
                             <div class="row p-3">
                                 <form action="SolveReportServlet" method="POST" class="p-0 pe-1">
+                                    <input type="hidden" name="objId" value="${report.reportedObjectId}">
+                                    <input type="hidden" name="type" value="${report.type}">
                                     <div class="wrapper p-3 border rounded-3 shadow">
                                         <div class="row">
                                             <c:if test='${report.status=="pending"}'>
