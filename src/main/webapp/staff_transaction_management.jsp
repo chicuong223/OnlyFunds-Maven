@@ -48,11 +48,13 @@
                                 <div class="row">
                                     <div class="col d-flex justify-content-center">
                                         <label class="label-form pt-2 me-2" for="start-date">From: </label>
-                                        <input class="form-control" type="date" name="start" id="start-date" value="${param.start}" />
+                                        <input class="form-control" type="date" name="start" id="start-date"
+                                            value="${param.start}" />
                                     </div>
                                     <div class="col d-flex justify-content-center">
                                         <label class="label-form pt-2 me-2" for="end-date">To: </label>
-                                        <input class="form-control" type="date" name="end" id="end-date" value="${param.end}" />
+                                        <input class="form-control" type="date" name="end" id="end-date"
+                                            value="${param.end}" />
                                     </div>
                                     <div class="col d-flex justify-content-start">
                                         <button type="submit" class="btn btn-primary">Search</button>
@@ -119,6 +121,10 @@
                 </main>
                 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
                 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+                <!-- JavaScript Bundle with Popper -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+                    crossorigin="anonymous"></script>
                 <script type="text/javascript" defer>
                     let activeTab = document.getElementById("active-tab");
                     let arr = document.querySelectorAll(".sort");

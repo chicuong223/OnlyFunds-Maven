@@ -25,7 +25,7 @@
                         <p>Don't worry, it's not your fault, this is probably because our developers
                             are sleeping now and can't process your request.
                         </p>
-                        <a href="#">Back to homepage</a>
+                        <a href="homepage">Back to homepage</a>
                     </div>
                 </div>
             </body>

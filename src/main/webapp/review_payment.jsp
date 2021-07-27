@@ -10,10 +10,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Payment Review</title>
-        <link rel="stylesheet" href="styles/receipt.css"/>
+        <link rel="stylesheet" href="styles/review.css"/>
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+        crossorigin="anonymous">
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container w-50 shadow border p-3 mx-auto" id="form-review">
             <div class="alert alert-warning mt-3 mb-3 text-center fw-bold" role="alert">
                 Please Review Before Continuining
             </div>
@@ -55,12 +59,16 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-12">
-                        <input type="submit" value="Pay Now"/>
-                        <input type="submit" name="cancel" value="Cancel"/>
+                    <div class="col-12 d-flex justify-content-evenly">
+                        <input class="btn btn-primary" type="submit" value="Pay Now"/>
+                        <input class="btn btn-danger" type="submit" name="cancel" value="Cancel"/>
                     </div>
                 </div>
             </form>
         </div>
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
     </body>
 </html>

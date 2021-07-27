@@ -38,7 +38,7 @@ public class ExecutePaymentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if(request.getParameter("cancel") != null){
-            response.sendRedirect("CancelPaymentServlet");
+            response.sendRedirect("cancel_payment");
             return;
         }
         try {
