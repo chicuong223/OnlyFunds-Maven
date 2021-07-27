@@ -22,28 +22,12 @@
     </head>
     <body>
         <header class="text-center">
-            <c:choose>
-                <c:when test="${tier == null}">
-                    <h1>Tiers</h1>
-                    <h4>Create benefits for subscribed users</h4>
-                </c:when>
-                <c:otherwise>
-                    <h1>Update a Tier</h1>
-                </c:otherwise>
-            </c:choose>
+            <h1>Tiers</h1>
+            <h4>Create benefits for subscribed users</h4>
         </header>
         <main>
             <div class="w-50 mx-auto shadow p-3 my-1">
-                <form method="POST" id="tierForm" 
-                      <c:choose>
-                          <c:when test="${tier == null}">
-                              action="AddTierServlet"
-                          </c:when>
-                          <c:otherwise>
-                              action="EditTierServlet"
-                          </c:otherwise>
-                      </c:choose>
-                      >
+                <form method="POST" id="tierForm" action="AddTierServlet" >
                     <div class="form-group my-2">
                         <label for="title" class="label-form fw-bold">Title</label> <span class="text-danger fw-bold fs-5">*</span>   <span class="text-danger" id="titleError">${titleError}</span>
                         <input type="text" id="title" name="title" class="form-control" value="${title}"/>
