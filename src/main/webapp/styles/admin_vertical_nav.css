@@ -1,0 +1,143 @@
+* {
+    font-family: 'Helvetica Neue', "Sans-Serif";
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    font-size: 16px;
+    background-color: #EAEAEA;
+}
+
+.main-container {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.vertical-navbar {
+    padding: 8px;
+    background-color: #583f57;
+    position: absolute;
+    height: 100%;
+    width: 14rem;
+    overflow-x: hidden;
+    transition: all .5s;
+    border-right: 1px solid #bdbdbd;
+}
+
+.vertical-navbar .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0px 20px 0px;
+}
+
+.vertical-navbar .logo img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.vertical-navbar .logo span {
+    font-size: 24px;
+    color: white;
+}
+
+ion-icon {
+    position: relative;
+    font-size: 2em;
+    z-index: 1;
+}
+
+.vertical-navbar ul {
+    color: white;
+    width: 100%;
+    height: auto;
+    padding-top: 10px;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.vertical-navbar ul li {
+    color: white;
+    position: relative;
+    padding: 5px;
+    list-style: none;
+    width: 100%;
+}
+
+.vertical-navbar ul li a {
+    color: white;
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: black;
+}
+
+.vertical-navbar ul li a .icon {
+    color: white;
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+}
+
+.vertical-navbar ul li a .title {
+    color: white;
+    position: relative;
+    display: block;
+    padding-left: 10px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+}
+
+#logout {
+    position: absolute;
+    bottom: 0;
+}
+
+.main-content {
+    height: 100%;
+    width: calc(100% - 14rem);
+    margin-left: 14rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.table-wrapper {
+    min-height: 75vh;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.table-header {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.col-sm-5 {
+    position: relative;
+}
+
+h4 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#add-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
