@@ -104,7 +104,7 @@ public class PostDAO {
             if (con != null) {
                 ps = con.prepareStatement("SELECT * FROM\n"
                         + "(SELECT ROW_NUMBER() OVER (ORDER BY id DESC) as r,\n"
-                        + "* FROM Post WHERE uploader_username = ? AND is_active=1) as x\n"
+                        + "* FROM Post WHERE uploader_username = ?) as x\n"
                         + "WHERE x.r between ?*4-(4-1) and ?*4");
                 ps.setString(1, user.getUsername());
                 ps.setInt(2, pageIndex);
@@ -553,9 +553,9 @@ public class PostDAO {
         ResultSet rs = null;
         String sql = "SELECT *\n"
                 + "FROM Post p\n"
-                + "WHERE p.is_active='1'\n"
-                + "AND (p.title LIKE ?)"
-                + "OR p.uploader_username LIKE ?";
+                + "WHERE (p.uploader_username LIKE ?\n"
+                + "OR p.title LIKE ?)\n"
+                + "AND p.is_active=1";
         try {
             con = DBConnect.makeConnection();
             if (con != null) {

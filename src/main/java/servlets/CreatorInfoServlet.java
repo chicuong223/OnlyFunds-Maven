@@ -124,7 +124,7 @@ public class CreatorInfoServlet extends HttpServlet {
 
     private TreeMap<Post, int[]> getPosts(User creator, User user, int page) {
         PostDAO dao = new PostDAO();
-        List<Post> postList = dao.getPostsByUser(creator, page);
+        List<Post> postList = dao.getActivePostsByUser(creator, page);
         TreeMap<Post, int[]> postMap = new TreeMap<>();
         PostLikeDAO likeDAO = new PostLikeDAO();
         CommentDAO cmtDAO = new CommentDAO();
