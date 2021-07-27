@@ -80,7 +80,6 @@ public class ResetPasswordEmailServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("OTP", otp);
         session.setAttribute("EMAIL", email);
-        session.setMaxInactiveInterval(180);
         SendEmail(emailList, "Password Reset", body);
     }
 }

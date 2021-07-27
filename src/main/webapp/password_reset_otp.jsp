@@ -38,9 +38,6 @@
                     <input type="text" name="otp" class="form-control" id="otp"/>
                     <button type="submit" name="action" value="otp" class="btn btn-success mt-2">Submit</button>
                 </form>
-                <div id='resend'>
-                    <p>Resend in <span id="time">${resendTime}</span> seconds!</p>
-                </div>
             </div>
         </main>
         <script src='scripts/password_otp_script.js' async>

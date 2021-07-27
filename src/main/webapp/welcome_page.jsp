@@ -31,7 +31,7 @@
                             <div class="col-lg-12 p-3 pb-1 my-auto text-center">
                                 <span style="font-size: 50px; color:#B82481; font-family: Righteous;">ONLY FUNDS</span>
                                 <p style="font-size: 36px; color:#69336D;">Create your own work and earn money!</p>
-                                <a href="#" class="register-link">
+                                <a href="RegisterServlet" class="register-link">
                                     <span>Get started!</span>
                                     <svg width="18px" height="15px" viewBox="0 0 13 10">
                                         <path d="M1,5 L11,5"></path>

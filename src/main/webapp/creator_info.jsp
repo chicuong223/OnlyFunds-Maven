@@ -101,10 +101,10 @@
                                         <c:if test="${sessionScope.user == null}">
                                             <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#pleaseLogin"></a>
                                         </c:if>
-                                        <c:if test="${sessionScope.user.username ne creator.username}">
+                                        <c:if test="${sessionScope.user != null && sessionScope.user.username ne creator.username}">
                                             <a href="#" class="stretched-link" data-bs-toggle="modal" data-bs-target="#modal-${tier.tierId}"></a>
                                         </c:if>
-                                        <c:if test="${sessionScope.user.username eq creator.username}">
+                                        <c:if test="${sessionScope.user != null && sessionScope.user.username eq creator.username}">
                                             <a href="#" class="stretched-link"></a>
                                         </c:if>
                                         <h4 class="card-header text-center text-truncate t-name">${tier.tierTitle}</h4>
