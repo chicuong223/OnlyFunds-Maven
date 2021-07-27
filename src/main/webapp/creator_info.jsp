@@ -47,12 +47,12 @@
                                     <c:if test="${followed == false}">
                                         <button style="background-color: #ce68a8; border-color: #ce68a8"
                                                 class="btn btn-sm btn-primary ms-2" 
-                                                id="follow">Follow</button>
+                                                id="follow-btn">Follow</button>
                                     </c:if>
                                     <c:if test="${followed == true}">
                                         <button style="background-color: #cecece; border-color: #cecece"
                                                 class="btn btn-sm btn-primary ms-2" 
-                                                id="follow">Following</button>
+                                                id="follow-btn">Following</button>
                                     </c:if>
                                 </c:if>
                             </h3>
@@ -265,6 +265,6 @@
                 </div>
             </div>
         </div>
-        <script src='scripts/creator_info_script.js'></script>
+        <script src='scripts/creator_info_script.js' defer></script>
     </body>
 </html>
