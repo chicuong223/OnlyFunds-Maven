@@ -24,7 +24,7 @@ import report.ReportDAO;
 @WebServlet(name = "SearchStaffServlet", urlPatterns = {"/SearchStaffServlet"})
 public class SearchStaffServlet extends HttpServlet {
 
-    final int numStaffInPage = 5;
+    final int numStaffInPage = 8;
     final String StaffListPage = "staffList.jsp";
     final String noSearchPage = "StaffListServlet";
 

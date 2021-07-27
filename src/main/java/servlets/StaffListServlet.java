@@ -21,7 +21,7 @@ import report.ReportDAO;
  */
 @WebServlet(name = "StaffListServlet", urlPatterns = {"/StaffListServlet"})
 public class StaffListServlet extends HttpServlet {
-    final int numStaffInPage = 5;
+    final int numStaffInPage = 8;
     final String StaffListPage = "staffList.jsp";
     String isBanned = "all";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -51,8 +51,8 @@ public class StaffListServlet extends HttpServlet {
         int endIndex = pageNum * numStaffInPage;
         endIndex = (endIndex > staffList.size() ? staffList.size() : endIndex);
         System.err.println("full list size: "+ staffList.size());
-        ArrayList<Staff> subArray = new ArrayList<Staff>(staffList.subList(startIndex, endIndex));
-        ArrayList<Integer>numSolvedReportList=new ArrayList<Integer>();
+        ArrayList<Staff> subArray = new ArrayList<>(staffList.subList(startIndex, endIndex));
+        ArrayList<Integer>numSolvedReportList=new ArrayList<>();
         ReportDAO rDAO=new ReportDAO();
         for (Staff staff : subArray) {
             int numSolvedReport=rDAO.countReportsByStaff(staff);
