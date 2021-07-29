@@ -1,5 +1,4 @@
 function clickBookmarkPost(username, postId) {
-    window.alert("clickBookmarkPost");
     event.preventDefault();
     var btnBookmark = document.querySelector("#btnBookmark");
     if (btnBookmark.className === "fas fa-bookmark") {
@@ -16,7 +15,6 @@ function clickBookmarkPost(username, postId) {
             cache: false,
             success: function () {
                 btnBookmark.className = "far fa-bookmark";
-                alert('delete bm');
             }
         });
     } else {
@@ -32,7 +30,6 @@ function clickBookmarkPost(username, postId) {
             cache: false,
             success: function () {
                 btnBookmark.className = "fas fa-bookmark";
-                alert('add bm');
             }
         });
     }
@@ -201,7 +198,6 @@ function submitReport() {
         },
         cache: false,
         success: function () {
-            alert("ajax success");
             $('#reportForm').modal('hide');
             if (type === 'post') {
                 $('#report-post-btn').replaceWith("\
