@@ -35,8 +35,8 @@ public class AddTierServlet extends HttpServlet {
         TierDAO tierDAO = new TierDAO();
         User currentUser = (User) request.getSession().getAttribute("user");
         ArrayList<Tier> tierList = tierDAO.getTiersByUser(currentUser);
-        if(tierList.size() >= 5){
-            request.setAttribute("tiererror", "You can create at most 5 tiers only");
+        if(tierList.size() >= 3){
+            request.setAttribute("tiererror", "You can create at most 3 tiers only");
             request.getRequestDispatcher("TierManagementServlet").forward(request, response);
             return;
         }
