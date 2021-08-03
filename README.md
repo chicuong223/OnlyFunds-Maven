@@ -19,3 +19,4 @@ Mr. Kieu Trong Khanh
 - Backend: JavaEE 7, Apache Maven 4.0.0
 - Frontend: Bootstrap 5
 - Libraries: JDBC 9.2.1 for JRE 8, Paypal REST SDK 1.14.0, Oracle JavaMail API
+- Architecture: MVC2
