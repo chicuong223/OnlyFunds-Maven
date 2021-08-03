@@ -41,7 +41,7 @@ public class BillDAO {
             }
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
+            
         }
         return result;
     }
@@ -76,7 +76,7 @@ public class BillDAO {
             }
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
+            
         }
         return lst;
     }
@@ -111,7 +111,6 @@ public class BillDAO {
             }
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
         return lst;
     }
@@ -147,7 +146,6 @@ public class BillDAO {
             }
         }
         catch (SQLException e) {
-           e.printStackTrace();
         }
         return lst;
     }
@@ -212,7 +210,6 @@ public class BillDAO {
             }
         }
         catch(Exception ex){
-            System.out.println(ex.getMessage());
         }
         return count;
     }
@@ -228,7 +225,6 @@ public class BillDAO {
             }
         }
         catch(Exception ex){
-            System.out.println(ex.getMessage());
         }
         return count;
     }
@@ -260,7 +256,6 @@ public class BillDAO {
                 }
         }
         catch (Exception e) {
-
         }
         return lst;
     }
@@ -296,7 +291,6 @@ public class BillDAO {
                 }
         }
         catch (Exception e) {
-
         }
         return lst;
     }
@@ -311,7 +305,6 @@ public class BillDAO {
                  count = rs.getInt("bill_count");
          }
          catch(Exception e){
-             System.out.println(e.getMessage());
          }
          return count;
      }
@@ -329,7 +322,7 @@ public class BillDAO {
              }
          }
          catch(Exception e){
-             System.out.println(e.getMessage());
+             
          }
          return count;
      }
@@ -362,7 +355,7 @@ public class BillDAO {
                 }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            
         }
         return lst;
      }
@@ -398,7 +391,7 @@ public class BillDAO {
                 }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            
         }
         return lst;
      }
@@ -418,7 +411,7 @@ public class BillDAO {
              }
          }
          catch(Exception e){
-             System.out.println(e.getMessage());
+             
          }
          return count;
      }

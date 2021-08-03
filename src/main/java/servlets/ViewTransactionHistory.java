@@ -98,6 +98,7 @@ public class ViewTransactionHistory extends HttpServlet {
         request.setAttribute("bills", billList);
         request.setAttribute("end", endPage);
         request.setAttribute("filter", filter);
+        request.setAttribute("active_tab", filter);
         request.getRequestDispatcher("transactions.jsp").forward(request, response);
     }
 }
