@@ -1,7 +1,5 @@
 # OnlyFunds Project
 
-----
-
 OnlyFunds Project is a web application inspired by Patreon and some other websites. This application allows users to express their creativity.
 Also they can earn some money using this platform.
 <br>
