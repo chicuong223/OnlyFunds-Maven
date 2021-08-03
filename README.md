@@ -15,11 +15,12 @@ Mr. Kieu Trong Khanh
 - [Nguyen Quang Dung](https://www.facebook.com/Aeterna212)
 - [Tran Khai Minh Khoi](https://www.facebook.com/profile.php?id=100013237866089)
 
-## Technology used:
+## Used technology:
 - Backend: JavaEE 7, Apache Maven 4.0.0
 - Frontend: Bootstrap 5
 - Libraries: JDBC 9.2.1 for JRE 8, Paypal REST SDK 1.14.0, Oracle JavaMail API
 - Architecture: MVC2
+- Database: Azure SQL Database
 
 ## Screenshots:
 ### Welcome Page:
