@@ -7,9 +7,9 @@ Also they can earn some money using this platform.
 <br>
 This project is developed over a period of 10 weeks, as a project for the course Software Development Project - SWP391 at FPT University
 
-##Mentor: Mr. Kieu Trong Khanh
+## Mentor: Mr. Kieu Trong Khanh
 
-##Members
+## Members
 - Tang Chi Cuong
 - Khuc Ngoc Thai
 - Nguyen Quang Dung
