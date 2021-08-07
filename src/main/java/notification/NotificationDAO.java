@@ -28,12 +28,12 @@ public class NotificationDAO {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement("INSERT INTO Notification(content, recipient_username, notification_date, is_read, post_id)\n"
-                        + "VALUES (?, ?, ?, ?, (SELECT MAX(id) FROM Post WHERE uploader_username = ?))")) {
+                        + "VALUES (?, ?, ?, ?, ?)")) {
                     ps.setString(1, post.getUploader().getUsername() + " has uploaded a new post");
                     ps.setString(2, user.getUsername());
                     ps.setDate(3, post.getUploadDate());
                     ps.setBoolean(4, false);
-                    ps.setString(5, post.getUploader().getUsername());
+                    ps.setInt(5, post.getPostId());
                     result = ps.executeUpdate() > 0;
                 }
                 con.close();

@@ -19,13 +19,13 @@ import utils.DBConnect;
  */
 public class PostCategoryMapDAO {
 
-    public boolean addPostCatMap(User user, Category cat) {
+    public boolean addPostCatMap(Post post, Category cat) {
         boolean result = false;
         try (Connection con = DBConnect.makeConnection()) {
             if (con != null)
                 try (PreparedStatement ps = con.prepareStatement("INSERT INTO Post_Category_Map(post_id, category_id)\n"
-                    + "VALUES((SELECT MAX(id) FROM Post WHERE uploader_username = ?), ?)")) {
-                ps.setString(1, user.getUsername());
+                    + "VALUES(?, ?)")) {
+                ps.setInt(1, post.getPostId());
                 ps.setInt(2, cat.getCategoryId());
                 result = ps.executeUpdate() > 0;
             }

@@ -37,7 +37,6 @@ public class UploadFile {
                 directory.mkdir();
             try {
                 File outputFilePath = new File(basePath + fileName);
-                System.out.println(outputFilePath);
                 inputStream = filePart.getInputStream();
                 outputStream = new FileOutputStream(outputFilePath);
                 int read = 0;
@@ -47,7 +46,7 @@ public class UploadFile {
                 }
             }
             catch (IOException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
                 fileName = "";
             }
             finally {
@@ -60,7 +59,7 @@ public class UploadFile {
             }
         }
         catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             fileName = "";
         }
         return fileName;
@@ -92,7 +91,6 @@ public class UploadFile {
             OutputStream outputStream = null;
             try {
                 File outputFilePath = new File(basePath + fileName);
-                System.out.println(outputFilePath);
                 inputStream = filePart.getInputStream();
                 outputStream = new FileOutputStream(outputFilePath);
                 int read = 0;

@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -389,8 +390,9 @@ public class PostDAO {
         try {
             con = DBConnect.makeConnection();
             if (con != null) {
-                ps = con.prepareStatement("INSERT INTO Post(title, description, attachment_URL, uploader_username, upload_date, view_count, is_active)\n"
-                        + "VALUES(?, ?, ?, ?, ?, ?, ?)");
+                String sql = "INSERT INTO Post(title, description, attachment_URL, uploader_username, upload_date, view_count, is_active)\n"
+                        + "VALUES(?, ?, ?, ?, ?, ?, ?)";
+                ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, post.getTitle());
                 ps.setString(2, post.getDescription());
                 ps.setString(3, post.getAttachmentURL());
@@ -399,6 +401,9 @@ public class PostDAO {
                 ps.setBoolean(7, post.isIsActive());
                 ps.setString(4, post.getUploader().getUsername());
                 ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+                if(rs.next())
+                    post.setPostId(rs.getInt(1));
                 return true;
             }
         }

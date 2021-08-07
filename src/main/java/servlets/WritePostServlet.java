@@ -83,19 +83,8 @@ public class WritePostServlet extends HttpServlet {
         //add post
         dao.addPost(post);
 
-        //Reason: Because we use identity for post ID in database,
-        //we can only get the correct post id of the added post after it has been inserted into the database
-        //Steps:
-        //1. Get the latest added post id of the current user
-        //2. Change the in-memory post id to the id gotten from step 1
-        //3. change file name to the post id and upload it to the server
-        //4. change the in-memory post's attachment URL
-        //5. Update the post in the database
         if (!filename.trim().equals("")) {
-            int postId = dao.getLatestPostIdByUser(user);
-//            Post post = dao.getLatestPostByUser(user)
-            post.setPostId(postId);
-            filename = fileUpload.postAttachmentUpload(request, postId);
+            filename = fileUpload.postAttachmentUpload(request, post.getPostId());
             post.setAttachmentURL(filename);
             dao.updatePost(post);
         }
@@ -103,18 +92,18 @@ public class WritePostServlet extends HttpServlet {
         //else, add all checked categories to category map
         if (cats == null) {
             Category cat = categoryDAO.getCategoryByID(6);
-            categoryMapDAO.addPostCatMap(user, cat);
+            categoryMapDAO.addPostCatMap(post, cat);
         }
         else
             for (String catID : cats) {
                 Category cat = categoryDAO.getCategoryByID(Integer.parseInt(catID));
-                categoryMapDAO.addPostCatMap(user, cat);
+                categoryMapDAO.addPostCatMap(post, cat);
             }
         //if user chose any tier, add a tier map
         if (tiers != null)
             for (String tierID : tiers) {
                 Tier tier = tierDAO.getTierById(Integer.parseInt(tierID));
-                tierMapDAO.addTierMap(tier, user);
+                tierMapDAO.addTierMap(tier, post);
             }
         sendNotifications(post, user);
         response.sendRedirect("YourPostsServlet");

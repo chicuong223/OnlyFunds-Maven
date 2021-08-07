@@ -20,14 +20,14 @@ import utils.DBConnect;
  */
 public class TierMapDAO {
 
-    public boolean addTierMap(Tier tier, User user) {
+    public boolean addTierMap(Tier tier, Post post) {
         boolean result = false;
         try {
             Connection con = DBConnect.makeConnection();
             if (con != null) {
                 try (PreparedStatement ps = con.prepareStatement("INSERT INTO Tier_Map(post_id, tier_id)\n"
-                        + "VALUES((SELECT MAX(id) FROM Post WHERE uploader_username = ?), ?)")) {
-                    ps.setString(1, user.getUsername());
+                        + "VALUES(?, ?)")) {
+                    ps.setInt(1, post.getPostId());
                     ps.setInt(2, tier.getTierId());
                     result = ps.executeUpdate() > 0;
                 }

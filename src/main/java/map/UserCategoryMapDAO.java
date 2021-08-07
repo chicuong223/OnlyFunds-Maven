@@ -157,14 +157,4 @@ public class UserCategoryMapDAO {
         }
         return false;
     }
-
-    public static void main(String[] args) {
-        UserDAO uDAO = new UserDAO();
-        User user = uDAO.getUserByUsername("chicuong");
-        UserCategoryMapDAO ucDAO = new UserCategoryMapDAO();
-        ArrayList<Category> lst = ucDAO.getCategoriesByUser(user);
-        for (Category category : lst) {
-            System.out.println(category.getCategoryId());
-        }
-    }
 }
